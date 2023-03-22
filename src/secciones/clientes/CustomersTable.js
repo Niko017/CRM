@@ -14,10 +14,10 @@ import {
   TableRow,
   Typography
 } from '@mui/material';
-import { Scrollbar } from 'src/components/scrollbar';
-import { getInitials } from 'src/utils/get-initials';
+import { Scrollbar } from 'components/scrollbar';
+import { getInitials } from 'utiles/get-initials';
 
-export const CustomersTable = (props) => {
+const CustomersTable = (props) => {
   const {
     count = 0,
     items = [],
@@ -140,6 +140,8 @@ export const CustomersTable = (props) => {
     </Card>
   );
 };
+
+export default CustomersTable;
 
 CustomersTable.propTypes = {
   count: PropTypes.number,
