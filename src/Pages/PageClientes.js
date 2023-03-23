@@ -5,11 +5,11 @@ import ArrowDownOnSquareIcon from '@heroicons/react/24/solid/ArrowDownOnSquareIc
 import ArrowUpOnSquareIcon from '@heroicons/react/24/solid/ArrowUpOnSquareIcon';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import { Box, Button, Container, Stack, SvgIcon, Typography } from '@mui/material';
-import { useSelection } from 'src/hooks/use-selection';
-import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
+import { useSelection } from 'hooks/use-selection';
+import { Layout as DashboardLayout } from 'layouts/dashboard/layout';
 import CustomersTable from 'secciones/clientes/CustomersTable';
-import { CustomersSearch } from 'src/sections/customer/customers-search';
-import { applyPagination } from 'src/utils/apply-pagination';
+import CustomersSearch from 'secciones/clientes/CustomersSearch';
+import { applyPagination } from 'utils/apply-pagination';
 
 const now = new Date();
 
@@ -173,7 +173,7 @@ const useCustomerIds = (customers) => {
   );
 };
 
-const Page = () => {
+const PageClientes = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const customers = useCustomers(page, rowsPerPage);
@@ -223,31 +223,21 @@ const Page = () => {
                 <Typography variant="h4">
                   Customers
                 </Typography>
-                <Stack
-                  alignItems="center"
-                  direction="row"
-                  spacing={1}
-                >
+                <Stack alignItems="center" direction="row"spacing={1}>
                   <Button
                     color="inherit"
                     startIcon={(
                       <SvgIcon fontSize="small">
                         <ArrowUpOnSquareIcon />
                       </SvgIcon>
-                    )}
-                  >
-                    Import
-                  </Button>
+                    )}>Import</Button>
                   <Button
                     color="inherit"
                     startIcon={(
                       <SvgIcon fontSize="small">
                         <ArrowDownOnSquareIcon />
                       </SvgIcon>
-                    )}
-                  >
-                    Export
-                  </Button>
+                    )}>Export</Button>
                 </Stack>
               </Stack>
               <div>
@@ -285,10 +275,9 @@ const Page = () => {
   );
 };
 
-Page.getLayout = (page) => (
+PageClientes.getLayout = (page) => (
   <DashboardLayout>
     {page}
   </DashboardLayout>
 );
-
-export default Page;
+export default PageClientes;
