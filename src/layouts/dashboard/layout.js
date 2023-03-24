@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
+//import { usePathname } from 'next/navigation';
 import { styled } from '@mui/material/styles';
-import { withAuthGuard } from 'hooks/with-auth-guard';
+//import { withAuthGuard } from 'hooks/with-auth-guard';
 import { SideNav } from './side-nav';
 import { TopNav } from './top-nav';
 
@@ -23,27 +23,27 @@ const LayoutContainer = styled('div')({
   width: '100%'
 });
 
-export const Layout = withAuthGuard((props) => {
+const Layout = /*withAuthGuard*/((props) => {
   const { children } = props;
-  const pathname = usePathname();
+  //const pathname = usePathname();
   const [openNav, setOpenNav] = useState(false);
 
-  const handlePathnameChange = useCallback(
-    () => {
-      if (openNav) {
-        setOpenNav(false);
-      }
-    },
-    [openNav]
-  );
+  // const handlePathnameChange = useCallback(
+  //   () => {
+  //     if (openNav) {
+  //       setOpenNav(false);
+  //     }
+  //   },
+  //   [openNav]
+  // );
 
-  useEffect(
-    () => {
-      handlePathnameChange();
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [pathname]
-  );
+  // useEffect(
+  //   () => {
+  //     handlePathnameChange();
+  //   },
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  //   [pathname]
+  // );
 
   return (
     <>
@@ -60,3 +60,5 @@ export const Layout = withAuthGuard((props) => {
     </>
   );
 });
+
+export default Layout;

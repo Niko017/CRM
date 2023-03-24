@@ -36,6 +36,7 @@ export const SideNav = (props) => {
       }}
     >
       <Box
+      
         sx={{
           display: 'flex',
           flexDirection: 'column',

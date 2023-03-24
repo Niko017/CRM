@@ -1,37 +1,20 @@
-import React, { Component } from 'react';
-import { EditorState, convertToRaw } from 'draft-js';
-import { Editor } from 'react-draft-wysiwyg';
-import draftToHtml from 'draftjs-to-html';
+import React from 'react';
+import SideNav from 'layouts/dashboard/SideNav';
+import Grid from '@mui/material/Unstable_Grid2';
+import MainEditor from 'main/MainEditor';
 
-
-class PageEditor  extends Component {
-  state = {
-    editorState: EditorState.createEmpty(),
-  }
-
-  onEditorStateChange = (editorState) => {
-    this.setState({
-      editorState,
-    });
-  };
-
-  render() {
-    const { editorState } = this.state;
-    return (
-      <div>
-        <Editor
-          editorState={editorState}
-          wrapperClassName="demo-wrapper"
-          editorClassName="demo-editor"
-          onEditorStateChange={this.onEditorStateChange}
-        />
-        <textarea
-          disabled
-          /*Valor html para poder enviar*/
-          value={draftToHtml(convertToRaw(editorState.getCurrentContent()))}/>
-      </div>
-    );
-  }
+function PageEditor(){
+  return(
+    <React.Fragment>
+    <Grid container disableEqualOverflow alignItems="center" justifyContent="center" spacing={1}>
+      <Grid xs={2}>
+        <SideNav/>
+      </Grid> 
+      <Grid xs={10}>
+        <MainEditor/>
+      </Grid>
+    </Grid>      
+  </React.Fragment>
+  )
 }
-
 export default PageEditor;

@@ -14,7 +14,6 @@ import {
   TableRow,
   Typography
 } from '@mui/material';
-import { Scrollbar } from 'components/scrollbar';
 import { getInitials } from 'utils/get-initials';
 
 const CustomersTable = (props) => {
@@ -37,7 +36,6 @@ const CustomersTable = (props) => {
 
   return (
     <Card>
-      <Scrollbar>
         <Box sx={{ minWidth: 800 }}>
           <Table>
             <TableHead>
@@ -55,21 +53,11 @@ const CustomersTable = (props) => {
                     }}
                   />
                 </TableCell>
-                <TableCell>
-                  Nombre
-                </TableCell>
-                <TableCell>
-                  Email
-                </TableCell>
-                <TableCell>
-                  Localizacion
-                </TableCell>
-                <TableCell>
-                  Telefono
-                </TableCell>
-                <TableCell>
-                  Creado
-                </TableCell>
+                <TableCell>Nombre</TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell>Localizacion</TableCell>
+                <TableCell>Telefono</TableCell>
+                <TableCell>Creado</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -101,33 +89,20 @@ const CustomersTable = (props) => {
                         direction="row"
                         spacing={2}
                       >
-                        <Avatar src={customer.avatar}>
-                          {getInitials(customer.name)}
-                        </Avatar>
-                        <Typography variant="subtitle2">
-                          {customer.name}
-                        </Typography>
+                        <Avatar src={customer.avatar}>{getInitials(customer.name)}</Avatar>
+                        <Typography variant="subtitle2">{customer.name}</Typography>
                       </Stack>
                     </TableCell>
-                    <TableCell>
-                      {customer.email}
-                    </TableCell>
-                    <TableCell>
-                      {customer.address.city}, {customer.address.state}, {customer.address.country}
-                    </TableCell>
-                    <TableCell>
-                      {customer.phone}
-                    </TableCell>
-                    <TableCell>
-                      {createdAt}
-                    </TableCell>
+                    <TableCell>{customer.email}</TableCell>
+                    <TableCell>{customer.address.city}, {customer.address.state}, {customer.address.country}</TableCell>
+                    <TableCell>{customer.phone}</TableCell>
+                    <TableCell>{createdAt}</TableCell>
                   </TableRow>
                 );
               })}
             </TableBody>
           </Table>
         </Box>
-      </Scrollbar>
       <TablePagination
         component="div"
         count={count}
