@@ -21,8 +21,9 @@ class MainEditor  extends Component {
       <div>
         <Editor
           editorState={editorState}
-          wrapperClassName="demo-wrapper"
-          editorClassName="demo-editor"
+          toolbarClassName="toolbarClassName"
+          wrapperClassName='wrapperClassName'
+          editorClassName="editorClassName"
           onEditorStateChange={this.onEditorStateChange}
         />
         <textarea
