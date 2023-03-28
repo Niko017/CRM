@@ -66,7 +66,9 @@ function MainEditor(){
       <Container maxWidth="xl">
       <FormControl onSubmit={enviarDatos}>
         <TextField fullWidth label="titulo" id="fullWidth" ref={refConcept}/>
-        <Editor/>
+        <Editor style={{
+          marginTop:'20px'
+        }}/>
         {/* <Editor
           editorState={state.editorState}
           toolbar={{

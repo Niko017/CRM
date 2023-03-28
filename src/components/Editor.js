@@ -1,4 +1,5 @@
 import React, { useRef, useState} from 'react';
+import 'components/editor.css';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import FormatBoldIcon from '@mui/icons-material/FormatBold';
 import FormatItalicIcon from '@mui/icons-material/FormatItalic';
@@ -30,6 +31,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Button from '@mui/material/Button';
 import AddReactionIcon from '@mui/icons-material/AddReaction';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
+import Contenido from 'components/Contenido'
 import Fuentes from 'components/Fuentes';
 
 function Editor (){
@@ -38,7 +40,8 @@ function Editor (){
     const [alineo, setAlineo] = useState("");
     const [font, setFont] = useState("");
     const [type, setType] = useState("");
-    const [list,setList] = useState("")
+    const [list,setList] = useState("");
+    const [contenido,setContenido] = useState("");
     const [size, setSize] = useState(8);
 
     const cajaTexto = useRef(null);
@@ -68,9 +71,20 @@ function Editor (){
     }
 
     const editarTexto = (event)=>{
-        console.log(event)
-        console.log(cajaTexto)
+        let inicioSelect = cajaTexto.current.selectionStart;
+        let finSelect = cajaTexto.current.selectionEnd;
+        let texto = cajaTexto.current.value;
+        let textoFinal  = texto.substring(inicioSelect,finSelect);
+        let principio = texto.substring(0,inicioSelect);
+        let final = texto.substring(finSelect, texto.lenght-1);
+        console.log(cajaTexto);
+        cajaTexto.current.innerHTML=`${principio}<strong>${textoFinal}</strong> ${final}`;
     }
+
+    const insertarFoto = ()=>{
+        
+    }
+    console.log(contenido);
 
     return(
         <React.Fragment>
@@ -81,13 +95,13 @@ function Editor (){
                 }}>
                 <ToggleButtonGroup aria-label="text formatting" value={formato} onChange={handleFormat}>
                     <ToggleButton onClick={editarTexto} value="bold" aria-label="bold">
-                        <FormatBoldIcon />
+                        <FormatBoldIcon/>
                     </ToggleButton>
                     <ToggleButton onClick={editarTexto} value="italic" aria-label="italic">
-                        <FormatItalicIcon />
+                        <FormatItalicIcon/>
                     </ToggleButton>
                     <ToggleButton onClick={editarTexto} value="underlined" aria-label="underlined">
-                        <FormatUnderlinedIcon />
+                        <FormatUnderlinedIcon/>
                     </ToggleButton>
                     <ToggleButton onClick={editarTexto} value="strike" aria-label="strike">
                         <StrikethroughSIcon/>
@@ -98,20 +112,20 @@ function Editor (){
                     <ToggleButton onClick={editarTexto} value="left" aria-label="left aligned">
                         <FormatAlignLeftIcon />
                     </ToggleButton>
-                    <ToggleButton value="center" aria-label="centered">
-                        <FormatAlignCenterIcon />
+                    <ToggleButton onClick={editarTexto} value="center" aria-label="centered">
+                        <FormatAlignCenterIcon/>
                     </ToggleButton>
-                    <ToggleButton value="right" aria-label="right aligned">
-                        <FormatAlignRightIcon />
+                    <ToggleButton onClick={editarTexto} value="right" aria-label="right aligned">
+                        <FormatAlignRightIcon/>
                     </ToggleButton>
-                    <ToggleButton value="justify" aria-label="justified">
-                        <FormatAlignJustifyIcon />
+                    <ToggleButton onClick={editarTexto} value="justify" aria-label="justified">
+                        <FormatAlignJustifyIcon/>
                     </ToggleButton>
                 </ToggleButtonGroup>
                 <Divider flexItem orientation="vertical" sx={{ mx: 0.5, my: 1 }} />
                 <Box sx={{ minWidth: 110 }}>
                     <FormControl fullWidth>
-                        <FormGroup fullWidth>
+                        <FormGroup>
                             <InputLabel id="fuenteID">Tipo</InputLabel>
                             <Select
                             labelId="fuenteID"
@@ -142,7 +156,7 @@ function Editor (){
                 </Box>
                 <Box sx={{ minWidth: 110 }}>
                     <FormControl fullWidth>
-                        <FormGroup fullWidth>
+                        <FormGroup>
                             <InputLabel id="fuenteID">Fuente</InputLabel>
                             <Select
                             labelId="fuenteID"
@@ -179,23 +193,17 @@ function Editor (){
                     </FormControl>
                 </Box>
                 <ButtonGroup color='aux' variant="outlined" aria-label="outlined button group">
-                    <Button value="bold" aria-label="bold"><InsertPhotoIcon/></Button>
+                    <Button onClick={insertarFoto} value="bold" aria-label="bold"><InsertPhotoIcon/></Button>
                     <Button value="bold" aria-label="bold"><LinkIcon/></Button>
                     <Button value="bold" aria-label="bold"><AddReactionIcon/></Button>
                     </ButtonGroup>
             </Paper>
-            <Paper contentEditable={true} ref={cajaTexto} onSelect={editarTexto} elevation={2}  sx={{
-                marginTop:5,
-                minHeight: 400,
-                padding:3,
-                }}>
-                    Hola de Nuevo 😁 
-            </Paper>
+            <TextareaAutosize color='aux' value={contenido} className='textCustom' ref={cajaTexto} id="idCaja" onChange={(event)=>setContenido(event.target.value)}></TextareaAutosize>
             <Box sx={{
                 margin:'auto',
                 marginTop:'30px',
             }}>
-                <Button onClick={editarTexto} variant="contained">Enviar</Button>
+                <Button variant="contained">Enviar</Button>
             </Box>
         </React.Fragment>
     );
