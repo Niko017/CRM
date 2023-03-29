@@ -1,0 +1,11 @@
+.textCustom{
+    border-radius: 5px;
+    padding: 5px;
+    margin-top:5px;
+    resize:none;
+    min-height:55%;
+}
+.textCustom:focus{
+    border: 1px solid #666261;
+    outline: 1px solid #666261;
+}
