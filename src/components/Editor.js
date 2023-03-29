@@ -201,3 +201,21 @@ function Editor (){
     );
 }
 export default Editor;
+
+
+import React, { useState } from 'react';
+
+function App() {
+  const [tags, setTags] = useState([]);
+
+  const addTag = () => {
+    setTags([...tags, <div key={tags.length}>New Tag</div>]);
+  }
+
+  return (
+    <div>
+      <button onClick={addTag}>Add Tag</button>
+      {tags.map(tag => tag)}
+    </div>
+  );
+}
