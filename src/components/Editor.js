@@ -1,4 +1,4 @@
-import React, { useRef, useState} from 'react';
+import React, { useEffect, useRef, useState} from 'react';
 import 'components/editor.css';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import FormatBoldIcon from '@mui/icons-material/FormatBold';
@@ -31,18 +31,48 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Button from '@mui/material/Button';
 import AddReactionIcon from '@mui/icons-material/AddReaction';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
+import Modal from '@mui/material/Modal';
 import Contenido from 'components/Contenido'
 import Fuentes from 'components/Fuentes';
+import { generarUUID } from 'functions/GenerarUUID';
 
 function Editor (){
 
     const [formato, setFormato] = useState([]);
     const [alineo, setAlineo] = useState("");
     const [font, setFont] = useState("");
-    const [type, setType] = useState("");
+    const [type, setType] = useState("p");
     const [list,setList] = useState("");
     const [contenido,setContenido] = useState("");
     const [size, setSize] = useState(8);
+    const [cajas, setCaja] = useState([]);
+    const [imgOpen,setImgOpen] = useState(false);
+    const [srcImg,setSrcImg] = useState('https://ceslava.s3-accelerate.amazonaws.com/2016/04/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png');
+    const [sizeImg,setSizeImg] = useState({
+        width:500,
+        height:500,
+        objectFit:'contain',
+    })
+
+    const handleImgOpen = ()=>{
+        setImgOpen(true);
+    }
+
+    const handleImgClose = ()=>{
+        setImgOpen(false)
+    }
+
+    const addTag = () => {
+        let tagDinamico = document.createElement(`${type}`);
+        tagDinamico.contentEditable=true;
+        tagDinamico.setAttribute('key',`${generarUUID()}`);
+        tagDinamico.innerHTML= "N";
+        setCaja([...cajas,tagDinamico.outerHTML]);
+    }
+
+    const removeTag = ()=>{
+        setCaja([...cajas, <></>])
+    }
 
     const cajaTexto = useRef(null);
 
@@ -63,7 +93,11 @@ function Editor (){
     }
 
     const handleType = (event)=>{
-        setType(event.target.value);
+        if(event.target.value!==""){
+            setType(event.target.value);
+        }else{
+            alert("No hay ninguna opcion marcada");
+        }
     }
 
     const handleList = (event)=>{
@@ -78,13 +112,41 @@ function Editor (){
         let principio = texto.substring(0,inicioSelect);
         let final = texto.substring(finSelect, texto.lenght-1);
         console.log(cajaTexto);
+
         cajaTexto.current.innerHTML=`${principio}<strong>${textoFinal}</strong> ${final}`;
     }
 
-    const insertarFoto = ()=>{
-        
+    const editarImagen = (event)=>{
+        const archivos = event.target.files;
+
+        if (!archivos || !archivos.length) {
+            event.target.src = "https://ceslava.s3-accelerate.amazonaws.com/2016/04/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png";
+            return;
+          }
+          const primerArchivo = archivos[0];
+
+          const objectURL = URL.createObjectURL(primerArchivo);
+
+          setSrcImg(objectURL);
     }
-    console.log(contenido);
+
+    ///////////////////////////////////Estilos para los modales//////////////////////////////////
+    const style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        pt: 2,
+        px: 4,
+        pb: 3,
+      };
+    ///////////////////////////////////Fin Estilos para los modales//////////////////////////////////    
+
+    //console.log(cajas);
 
     return(
         <React.Fragment>
@@ -133,14 +195,14 @@ function Editor (){
                             value={type}
                             label="Fuente"
                             onChange={handleType}
-                            defaultValue={'normal'}
+                            defaultValue={'p'}
                             >
-                                <MenuItem value={10}>Normal</MenuItem>
-                                <MenuItem value={20}>H1</MenuItem>
-                                <MenuItem value={30}>H2</MenuItem>
-                                <MenuItem value={30}>H3</MenuItem>
-                                <MenuItem value={30}>H4</MenuItem>
-                                <MenuItem value={30}>Blockquote</MenuItem>
+                                <MenuItem value={'p'}>Normal</MenuItem>
+                                <MenuItem value={'h1'}>Encabezado 1</MenuItem>
+                                <MenuItem value={'h2'}>Encabezado 2</MenuItem>
+                                <MenuItem value={'h3'}>Encabezado 3</MenuItem>
+                                <MenuItem value={'h4'}>Encabezado 4</MenuItem>
+                                <MenuItem value={'blockquote'}>'Cita'</MenuItem>
                             </Select>
                         </FormGroup>
                     </FormControl>
@@ -193,37 +255,56 @@ function Editor (){
                     </FormControl>
                 </Box>
                 <ButtonGroup color='aux' variant="outlined" aria-label="outlined button group">
-                    <Button onClick={insertarFoto} value="bold" aria-label="bold"><InsertPhotoIcon/></Button>
+                    <Button onClick={handleImgOpen} value="bold" aria-label="bold"><InsertPhotoIcon/></Button>
                     <Button value="bold" aria-label="bold"><LinkIcon/></Button>
                     <Button value="bold" aria-label="bold"><AddReactionIcon/></Button>
                     </ButtonGroup>
             </Paper>
-            <TextareaAutosize color='aux' value={contenido} className='textCustom' ref={cajaTexto} id="idCaja" onChange={(event)=>setContenido(event.target.value)}></TextareaAutosize>
+
+            <Modal
+                open={imgOpen}
+                onClose={handleImgClose}
+                aria-labelledby="child-modal-title"
+                aria-describedby="child-modal-description"
+                >
+        <Box sx={{ ...style, width: 'auto' }}>
+            <img src={srcImg} style={sizeImg}  alt="Imagen para Insertar"/>
+        <FormControl>
+            <TextField
+                fullWidth
+                type="number"
+                label="Ancho"
+                onChange={(event)=>{
+                    setSizeImg({...sizeImg,width:`${event.target.value}px`});
+                }}/>
+            <TextField
+                fullWidth
+                type="number"
+                label="Alto"
+                onChange={(event)=>{
+                    setSizeImg({...sizeImg,height:`${event.target.value}px`});
+                }}/>
+        </FormControl>
+        <Button variant="contained" component="label">Subir Imagen
+            <input onChange={editarImagen} type="file" hidden/>
+        </Button>
+          <Button onClick={handleImgClose}>Cerrar Modal</Button>
+        </Box>
+      </Modal>
+
+            <TextareaAutosize color='aux' className='textCustom' ref={cajaTexto} onChange={(event)=>setContenido(event.target.value)} onKeyDown={(event)=>{
+                if(event.key==='Enter'){
+                    addTag();
+                }
+            }}>{cajas.map(tag => tag)}</TextareaAutosize>
             <Box sx={{
                 margin:'auto',
                 marginTop:'30px',
             }}>
+                
                 <Button variant="contained">Enviar</Button>
             </Box>
         </React.Fragment>
     );
 }
 export default Editor;
-
-
-import React, { useState } from 'react';
-
-function App() {
-  const [tags, setTags] = useState([]);
-
-  const addTag = () => {
-    setTags([...tags, <div key={tags.length}>New Tag</div>]);
-  }
-
-  return (
-    <div>
-      <button onClick={addTag}>Add Tag</button>
-      {tags.map(tag => tag)}
-    </div>
-  );
-}

@@ -1,7 +1,8 @@
 import React, { Component, useRef, useState } from 'react';
 import { EditorState, convertToRaw } from 'draft-js';
-import { Editor } from 'react-draft-wysiwyg';
-//import Editor from 'components/Editor';
+//import { Editor } from 'react-draft-wysiwyg';
+import Editor from 'components/Editor';
+import Pruebas from 'components/Pruebas';
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
 import Container from '@mui/material/Container';
@@ -38,7 +39,7 @@ function MainEditor(){
               name: correo,
           }
         }),
-        textContent: mensajeHTML,
+        textContent: 'mensaj eHTML',
         subject: refConcept.current.textContent,
       })
     }
@@ -59,6 +60,7 @@ function MainEditor(){
       <Container maxWidth="xl">
       <FormControl onSubmit={enviarDatos}>
         <TextField fullWidth label="titulo" id="fullWidth" ref={refConcept}/>
+        <Pruebas/>
         <Editor/>
         {/* <Editor
           editorState={description}
