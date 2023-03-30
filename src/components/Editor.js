@@ -66,8 +66,7 @@ function Editor (){
         let tagDinamico = document.createElement(`${type}`);
         tagDinamico.contentEditable=true;
         tagDinamico.setAttribute('key',`${generarUUID()}`);
-        tagDinamico.innerHTML= "N";
-        setCaja([...cajas,tagDinamico.outerHTML]);
+        setCaja([...cajas,tagDinamico]);
     }
 
     const removeTag = ()=>{
@@ -147,6 +146,10 @@ function Editor (){
     ///////////////////////////////////Fin Estilos para los modales//////////////////////////////////    
 
     //console.log(cajas);
+
+    useEffect(()=>{
+        addTag();
+    },[]);
 
     return(
         <React.Fragment>
@@ -292,11 +295,22 @@ function Editor (){
         </Box>
       </Modal>
 
-            <TextareaAutosize color='aux' className='textCustom' ref={cajaTexto} onChange={(event)=>setContenido(event.target.value)} onKeyDown={(event)=>{
+            <div className='textCustom' ref={cajaTexto} onChange={(event)=>setContenido(event.target.value)}
+            style={{
+                minHeight:'400px'
+            }}
+            onKeyDown={(event)=>{
                 if(event.key==='Enter'){
                     addTag();
                 }
-            }}>{cajas.map(tag => <div dangerouslySetInnerHTML={{ __html:tag }}></div>)}</TextareaAutosize>
+            }}>{cajas.map(tag => <p contentEditable={true} style={{
+                width:'auto',
+                minHeight:'35px',
+                height:'auto',
+                margin:'5px',
+                fontSize:'12px'
+            }}
+            >{tag.textContent}</p>)}</div>
             <Box sx={{
                 margin:'auto',
                 marginTop:'30px',
