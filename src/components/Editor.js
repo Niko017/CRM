@@ -35,6 +35,7 @@ import Modal from '@mui/material/Modal';
 import Contenido from 'components/Contenido'
 import Fuentes from 'components/Fuentes';
 import { generarUUID } from 'functions/GenerarUUID';
+import { getPosition } from 'functions/GenerarUUID';
 
 function Editor (){
 
@@ -44,7 +45,7 @@ function Editor (){
     const [type, setType] = useState("p");
     const [list,setList] = useState("");
     const [contenido,setContenido] = useState("");
-    const [size, setSize] = useState(8);
+    const [size, setSize] = useState(21);
     const [cajas, setCaja] = useState([]);
     const [imgOpen,setImgOpen] = useState(false);
     const [srcImg,setSrcImg] = useState('https://ceslava.s3-accelerate.amazonaws.com/2016/04/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png');
@@ -53,6 +54,13 @@ function Editor (){
         height:500,
         objectFit:'contain',
     })
+    const [activo,setActivo] = useState({
+        bold:false,
+        italic:false,
+        underlined:false,
+        stroke:false,
+    });
+    const[estilo,setEstilo] = useState([<div>{contenido}</div>]);
 
     const handleImgOpen = ()=>{
         setImgOpen(true);
@@ -62,11 +70,10 @@ function Editor (){
         setImgOpen(false)
     }
 
-    const addTag = () => {
-        let tagDinamico = document.createElement(`${type}`);
-        tagDinamico.contentEditable=true;
+    const addTag = (event) => {
+        let tagDinamico = document.createElement(`${event.target.value}`);
         tagDinamico.setAttribute('key',`${generarUUID()}`);
-        setCaja([...cajas,tagDinamico]);
+        setCaja([...cajas,event.target.value]);
     }
 
     const removeTag = ()=>{
@@ -104,15 +111,17 @@ function Editor (){
     }
 
     const editarTexto = (event)=>{
-        let inicioSelect = cajaTexto.current.selectionStart;
-        let finSelect = cajaTexto.current.selectionEnd;
-        let texto = cajaTexto.current.value;
-        let textoFinal  = texto.substring(inicioSelect,finSelect);
-        let principio = texto.substring(0,inicioSelect);
-        let final = texto.substring(finSelect, texto.lenght-1);
-        console.log(cajaTexto);
-
-        cajaTexto.current.innerHTML=`${principio}<strong>${textoFinal}</strong> ${final}`;
+        if(!activo.bold && window.getSelection().toString()!==''){
+            let fraseSeleccionada = window.getSelection().toString();
+            for(let letra of fraseSeleccionada){
+                console.log(letra);
+                if(letra === '\\'){
+                    console.log("\\");
+                    console.log(letra);
+                }
+            }
+            let estructura = cajaTexto.current.outerHTML;
+        }
     }
 
     const editarImagen = (event)=>{
@@ -127,6 +136,12 @@ function Editor (){
           const objectURL = URL.createObjectURL(primerArchivo);
 
           setSrcImg(objectURL);
+    }
+
+    const borrarParrafo = (event)=>{
+        if((event.key === 'Backspace' || event.key === 'Delete') && event.target.textContent=== '' && cajas.length>1){
+            event.target.remove();
+        }else{ return }    
     }
 
     ///////////////////////////////////Estilos para los modales//////////////////////////////////
@@ -145,12 +160,6 @@ function Editor (){
       };
     ///////////////////////////////////Fin Estilos para los modales//////////////////////////////////    
 
-    //console.log(cajas);
-
-    useEffect(()=>{
-        addTag();
-    },[]);
-
     return(
         <React.Fragment>
             <Paper elevation={1}
@@ -159,16 +168,28 @@ function Editor (){
                 flexWrap: 'wrap',
                 }}>
                 <ToggleButtonGroup aria-label="text formatting" value={formato} onChange={handleFormat}>
-                    <ToggleButton onClick={editarTexto} value="bold" aria-label="bold">
+                    <ToggleButton onClick={(event)=>{
+                        setActivo({...activo,bold:!activo.bold});
+                        editarTexto(event);
+                    }} selected={activo.bold} value="bold" aria-label="bold">
                         <FormatBoldIcon/>
                     </ToggleButton>
-                    <ToggleButton onClick={editarTexto} value="italic" aria-label="italic">
+                    <ToggleButton onClick={(event)=>{
+                        editarTexto(event);
+                        setActivo({...activo,italic:!activo.italic});
+                    }} value="italic" aria-label="italic">
                         <FormatItalicIcon/>
                     </ToggleButton>
-                    <ToggleButton onClick={editarTexto} value="underlined" aria-label="underlined">
+                    <ToggleButton onClick={(event)=>{
+                        editarTexto(event);
+                        setActivo({...activo,underlined:!activo.underlined});
+                    }} value="underlined" aria-label="underlined">
                         <FormatUnderlinedIcon/>
                     </ToggleButton>
-                    <ToggleButton onClick={editarTexto} value="strike" aria-label="strike">
+                    <ToggleButton onClick={(event)=>{
+                        editarTexto(event);
+                        setActivo({...activo,stroke:!activo.stroke})
+                    }} value="strike" aria-label="strike">
                         <StrikethroughSIcon/>
                     </ToggleButton>
                     </ToggleButtonGroup>
@@ -197,7 +218,10 @@ function Editor (){
                             id="demo-simple-select"
                             value={type}
                             label="Fuente"
-                            onChange={handleType}
+                            onChange={(event)=>{
+                                handleType(event);
+                                addTag(event);
+                            }}
                             defaultValue={'p'}
                             >
                                 <MenuItem value={'p'}>Normal</MenuItem>
@@ -295,22 +319,33 @@ function Editor (){
         </Box>
       </Modal>
 
-            <div className='textCustom' ref={cajaTexto} onChange={(event)=>setContenido(event.target.value)}
+        <div className='textCustom' ref={cajaTexto} onChange={(event)=>{
+                setContenido(event.target.value);
+            }}
+            id='pruebas'
+            contentEditable={true}
+            suppressContentEditableWarning={true}
             style={{
-                minHeight:'400px'
-            }}
-            onKeyDown={(event)=>{
-                if(event.key==='Enter'){
-                    addTag();
+                minHeight:'400px',
+                fontSize:`${size}px`,
+                padding:'20px',
+            }}>
+            {}
+            {cajas.map(tag =>{
+                switch(tag){
+                    case 'h1':
+                        return(<h1 key={generarUUID()}>Tutulo 1</h1>);
+                    case 'h2':
+                        return(<h2 key={generarUUID()}>Tutulo 2</h2>);
+                    case 'h3':
+                        return(<h3 key={generarUUID()}>Titulo 3</h3>);
+                    case 'h4':
+                        return(<h4 key={generarUUID()}>Titulo 4</h4>);
+                    case 'blockquote':
+                        return (<blockquote key={generarUUID()}>Cita Ejemplo</blockquote>)
                 }
-            }}>{cajas.map(tag => <p contentEditable={true} style={{
-                width:'auto',
-                minHeight:'35px',
-                height:'auto',
-                margin:'5px',
-                fontSize:'12px'
-            }}
-            >{tag.textContent}</p>)}</div>
+            })}
+        </div>
             <Box sx={{
                 margin:'auto',
                 marginTop:'30px',
