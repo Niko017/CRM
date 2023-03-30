@@ -296,7 +296,7 @@ function Editor (){
                 if(event.key==='Enter'){
                     addTag();
                 }
-            }}>{cajas.map(tag => tag)}</TextareaAutosize>
+            }}>{cajas.map(tag => <div dangerouslySetInnerHTML={{ __html:tag }}></div>)}</TextareaAutosize>
             <Box sx={{
                 margin:'auto',
                 marginTop:'30px',
