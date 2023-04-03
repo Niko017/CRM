@@ -30,7 +30,10 @@ import LinkIcon from '@mui/icons-material/Link';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Button from '@mui/material/Button';
 import AddReactionIcon from '@mui/icons-material/AddReaction';
+import IconButton from '@mui/material/IconButton';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
+import Stack from '@mui/material/Stack';
 import Modal from '@mui/material/Modal';
 import Contenido from 'components/Contenido'
 import Fuentes from 'components/Fuentes';
@@ -50,16 +53,18 @@ function Editor (){
     const [imgOpen,setImgOpen] = useState(false);
     const [srcImg,setSrcImg] = useState('https://ceslava.s3-accelerate.amazonaws.com/2016/04/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png');
     const [sizeImg,setSizeImg] = useState({
+        marginRight:'30px',
         width:500,
         height:500,
         objectFit:'contain',
     })
-    const [activo,setActivo] = useState({
+    let activo = {
         bold:false,
         italic:false,
         underlined:false,
         stroke:false,
-    });
+    };
+
     const[estilo,setEstilo] = useState([<div>{contenido}</div>]);
 
     const handleImgOpen = ()=>{
@@ -67,7 +72,8 @@ function Editor (){
     }
 
     const handleImgClose = ()=>{
-        setImgOpen(false)
+        setImgOpen(false);
+        setSrcImg('https://ceslava.s3-accelerate.amazonaws.com/2016/04/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png');
     }
 
     const addTag = (event) => {
@@ -88,8 +94,8 @@ function Editor (){
 
     const handleAlign = (event, nuevaAlineacion)=>{
         setAlineo(nuevaAlineacion);
-        cajaTexto.current.style=`text-align: ${nuevaAlineacion};
-        min-height: 400px; font-size: ${font}px; padding: 20px;`;
+        cajaTexto.current.style=`text-align:${nuevaAlineacion};
+        min-height: 400px; font-size:${size}px; padding: 20px;`;
     }
 
     const handleFont = (event)=>{
@@ -115,32 +121,28 @@ function Editor (){
     const editarTexto = ()=>{
         if(activo.bold && window.getSelection().toString()!==''){
             let fraseSeleccionada = window.getSelection().toString();
-            let contenido  = cajaTexto.current.textContent;
-            console.log(contenido);
+            console.log(cajaTexto);
+            let contenido  = cajaTexto.current.innerHTML;
             let regex = new RegExp(`${fraseSeleccionada}`,'g');
-            let nuevoContenido = contenido.replace(regex,`<b>${fraseSeleccionada}</b>`);
+            let nuevoContenido = contenido.replace(regex,`<b>${fraseSeleccionada}</b>&nbsp;`);
             cajaTexto.current.innerHTML = nuevoContenido;
         }else if(activo.italic && window.getSelection().toString()!==''){
             let fraseSeleccionada = window.getSelection().toString();
-            let contenido  = cajaTexto.current.textContent;
-            console.log(contenido);
+            let contenido  = cajaTexto.current.innerHTML;
             let regex = new RegExp(`${fraseSeleccionada}`,'g');
-            let nuevoContenido = contenido.replace(regex,`<i>${fraseSeleccionada}</i>`);
+            let nuevoContenido = contenido.replace(regex,`<i>${fraseSeleccionada}</i>&nbsp;`);
             cajaTexto.current.innerHTML = nuevoContenido;
         }else if(activo.underlined && window.getSelection().toString()!==''){
-            console.log("Lego");
             let fraseSeleccionada = window.getSelection().toString();
-            let contenido  = cajaTexto.current.textContent;
-            console.log(contenido);
+            let contenido  = cajaTexto.current.innerHTML;
             let regex = new RegExp(`${fraseSeleccionada}`,'g');
-            let nuevoContenido = contenido.replace(regex,`<u>${fraseSeleccionada}</u>`);
+            let nuevoContenido = contenido.replace(regex,`<u>${fraseSeleccionada}</u>&nbsp;`);
             cajaTexto.current.innerHTML = nuevoContenido;
         }else if(activo.stroke && window.getSelection().toString()!==''){
             let fraseSeleccionada = window.getSelection().toString();
-            let contenido  = cajaTexto.current.textContent;
-            console.log(contenido);
+            let contenido  = cajaTexto.current.innerHTML;
             let regex = new RegExp(`${fraseSeleccionada}`,'g');
-            let nuevoContenido = contenido.replace(regex,`<s>${fraseSeleccionada}</s>`);
+            let nuevoContenido = contenido.replace(regex,`<s>${fraseSeleccionada}</s>&nbsp;`);
             cajaTexto.current.innerHTML = nuevoContenido;
         }
     }
@@ -157,12 +159,52 @@ function Editor (){
           const objectURL = URL.createObjectURL(primerArchivo);
 
           setSrcImg(objectURL);
+        }
+
+    const insertarImagen = ()=>{
+        cajaTexto.current.innerHTML+=`<div style="overflow:hidden; resize:both; width:${sizeImg.width}px; height:${sizeImg.height}; display:flex;justifi-content:center"><img width="100%" src="${srcImg}" style="object-fit: contain; overflow:hidden; resize:both;"/></div><br>`;
+        handleImgClose();
     }
 
-    const borrarParrafo = (event)=>{
-        if((event.key === 'Backspace' || event.key === 'Delete') && event.target.textContent=== '' && cajas.length>1){
-            event.target.remove();
-        }else{ return }    
+    const establecerParrafo = (tipoParrafo)=>{
+        switch (tipoParrafo){
+            case "U":
+                activo = {...activo,underlined:true};
+                setFormato([...formato,'underlined']);
+                break;
+            case "S":
+                activo = {...activo,stroke:true};
+                setFormato([...formato,'strike']);
+                break;
+            case "I":
+                activo = {...activo,italic:true};
+                setFormato([...formato,'italic']);
+                break;
+            case "B":
+                activo = {...activo,bold:true}
+                setFormato([...formato,'bold'])
+                break; 
+        }
+    }
+
+    const detector = (event)=>{
+        activo = {...activo,
+            bold:false,
+            italic:false,
+            stroke:false,
+            underlined:false,
+        }
+        setFormato([]);
+        let tipoParrafo = event.nativeEvent.target.nodeName;
+        let padreParrafo = event.nativeEvent.target.parentElement.nodeName;
+        establecerParrafo(tipoParrafo);
+        establecerParrafo(padreParrafo);
+        
+
+        if(activo.underlined && tipoParrafo==="U"){
+            console.log("Hago cosas")
+        }
+        console.log(event);
     }
 
     ///////////////////////////////////Estilos para los modales//////////////////////////////////
@@ -178,6 +220,7 @@ function Editor (){
         pt: 2,
         px: 4,
         pb: 3,
+        display:'flex'
       };
     ///////////////////////////////////Fin Estilos para los modales//////////////////////////////////    
 
@@ -190,26 +233,26 @@ function Editor (){
                 }}>
                 <ToggleButtonGroup aria-label="text formatting" value={formato} onChange={handleFormat}>
                     <ToggleButton onClick={(event)=>{
-                        setActivo({...activo,bold:!activo.bold});
+                       activo = {...activo,bold:!activo.bold};
                         editarTexto(event);
-                    }} selected={activo.bold} value="bold" aria-label="bold">
+                    }} value="bold" aria-label="bold">
                         <FormatBoldIcon/>
                     </ToggleButton>
                     <ToggleButton onClick={(event)=>{
+                         activo = {...activo,italic:!activo.italic};
                         editarTexto(event);
-                        setActivo({...activo,italic:!activo.italic});
                     }} value="italic" aria-label="italic">
                         <FormatItalicIcon/>
                     </ToggleButton>
                     <ToggleButton onClick={(event)=>{
+                        activo = {...activo,underlined:!activo.underlined};
                         editarTexto(event);
-                        setActivo({...activo,underlined:!activo.underlined});
                     }} value="underlined" aria-label="underlined">
                         <FormatUnderlinedIcon/>
                     </ToggleButton>
                     <ToggleButton onClick={(event)=>{
+                        activo = {...activo,stroke:!activo.stroke};
                         editarTexto(event);
-                        setActivo({...activo,stroke:!activo.stroke})
                     }} value="strike" aria-label="strike">
                         <StrikethroughSIcon/>
                     </ToggleButton>
@@ -233,7 +276,7 @@ function Editor (){
                 <Box sx={{ minWidth: 110 }}>
                     <FormControl fullWidth>
                         <FormGroup>
-                            <InputLabel id="fuenteID">Tipo</InputLabel>
+                            <InputLabel id="fuenteID">Titulos</InputLabel>
                             <Select
                             labelId="fuenteID"
                             id="demo-simple-select"
@@ -303,9 +346,9 @@ function Editor (){
                     </FormControl>
                 </Box>
                 <ButtonGroup color='aux' variant="outlined" aria-label="outlined button group">
-                    <Button onClick={handleImgOpen} value="bold" aria-label="bold"><InsertPhotoIcon/></Button>
-                    <Button value="bold" aria-label="bold"><LinkIcon/></Button>
-                    <Button value="bold" aria-label="bold"><AddReactionIcon/></Button>
+                    <Button onClick={handleImgOpen}><InsertPhotoIcon/></Button>
+                    <Button><LinkIcon/></Button>
+                    <Button><AddReactionIcon/></Button>
                     </ButtonGroup>
             </Paper>
 
@@ -317,32 +360,43 @@ function Editor (){
                 >
         <Box sx={{ ...style, width: 'auto' }}>
             <img src={srcImg} style={sizeImg}  alt="Imagen para Insertar"/>
-        <FormControl>
-            <TextField
-                fullWidth
-                type="number"
-                label="Ancho"
-                onChange={(event)=>{
-                    setSizeImg({...sizeImg,width:`${event.target.value}px`});
-                }}/>
-            <TextField
-                fullWidth
-                type="number"
-                label="Alto"
-                onChange={(event)=>{
-                    setSizeImg({...sizeImg,height:`${event.target.value}px`});
-                }}/>
-        </FormControl>
-        <Button variant="contained" component="label">Subir Imagen
-            <input onChange={editarImagen} type="file" hidden/>
-        </Button>
-          <Button onClick={handleImgClose}>Cerrar Modal</Button>
+            <Stack spacing={2} justifyContent="center" alignItems="center">
+                <h2 style={{margin:'10px 0px'}}>Tamaño Imagen</h2>
+                <div style={{margin:'10px 0px'}}>
+                    <FormControl>
+                        <TextField
+                            fullWidth
+                            type="number"
+                            label="Ancho"
+                            onChange={(event)=>{
+                                setSizeImg({...sizeImg,width:`${event.target.value}px`});
+                            }}/>
+                        <TextField
+                            fullWidth
+                            type="number"
+                            label="Alto"
+                            onChange={(event)=>{
+                                setSizeImg({...sizeImg,height:`${event.target.value}px`});
+                            }}/>
+                    </FormControl>
+                </div>
+                <div style={{margin:'10px 0px'}}>
+                    <Button variant="contained" onClick={insertarImagen}>Insertar Imagen</Button>
+                    <IconButton color="primary" aria-label="Subir Imagen" component="label">
+                        <input onChange={editarImagen} hidden accept="image/*" type="file" />
+                        <PhotoCamera />
+                    </IconButton>
+                    <Button onClick={handleImgClose}>Cerrar</Button>
+                </div>
+            </Stack>
         </Box>
       </Modal>
 
-        <div className='textCustom' ref={cajaTexto} onChange={(event)=>{
+        <div className='textCustom' ref={cajaTexto} onInput={(event)=>{
+                //console.log(event);
                 setContenido(event.target.value);
             }}
+            onClick={detector}
             id='pruebas'
             contentEditable={true}
             suppressContentEditableWarning={true}
@@ -350,14 +404,14 @@ function Editor (){
                 minHeight:'400px',
                 fontSize:`${size}px`,
                 padding:'20px',
-            }}>
-            {}
+            }}
+            >
             {cajas.map(tag =>{
                 switch(tag){
                     case 'h1':
-                        return(<h1 key={generarUUID()}>Tutulo 1</h1>);
+                        return(<h1 key={generarUUID()}>Titulo 1</h1>);
                     case 'h2':
-                        return(<h2 key={generarUUID()}>Tutulo 2</h2>);
+                        return(<h2 key={generarUUID()}>Titulo 2</h2>);
                     case 'h3':
                         return(<h3 key={generarUUID()}>Titulo 3</h3>);
                     case 'h4':
