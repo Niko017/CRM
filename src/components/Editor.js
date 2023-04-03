@@ -88,6 +88,8 @@ function Editor (){
 
     const handleAlign = (event, nuevaAlineacion)=>{
         setAlineo(nuevaAlineacion);
+        cajaTexto.current.style=`text-align: ${nuevaAlineacion};
+        min-height: 400px; font-size: ${font}px; padding: 20px;`;
     }
 
     const handleFont = (event)=>{
@@ -110,17 +112,36 @@ function Editor (){
         setList(event.target.value);
     }
 
-    const editarTexto = (event)=>{
-        if(!activo.bold && window.getSelection().toString()!==''){
+    const editarTexto = ()=>{
+        if(activo.bold && window.getSelection().toString()!==''){
             let fraseSeleccionada = window.getSelection().toString();
-            for(let letra of fraseSeleccionada){
-                console.log(letra);
-                if(letra === '\\'){
-                    console.log("\\");
-                    console.log(letra);
-                }
-            }
-            let estructura = cajaTexto.current.outerHTML;
+            let contenido  = cajaTexto.current.textContent;
+            console.log(contenido);
+            let regex = new RegExp(`${fraseSeleccionada}`,'g');
+            let nuevoContenido = contenido.replace(regex,`<b>${fraseSeleccionada}</b>`);
+            cajaTexto.current.innerHTML = nuevoContenido;
+        }else if(activo.italic && window.getSelection().toString()!==''){
+            let fraseSeleccionada = window.getSelection().toString();
+            let contenido  = cajaTexto.current.textContent;
+            console.log(contenido);
+            let regex = new RegExp(`${fraseSeleccionada}`,'g');
+            let nuevoContenido = contenido.replace(regex,`<i>${fraseSeleccionada}</i>`);
+            cajaTexto.current.innerHTML = nuevoContenido;
+        }else if(activo.underlined && window.getSelection().toString()!==''){
+            console.log("Lego");
+            let fraseSeleccionada = window.getSelection().toString();
+            let contenido  = cajaTexto.current.textContent;
+            console.log(contenido);
+            let regex = new RegExp(`${fraseSeleccionada}`,'g');
+            let nuevoContenido = contenido.replace(regex,`<u>${fraseSeleccionada}</u>`);
+            cajaTexto.current.innerHTML = nuevoContenido;
+        }else if(activo.stroke && window.getSelection().toString()!==''){
+            let fraseSeleccionada = window.getSelection().toString();
+            let contenido  = cajaTexto.current.textContent;
+            console.log(contenido);
+            let regex = new RegExp(`${fraseSeleccionada}`,'g');
+            let nuevoContenido = contenido.replace(regex,`<s>${fraseSeleccionada}</s>`);
+            cajaTexto.current.innerHTML = nuevoContenido;
         }
     }
 
