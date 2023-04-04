@@ -39,6 +39,7 @@ import Contenido from 'components/Contenido'
 import Fuentes from 'components/Fuentes';
 import { generarUUID } from 'functions/GenerarUUID';
 import { getPosition } from 'functions/GenerarUUID';
+import { ca } from 'date-fns/locale';
 
 function Editor (){
 
@@ -46,6 +47,7 @@ function Editor (){
     const [alineo, setAlineo] = useState("");
     const [font, setFont] = useState("");
     const [link,setLink] = useState("");
+    const [eventTag,setEventTag] = useState(null);
     const [seleccion,setSeleccion] = useState("");
     const [type, setType] = useState("p");
     const [listados,setListados] = useState([])
@@ -91,9 +93,20 @@ function Editor (){
     
     const cajaTexto = useRef(null);
 
+     /*
+    const arrayCompleto = [1, 2, 3, 4, 5];
+    const arrayIncompleto = [1, 3, 5];
+    const elementosFaltantes = arrayCompleto.filter((elemento) => !arrayIncompleto.includes(elemento));
+    console.log(elementosFaltantes); // Output: [2, 4]
+    */
+
     const handleFormat = (event, nuevoFormato) => {
         setFormato(nuevoFormato);
-      };
+        let formatosFaltantes = formato.filter( elemento => !nuevoFormato.includes(elemento));
+        if(formatosFaltantes.length!==0 && eventTag!==null){
+
+        }
+      }
 
     const handleAlign = (event, nuevaAlineacion)=>{
         setAlineo(nuevaAlineacion);
@@ -180,7 +193,6 @@ function Editor (){
         let tipoParrafo = nodo.nodeName;
         let nuevoFormato = [...formatoActual];
         if (tipoParrafo !== "DIV") {
-            console.log(tipoParrafo);
           switch (tipoParrafo) {
             case "U":
                 activo = {...activo, underlined: true };
@@ -206,7 +218,7 @@ function Editor (){
           await setFormato(nuevoFormato);
           return;
         }
-      }
+    }
 
     const detector = (event)=>{
         activo = {...activo,
@@ -222,9 +234,25 @@ function Editor (){
             establecerParrafo(tipoParrafo,formato);
         }
 
-        if(activo.underlined && tipoParrafo==="U"){
-            console.log("Hago cosas")
+        //Filtro para quitar formato de las letras.
+        console.log(event);
+        if(tipoParrafo.nodeName==="U" || tipoParrafo.nodeName==="S" || tipoParrafo.nodeName==="I" || tipoParrafo.nodeName==="B"){
+            setEventTag(event);
+        }else{
+            setEventTag(null);
         }
+    }
+
+    const limpiarTagHtml = (tag)=>{
+        if(tag.nodeName==="U" || tag.nodeName==="S" || tag.nodeName==="I" || tag.nodeName==="B"){
+            //La u es la variable del tag a acambiar.
+        let cadenaLimpia = tag.outerHTML.replace(/(?:<[u>]+>)|(?:<[/u>]+>)/gi, '');
+        let contenidoTotal = cajaTexto.current.textContent;
+        let regex = new RegExp(`${cadenaLimpia}`,'g');
+        let nuevoContenido = contenidoTotal.replace(regex,`${cadenaLimpia}`);
+        cajaTexto.current.innerHTML = nuevoContenido;
+        limpiarTagHtml(tag.parentElement);
+        }else{return}
     }
 
     const linkear = ()=>{
