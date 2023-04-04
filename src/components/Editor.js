@@ -243,7 +243,14 @@ function Editor (){
         }
     }
 
-    const limpiarTagHtml = (tag)=>{
+    const limpiarTagHtml = (tag,elemento)=>{
+        switch (elemento[0]){
+            case "underline":
+                console.log("a");
+                break;
+        }
+
+
         if(tag.nodeName==="U" || tag.nodeName==="S" || tag.nodeName==="I" || tag.nodeName==="B"){
             //La u es la variable del tag a acambiar.
         let cadenaLimpia = tag.outerHTML.replace(/(?:<[u>]+>)|(?:<[/u>]+>)/gi, '');
