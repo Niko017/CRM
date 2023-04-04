@@ -45,12 +45,15 @@ function Editor (){
     const [formato, setFormato] = useState([]);
     const [alineo, setAlineo] = useState("");
     const [font, setFont] = useState("");
+    const [link,setLink] = useState("");
+    const [seleccion,setSeleccion] = useState("");
     const [type, setType] = useState("p");
+    const [listados,setListados] = useState([])
     const [list,setList] = useState("");
-    const [contenido,setContenido] = useState("");
     const [size, setSize] = useState(21);
     const [cajas, setCaja] = useState([]);
     const [imgOpen,setImgOpen] = useState(false);
+    const [linkOpen,setLinkOpen] = useState(false);
     const [srcImg,setSrcImg] = useState('https://ceslava.s3-accelerate.amazonaws.com/2016/04/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png');
     const [sizeImg,setSizeImg] = useState({
         marginRight:'30px',
@@ -65,10 +68,16 @@ function Editor (){
         stroke:false,
     };
 
-    const[estilo,setEstilo] = useState([<div>{contenido}</div>]);
-
     const handleImgOpen = ()=>{
         setImgOpen(true);
+    }
+
+    const handleLinkOpen = ()=>{
+        setLinkOpen(true);
+    }
+
+    const handleLinkClose = ()=>{
+        setLinkOpen(false);
     }
 
     const handleImgClose = ()=>{
@@ -77,15 +86,9 @@ function Editor (){
     }
 
     const addTag = (event) => {
-        let tagDinamico = document.createElement(`${event.target.value}`);
-        tagDinamico.setAttribute('key',`${generarUUID()}`);
         setCaja([...cajas,event.target.value]);
     }
-
-    const removeTag = ()=>{
-        setCaja([...cajas, <></>])
-    }
-
+    
     const cajaTexto = useRef(null);
 
     const handleFormat = (event, nuevoFormato) => {
@@ -115,13 +118,20 @@ function Editor (){
     }
 
     const handleList = (event)=>{
-        setList(event.target.value);
+        let tipoLista = event.target.value;
+        setList(tipoLista);
+        if(tipoLista==="ordenada"){
+            setListados([...listados,tipoLista]);
+            setList(null);
+        }else if(tipoLista==="desordenada"){
+            setListados([...listados,tipoLista]);
+            setList(null);
+        }
     }
 
     const editarTexto = ()=>{
         if(activo.bold && window.getSelection().toString()!==''){
             let fraseSeleccionada = window.getSelection().toString();
-            console.log(cajaTexto);
             let contenido  = cajaTexto.current.innerHTML;
             let regex = new RegExp(`${fraseSeleccionada}`,'g');
             let nuevoContenido = contenido.replace(regex,`<b>${fraseSeleccionada}</b>&nbsp;`);
@@ -162,30 +172,41 @@ function Editor (){
         }
 
     const insertarImagen = ()=>{
-        cajaTexto.current.innerHTML+=`<div style="overflow:hidden; resize:both; width:${sizeImg.width}px; height:${sizeImg.height}; display:flex;justifi-content:center"><img width="100%" src="${srcImg}" style="object-fit: contain; overflow:hidden; resize:both;"/></div><br>`;
+        cajaTexto.current.innerHTML+=`<div draggable="true" style="overflow:hidden; resize:both; width:${sizeImg.width}px; height:${sizeImg.height}px; display:flex;justifi-content:center;"><img width="100%" src="${srcImg}" style="object-fit: contain;"/></div><br>`;
         handleImgClose();
     }
 
-    const establecerParrafo = (tipoParrafo)=>{
-        switch (tipoParrafo){
+    const establecerParrafo = async (nodo, formatoActual) => {
+        let tipoParrafo = nodo.nodeName;
+        let nuevoFormato = [...formatoActual];
+        if (tipoParrafo !== "DIV") {
+            console.log(tipoParrafo);
+          switch (tipoParrafo) {
             case "U":
-                activo = {...activo,underlined:true};
-                setFormato([...formato,'underlined']);
+                activo = {...activo, underlined: true };
+                nuevoFormato = [...nuevoFormato,"underlined"];
                 break;
             case "S":
-                activo = {...activo,stroke:true};
-                setFormato([...formato,'strike']);
+                activo = {...activo, stroke: true };
+                nuevoFormato = [...nuevoFormato,"strike"];
                 break;
             case "I":
-                activo = {...activo,italic:true};
-                setFormato([...formato,'italic']);
+                activo = {...activo, italic: true };
+                nuevoFormato = [...nuevoFormato,"italic"];
                 break;
             case "B":
-                activo = {...activo,bold:true}
-                setFormato([...formato,'bold'])
-                break; 
+                activo = {...activo, bold: true };
+                nuevoFormato = [...nuevoFormato,"bold"];
+                break;
+            default:
+                console.log("Error");
+          }
+          await establecerParrafo(nodo.parentElement, nuevoFormato);
+        } else {
+          await setFormato(nuevoFormato);
+          return;
         }
-    }
+      }
 
     const detector = (event)=>{
         activo = {...activo,
@@ -195,16 +216,23 @@ function Editor (){
             underlined:false,
         }
         setFormato([]);
-        let tipoParrafo = event.nativeEvent.target.nodeName;
-        let padreParrafo = event.nativeEvent.target.parentElement.nodeName;
-        establecerParrafo(tipoParrafo);
-        establecerParrafo(padreParrafo);
-        
+        let tipoParrafo = event.nativeEvent.target;
+        //Filtro para actualizar estado en caso de no detectar nada.
+        if(tipoParrafo.nodeName!=="DIV"){
+            establecerParrafo(tipoParrafo,formato);
+        }
 
         if(activo.underlined && tipoParrafo==="U"){
             console.log("Hago cosas")
         }
-        console.log(event);
+    }
+
+    const linkear = ()=>{
+            let contenido  = cajaTexto.current.innerHTML;
+            let regex = new RegExp(`${seleccion}`,'g');
+            let nuevoContenido = contenido.replace(regex,`<a href="http://${link}">${seleccion}</a>&nbsp;`);
+            cajaTexto.current.innerHTML = nuevoContenido;
+            handleLinkClose();
     }
 
     ///////////////////////////////////Estilos para los modales//////////////////////////////////
@@ -347,11 +375,40 @@ function Editor (){
                 </Box>
                 <ButtonGroup color='aux' variant="outlined" aria-label="outlined button group">
                     <Button onClick={handleImgOpen}><InsertPhotoIcon/></Button>
-                    <Button><LinkIcon/></Button>
+                    <Button onClick={()=>{
+                        if(window.getSelection().toString()!==''){
+                            handleLinkOpen();
+                            setSeleccion(window.getSelection().toString());
+                        }
+                    }}><LinkIcon/></Button>
                     <Button><AddReactionIcon/></Button>
                     </ButtonGroup>
             </Paper>
-
+            <Modal
+                open={linkOpen}
+                onClose={handleLinkClose}
+                aria-labelledby="child-modal-title"
+                aria-describedby="child-modal-description"
+                >
+                <Box sx={{ ...style, width: 'auto' }}>
+                    <Stack spacing={2}>
+                            <FormControl>
+                                <TextField
+                                    fullWidth
+                                    label="URL"
+                                    value={link}
+                                    onInput={(event)=>{
+                                        setLink(event.target.value);
+                                    }}
+                                    />
+                            </FormControl>
+                            <div>
+                                <Button variant="contained" onClick={linkear}>Linkear</Button>
+                                <Button onClick={handleLinkClose}>Cerrar</Button>
+                            </div>
+                    </Stack>
+                </Box>
+            </Modal>
             <Modal
                 open={imgOpen}
                 onClose={handleImgClose}
@@ -392,10 +449,7 @@ function Editor (){
         </Box>
       </Modal>
 
-        <div className='textCustom' ref={cajaTexto} onInput={(event)=>{
-                //console.log(event);
-                setContenido(event.target.value);
-            }}
+        <div className='textCustom' ref={cajaTexto}
             onClick={detector}
             id='pruebas'
             contentEditable={true}
@@ -418,8 +472,13 @@ function Editor (){
                         return(<h4 key={generarUUID()}>Titulo 4</h4>);
                     case 'blockquote':
                         return (<blockquote key={generarUUID()}>Cita Ejemplo</blockquote>)
+                    default:
+                        console.error("Error");
                 }
             })}
+            {
+                listados.map(lista=> lista==="desordenada" ? <ul><li></li></ul> : <ol><li></li></ol>)
+            }
         </div>
             <Box sx={{
                 margin:'auto',
