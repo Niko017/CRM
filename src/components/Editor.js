@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState} from 'react';
+import React, { useRef, useState} from 'react';
+import { generarUUID, cogerDatos } from 'functions/Funciones.js';
 import 'components/editor.css';
-import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import FormatBoldIcon from '@mui/icons-material/FormatBold';
 import FormatItalicIcon from '@mui/icons-material/FormatItalic';
 import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
@@ -8,8 +8,6 @@ import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
 import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
 import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';
 import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
-import FormatColorFillIcon from '@mui/icons-material/FormatColorFill';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import StrikethroughSIcon from '@mui/icons-material/StrikethroughS';
@@ -32,30 +30,30 @@ import Button from '@mui/material/Button';
 import AddReactionIcon from '@mui/icons-material/AddReaction';
 import IconButton from '@mui/material/IconButton';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import TextareaAutosize from '@mui/base/TextareaAutosize';
 import Stack from '@mui/material/Stack';
 import Modal from '@mui/material/Modal';
-import Contenido from 'components/Contenido'
-import Fuentes from 'components/Fuentes';
-import { generarUUID } from 'functions/GenerarUUID';
-import { getPosition } from 'functions/GenerarUUID';
-import { ca } from 'date-fns/locale';
+//import {fuente} from '../fonts/Acme-Regular.ttf';
 
 function Editor (){
 
+
+    const cajaTexto = useRef(null);
     const [formato, setFormato] = useState([]);
+    const [listados,setListados] = useState([]);
+    const [cajas, setCaja] = useState([]);
     const [alineo, setAlineo] = useState("");
+
     const [font, setFont] = useState("");
+
     const [link,setLink] = useState("");
     const [eventTag,setEventTag] = useState(null);
     const [seleccion,setSeleccion] = useState("");
     const [type, setType] = useState("p");
-    const [listados,setListados] = useState([])
     const [list,setList] = useState("");
     const [size, setSize] = useState(21);
-    const [cajas, setCaja] = useState([]);
     const [imgOpen,setImgOpen] = useState(false);
     const [linkOpen,setLinkOpen] = useState(false);
+
     const [srcImg,setSrcImg] = useState('https://ceslava.s3-accelerate.amazonaws.com/2016/04/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png');
     const [sizeImg,setSizeImg] = useState({
         marginRight:'30px',
@@ -86,25 +84,27 @@ function Editor (){
         setImgOpen(false);
         setSrcImg('https://ceslava.s3-accelerate.amazonaws.com/2016/04/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png');
     }
-
-    const addTag = (event) => {
-        setCaja([...cajas,event.target.value]);
-    }
     
-    const cajaTexto = useRef(null);
-
-     /*
-    const arrayCompleto = [1, 2, 3, 4, 5];
-    const arrayIncompleto = [1, 3, 5];
-    const elementosFaltantes = arrayCompleto.filter((elemento) => !arrayIncompleto.includes(elemento));
-    console.log(elementosFaltantes); // Output: [2, 4]
-    */
-
     const handleFormat = (event, nuevoFormato) => {
         setFormato(nuevoFormato);
         let formatosFaltantes = formato.filter( elemento => !nuevoFormato.includes(elemento));
         if(formatosFaltantes.length!==0 && eventTag!==null){
-
+            switch (formatosFaltantes[0]){
+                case "underlined":
+                    limpiarTagHtml('u');
+                    break;
+                case "strike":
+                    limpiarTagHtml('s');
+                    break;
+                case "bold":
+                    limpiarTagHtml('b');
+                    break;
+                case "italic":
+                    limpiarTagHtml('i')
+                    break;
+                default:
+                    console.error("Error al quitar los estilos");
+            }
         }
       }
 
@@ -142,31 +142,27 @@ function Editor (){
         }
     }
 
+    const addTag = (event) => {
+        setCaja([...cajas,event.target.value]);
+    }
+
+    const estilarTexto = (tag)=>{
+        let fraseSeleccionada = window.getSelection().toString();
+        let contenido  = cajaTexto.current.innerHTML;
+        let regex = new RegExp(`${fraseSeleccionada}`,'g');
+        let nuevoContenido = contenido.replace(regex,`<${tag}>${fraseSeleccionada}</${tag}>`);
+        cajaTexto.current.innerHTML = nuevoContenido;
+    }
+
     const editarTexto = ()=>{
         if(activo.bold && window.getSelection().toString()!==''){
-            let fraseSeleccionada = window.getSelection().toString();
-            let contenido  = cajaTexto.current.innerHTML;
-            let regex = new RegExp(`${fraseSeleccionada}`,'g');
-            let nuevoContenido = contenido.replace(regex,`<b>${fraseSeleccionada}</b>&nbsp;`);
-            cajaTexto.current.innerHTML = nuevoContenido;
+            estilarTexto('b');
         }else if(activo.italic && window.getSelection().toString()!==''){
-            let fraseSeleccionada = window.getSelection().toString();
-            let contenido  = cajaTexto.current.innerHTML;
-            let regex = new RegExp(`${fraseSeleccionada}`,'g');
-            let nuevoContenido = contenido.replace(regex,`<i>${fraseSeleccionada}</i>&nbsp;`);
-            cajaTexto.current.innerHTML = nuevoContenido;
+            estilarTexto('i');
         }else if(activo.underlined && window.getSelection().toString()!==''){
-            let fraseSeleccionada = window.getSelection().toString();
-            let contenido  = cajaTexto.current.innerHTML;
-            let regex = new RegExp(`${fraseSeleccionada}`,'g');
-            let nuevoContenido = contenido.replace(regex,`<u>${fraseSeleccionada}</u>&nbsp;`);
-            cajaTexto.current.innerHTML = nuevoContenido;
+            estilarTexto('u');
         }else if(activo.stroke && window.getSelection().toString()!==''){
-            let fraseSeleccionada = window.getSelection().toString();
-            let contenido  = cajaTexto.current.innerHTML;
-            let regex = new RegExp(`${fraseSeleccionada}`,'g');
-            let nuevoContenido = contenido.replace(regex,`<s>${fraseSeleccionada}</s>&nbsp;`);
-            cajaTexto.current.innerHTML = nuevoContenido;
+            estilarTexto('s');
         }
     }
 
@@ -174,7 +170,6 @@ function Editor (){
         const archivos = event.target.files;
 
         if (!archivos || !archivos.length) {
-            event.target.src = "https://ceslava.s3-accelerate.amazonaws.com/2016/04/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png";
             return;
           }
           const primerArchivo = archivos[0];
@@ -235,7 +230,6 @@ function Editor (){
         }
 
         //Filtro para quitar formato de las letras.
-        console.log(event);
         if(tipoParrafo.nodeName==="U" || tipoParrafo.nodeName==="S" || tipoParrafo.nodeName==="I" || tipoParrafo.nodeName==="B"){
             setEventTag(event);
         }else{
@@ -243,31 +237,23 @@ function Editor (){
         }
     }
 
-    const limpiarTagHtml = (tag,elemento)=>{
-        switch (elemento[0]){
-            case "underline":
-                console.log("a");
-                break;
+    const limpiarTagHtml = (elemento)=>{
+        let evento = eventTag.nativeEvent.target;
+        if(evento.nodeName!=="DIV" && evento!==undefined){
+            let filtro = new RegExp(`(<[${elemento}]+>)|(<[/${elemento}]+>)`,'gi');
+            let contenidoTotal = cajaTexto.current.innerHTML;
+            let nuevoContenido = contenidoTotal.replace(filtro,``);
+            cajaTexto.current.innerHTML = nuevoContenido;
+            setEventTag(null);
         }
-
-
-        if(tag.nodeName==="U" || tag.nodeName==="S" || tag.nodeName==="I" || tag.nodeName==="B"){
-            //La u es la variable del tag a acambiar.
-        let cadenaLimpia = tag.outerHTML.replace(/(?:<[u>]+>)|(?:<[/u>]+>)/gi, '');
-        let contenidoTotal = cajaTexto.current.textContent;
-        let regex = new RegExp(`${cadenaLimpia}`,'g');
-        let nuevoContenido = contenidoTotal.replace(regex,`${cadenaLimpia}`);
-        cajaTexto.current.innerHTML = nuevoContenido;
-        limpiarTagHtml(tag.parentElement);
-        }else{return}
     }
 
     const linkear = ()=>{
-            let contenido  = cajaTexto.current.innerHTML;
-            let regex = new RegExp(`${seleccion}`,'g');
-            let nuevoContenido = contenido.replace(regex,`<a href="http://${link}">${seleccion}</a>&nbsp;`);
-            cajaTexto.current.innerHTML = nuevoContenido;
-            handleLinkClose();
+        let contenido  = cajaTexto.current.innerHTML;
+        let regex = new RegExp(`${seleccion}`,'g');
+        let nuevoContenido = contenido.replace(regex,`<a href="http://${link}">${seleccion}</a>&nbsp;`);
+        cajaTexto.current.innerHTML = nuevoContenido;
+        handleLinkClose();
     }
 
     ///////////////////////////////////Estilos para los modales//////////////////////////////////
@@ -285,7 +271,9 @@ function Editor (){
         pb: 3,
         display:'flex'
       };
-    ///////////////////////////////////Fin Estilos para los modales//////////////////////////////////    
+    ///////////////////////////////////Fin Estilos para los modales//////////////////////////////////
+
+
 
     return(
         <React.Fragment>
@@ -511,15 +499,12 @@ function Editor (){
                         console.error("Error");
                 }
             })}
-            {
-                listados.map(lista=> lista==="desordenada" ? <ul><li></li></ul> : <ol><li></li></ol>)
-            }
+            {listados.map(lista=> lista==="desordenada" ? <ul><li></li></ul> : <ol><li></li></ol>)}
         </div>
             <Box sx={{
                 margin:'auto',
                 marginTop:'30px',
             }}>
-                
                 <Button variant="contained">Enviar</Button>
             </Box>
         </React.Fragment>

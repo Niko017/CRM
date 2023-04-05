@@ -27,4 +27,15 @@ const getPosition = ()=>{
   return null;
 }
 
-export { generarUUID, getPosition };
+/**
+ * Realiza una peticion get a un servidor mediante una URL
+ * @param {String} url Pasas la URL que se quiera consumir
+ * @returns Devuelve una Promesa con los datos del Servidor
+ */
+const cogerDatos = (url)=>{
+    return fetch(url)
+    .then(respuesta => respuesta.json())
+    .then(datos => datos);
+}
+
+export { generarUUID, getPosition, cogerDatos };
