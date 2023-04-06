@@ -1,42 +1,50 @@
-import React, { useRef, useState} from 'react';
-import { generarUUID, cogerDatos } from 'functions/Funciones.js';
+import React, { useEffect, useRef, useState} from 'react';
+import { generarUUID } from 'functions/Funciones.js';
 import 'components/editor.css';
-import FormatBoldIcon from '@mui/icons-material/FormatBold';
-import FormatItalicIcon from '@mui/icons-material/FormatItalic';
-import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
-import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
-import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
-import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';
-import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import StrikethroughSIcon from '@mui/icons-material/StrikethroughS';
-import Paper from '@mui/material/Paper';
-import Divider from '@mui/material/Divider';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import Box from '@mui/material/Box';
-import FormControl from '@mui/material/FormControl';
-import FormGroup from '@mui/material/FormGroup';
-import TextField from '@mui/material/TextField';
-import ListIcon from '@mui/icons-material/List';
+/////////////////////////////ICONOS DE MATERIAL///////////////////////////////////////
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
+import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
+import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
+import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';
+import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
+import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
+import FormatColorFillIcon from '@mui/icons-material/FormatColorFill';
+import StrikethroughSIcon from '@mui/icons-material/StrikethroughS';
+import FormatItalicIcon from '@mui/icons-material/FormatItalic';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
-import LinkIcon from '@mui/icons-material/Link';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import Button from '@mui/material/Button';
-import AddReactionIcon from '@mui/icons-material/AddReaction';
-import IconButton from '@mui/material/IconButton';
+import FormatBoldIcon from '@mui/icons-material/FormatBold';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import ListIcon from '@mui/icons-material/List';
+import LinkIcon from '@mui/icons-material/Link';
+/////////////////////////FIN ICONOS DE MATERIAL///////////////////////////////////
+
+///////////////////////COMPONENTES MATERIAL UI///////////////////////////////////
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import ToggleButton from '@mui/material/ToggleButton';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import FormControl from '@mui/material/FormControl';
+import IconButton from '@mui/material/IconButton';
+import InputLabel from '@mui/material/InputLabel';
+import TextField from '@mui/material/TextField';
+import FormGroup from '@mui/material/FormGroup';
+import Snackbar from '@mui/material/Snackbar';
+import MenuItem from '@mui/material/MenuItem';
+import Divider from '@mui/material/Divider';
+import MuiAlert from '@mui/material/Alert';
+import Button from '@mui/material/Button';
+import Select from '@mui/material/Select';
+import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Modal from '@mui/material/Modal';
-//import {fuente} from '../fonts/Acme-Regular.ttf';
+import Box from '@mui/material/Box';
+///////////////////////COMPONENTES MATERIAL UI///////////////////////////////////
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 function Editor (){
-
-
     const cajaTexto = useRef(null);
     const [formato, setFormato] = useState([]);
     const [listados,setListados] = useState([]);
@@ -50,9 +58,11 @@ function Editor (){
     const [seleccion,setSeleccion] = useState("");
     const [type, setType] = useState("p");
     const [list,setList] = useState("");
+    const [mensaje,setMensaje] = useState("");
     const [size, setSize] = useState(21);
     const [imgOpen,setImgOpen] = useState(false);
     const [linkOpen,setLinkOpen] = useState(false);
+    const [messageOpen,setMessageOpen] = useState(false);
 
     const [srcImg,setSrcImg] = useState('https://ceslava.s3-accelerate.amazonaws.com/2016/04/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png');
     const [sizeImg,setSizeImg] = useState({
@@ -103,7 +113,7 @@ function Editor (){
                     limpiarTagHtml('i')
                     break;
                 default:
-                    console.error("Error al quitar los estilos");
+                    mensajeError("Error al quitar los estilos");
             }
         }
       }
@@ -126,7 +136,7 @@ function Editor (){
         if(event.target.value!==""){
             setType(event.target.value);
         }else{
-            alert("No hay ninguna opcion marcada");
+            mensajeError("No hay ninguna opcion marcada");
         }
     }
 
@@ -142,8 +152,19 @@ function Editor (){
         }
     }
 
+    const handleErrorClose = (event, reason)=>{
+        if (reason === 'clickaway') {
+            return;
+          }
+          setMessageOpen(false);
+    }
+
+    const anyadirTitulo = (tag)=>{
+        cajaTexto.current.innerHTML+=`<${tag} style="display: inline-block">Titulo</${tag}>&nbsp;`;
+    }
+
     const addTag = (event) => {
-        setCaja([...cajas,event.target.value]);
+        anyadirTitulo(event.target.value);
     }
 
     const estilarTexto = (tag)=>{
@@ -187,7 +208,7 @@ function Editor (){
     const establecerParrafo = async (nodo, formatoActual) => {
         let tipoParrafo = nodo.nodeName;
         let nuevoFormato = [...formatoActual];
-        if (tipoParrafo !== "DIV") {
+        if (tipoParrafo === "U" || tipoParrafo === "S" || tipoParrafo === "I" || tipoParrafo === "B") {
           switch (tipoParrafo) {
             case "U":
                 activo = {...activo, underlined: true };
@@ -206,7 +227,8 @@ function Editor (){
                 nuevoFormato = [...nuevoFormato,"bold"];
                 break;
             default:
-                console.log("Error");
+                mensajeError('Error al estilar las letras.');
+                return;
           }
           await establecerParrafo(nodo.parentElement, nuevoFormato);
         } else {
@@ -228,7 +250,6 @@ function Editor (){
         if(tipoParrafo.nodeName!=="DIV"){
             establecerParrafo(tipoParrafo,formato);
         }
-
         //Filtro para quitar formato de las letras.
         if(tipoParrafo.nodeName==="U" || tipoParrafo.nodeName==="S" || tipoParrafo.nodeName==="I" || tipoParrafo.nodeName==="B"){
             setEventTag(event);
@@ -256,7 +277,21 @@ function Editor (){
         handleLinkClose();
     }
 
-    ///////////////////////////////////Estilos para los modales//////////////////////////////////
+    const mensajeError = (mensaje)=>{
+        setMensaje(mensaje);
+        setMessageOpen(true);
+    }
+
+    const colorLetra = (event)=>{
+        if(seleccion!==''){
+            let contenidoTotal = cajaTexto.current.innerHTML;
+            let filtro = new RegExp(`${seleccion}`,'g');
+            let nuevoTexto = contenidoTotal.replace(filtro,`<span style="color:${event.target.value}">${seleccion}</span>&nbsp;`);
+            cajaTexto.current.innerHTML = nuevoTexto;
+        }
+    }
+
+    /////////////////////////////////////Estilos para los modales//////////////////////////////////
     const style = {
         position: 'absolute',
         top: '50%',
@@ -272,8 +307,6 @@ function Editor (){
         display:'flex'
       };
     ///////////////////////////////////Fin Estilos para los modales//////////////////////////////////
-
-
 
     return(
         <React.Fragment>
@@ -404,8 +437,11 @@ function Editor (){
                             setSeleccion(window.getSelection().toString());
                         }
                     }}><LinkIcon/></Button>
-                    <Button><AddReactionIcon/></Button>
-                    </ButtonGroup>
+                    <IconButton color="inherit" aria-label="Subir Imagen" component="label">
+                        <input onChange={colorLetra} hidden type="color"/>
+                        <FormatColorFillIcon />
+                    </IconButton>
+                </ButtonGroup>
             </Paper>
             <Modal
                 open={linkOpen}
@@ -471,6 +507,11 @@ function Editor (){
             </Stack>
         </Box>
       </Modal>
+        <Snackbar open={messageOpen} autoHideDuration={2000} onClose={handleErrorClose} anchorOrigin={{ vertical:'bottom', horizontal: 'center', }}>
+            <Alert onClose={handleErrorClose} severity="error" sx={{ width: '100%' }}>
+                {mensaje}
+            </Alert>
+        </Snackbar>
 
         <div className='textCustom' ref={cajaTexto}
             onClick={detector}
@@ -482,30 +523,19 @@ function Editor (){
                 fontSize:`${size}px`,
                 padding:'20px',
             }}
+            onSelect={()=>{
+                setSeleccion(window.getSelection().toString());
+            }}
             >
-            {cajas.map(tag =>{
-                switch(tag){
-                    case 'h1':
-                        return(<h1 key={generarUUID()}>Titulo 1</h1>);
-                    case 'h2':
-                        return(<h2 key={generarUUID()}>Titulo 2</h2>);
-                    case 'h3':
-                        return(<h3 key={generarUUID()}>Titulo 3</h3>);
-                    case 'h4':
-                        return(<h4 key={generarUUID()}>Titulo 4</h4>);
-                    case 'blockquote':
-                        return (<blockquote key={generarUUID()}>Cita Ejemplo</blockquote>)
-                    default:
-                        console.error("Error");
-                }
-            })}
             {listados.map(lista=> lista==="desordenada" ? <ul><li></li></ul> : <ol><li></li></ol>)}
+            
         </div>
             <Box sx={{
                 margin:'auto',
                 marginTop:'30px',
             }}>
-                <Button variant="contained">Enviar</Button>
+                <Button variant="contained" onClick={()=>{
+                }}>Enviar</Button>
             </Box>
         </React.Fragment>
     );
