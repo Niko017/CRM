@@ -2,6 +2,7 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import Table from 'tables/Table.js';
 import PageClientes from 'Pages/PageClientes.js';
 import PageEditor from 'Pages/PageEditor.js';
+import ProvedorEmails from 'contexts/ProvedorEmails.js'
 import './App.css';
 import {
   createBrowserRouter,
@@ -27,7 +28,9 @@ function App() {
   ]);
   
   return (
-    <RouterProvider router={router} />
+    <ProvedorEmails>
+      <RouterProvider router={router} />
+    </ProvedorEmails>
   );
 }
 

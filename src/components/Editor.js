@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState} from 'react';
+import React, { useContext, useEffect, useRef, useState} from 'react';
+import { emailsContexto } from 'contexts/ProvedorEmails';
 import { generarUUID } from 'functions/Funciones.js';
 import 'components/editor.css';
 /////////////////////////////ICONOS DE MATERIAL///////////////////////////////////////
@@ -46,6 +47,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 function Editor (){
     const cajaTexto = useRef(null);
+    const { setRefTexto } = useContext(emailsContexto);
     const [formato, setFormato] = useState([]);
     const [listados,setListados] = useState([]);
     const [cajas, setCaja] = useState([]);
@@ -161,6 +163,7 @@ function Editor (){
 
     const anyadirTitulo = (tag)=>{
         cajaTexto.current.innerHTML+=`<${tag} style="display: inline-block">Titulo</${tag}>&nbsp;`;
+        setRefTexto(cajaTexto);
     }
 
     const addTag = (event) => {
@@ -173,6 +176,7 @@ function Editor (){
         let regex = new RegExp(`${fraseSeleccionada}`,'g');
         let nuevoContenido = contenido.replace(regex,`<${tag}>${fraseSeleccionada}</${tag}>`);
         cajaTexto.current.innerHTML = nuevoContenido;
+        setRefTexto(cajaTexto);
     }
 
     const editarTexto = ()=>{
@@ -203,6 +207,7 @@ function Editor (){
     const insertarImagen = ()=>{
         cajaTexto.current.innerHTML+=`<div draggable="true" style="overflow:hidden; resize:both; width:${sizeImg.width}px; height:${sizeImg.height}px; display:flex;justifi-content:center;"><img width="100%" src="${srcImg}" style="object-fit: contain;"/></div><br>`;
         handleImgClose();
+        setRefTexto(cajaTexto);
     }
 
     const establecerParrafo = async (nodo, formatoActual) => {
@@ -266,6 +271,7 @@ function Editor (){
             let nuevoContenido = contenidoTotal.replace(filtro,``);
             cajaTexto.current.innerHTML = nuevoContenido;
             setEventTag(null);
+            setRefTexto(cajaTexto);
         }
     }
 
@@ -275,6 +281,7 @@ function Editor (){
         let nuevoContenido = contenido.replace(regex,`<a href="http://${link}">${seleccion}</a>&nbsp;`);
         cajaTexto.current.innerHTML = nuevoContenido;
         handleLinkClose();
+        setRefTexto(cajaTexto);
     }
 
     const mensajeError = (mensaje)=>{
@@ -288,6 +295,7 @@ function Editor (){
             let filtro = new RegExp(`${seleccion}`,'g');
             let nuevoTexto = contenidoTotal.replace(filtro,`<span style="color:${event.target.value}">${seleccion}</span>&nbsp;`);
             cajaTexto.current.innerHTML = nuevoTexto;
+            setRefTexto(cajaTexto);
         }
     }
 
@@ -307,6 +315,36 @@ function Editor (){
         display:'flex'
       };
     ///////////////////////////////////Fin Estilos para los modales//////////////////////////////////
+
+    const { emailsDatos, motivo } = useContext(emailsContexto);
+
+    const enviarDatos=()=>{
+
+    const options = {
+      method: 'POST',
+      headers: {
+        accept: 'application/json',
+        'content-type': 'application/json',
+        'api-key': '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'
+      },
+      body: JSON.stringify({
+        sender: {name: 'Pepe', email: 'nikolaydiaz.alu@iespacomolla.es'},
+        to: emailsDatos.map((correo)=>{
+          return {
+              email: correo,
+              name: correo,
+          }
+        }),
+        textContent: cajaTexto.target.outerHTML,
+        subject: motivo,
+      })
+    }
+
+    fetch('https://api.sendinblue.com/v3/smtp/email', options)
+    .then(response => response.json())
+    .then(response => console.log(response))
+    .catch(err => console.error(err));
+  }
 
     return(
         <React.Fragment>
@@ -534,8 +572,7 @@ function Editor (){
                 margin:'auto',
                 marginTop:'30px',
             }}>
-                <Button variant="contained" onClick={()=>{
-                }}>Enviar</Button>
+                <Button variant="contained" onClick={enviarDatos}>Enviar</Button>
             </Box>
         </React.Fragment>
     );

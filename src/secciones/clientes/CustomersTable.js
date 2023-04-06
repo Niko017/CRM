@@ -62,41 +62,29 @@ const CustomersTable = (props) => {
             </TableHead>
             <TableBody>
               {items.map((customer) => {
-                const isSelected = selected.includes(customer.email);
-                const createdAt = format(customer.createdAt, 'dd/MM/yyyy');
-
+                const isSelected = selected.includes(customer.email)
                 return (
-                  <TableRow
-                    hover
-                    key={customer.id}
-                    selected={isSelected}
-                  >
+                  <TableRow hover key={customer.id} selected={isSelected}>
                     <TableCell padding="checkbox">
-                      <Checkbox
-                        checked={isSelected}
+                      <Checkbox checked={isSelected}
                         onChange={(event) => {
                           if (event.target.checked) {
                             onSelectOne?.(customer.email);
                           } else {
                             onDeselectOne?.(customer.email);
                           }
-                        }}
-                      />
+                        }}/>
                     </TableCell>
                     <TableCell>
-                      <Stack
-                        alignItems="center"
-                        direction="row"
-                        spacing={2}
-                      >
+                      <Stack alignItems="center" direction="row" spacing={2}>
                         <Avatar src={customer.avatar}>{getInitials(customer.name)}</Avatar>
-                        <Typography variant="subtitle2">{customer.name}</Typography>
+                        <Typography variant="subtitle2">{customer.name} {customer.surname}</Typography>
                       </Stack>
                     </TableCell>
                     <TableCell>{customer.email}</TableCell>
-                    <TableCell>{customer.address.city}, {customer.address.state}, {customer.address.country}</TableCell>
+                    <TableCell>{customer.direccion}</TableCell>
                     <TableCell>{customer.phone}</TableCell>
-                    <TableCell>{createdAt}</TableCell>
+                    <TableCell>{customer.fecha}</TableCell>
                   </TableRow>
                 );
               })}
@@ -110,7 +98,7 @@ const CustomersTable = (props) => {
         onRowsPerPageChange={onRowsPerPageChange}
         page={page}
         rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={[5, 10, 25, count]}
       />
     </Card>
   );

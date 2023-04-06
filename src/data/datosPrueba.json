@@ -1,0 +1,16 @@
+[
+    {
+        "id": "5e887ac47eed253091be10cb",
+        "address": {
+            "city": "Cleveland",
+            "country": "USA",
+            "state": "Ohio",
+            "street": "2849 Fulton Street"
+        },
+        "avatar": "/assets/avatars/avatar-carson-darrin.png",
+        "createdAt": 1680683680819,
+        "email": "carson.darrin@devias.io",
+        "name": "Carson Darrin",
+        "phone": "304-428-3097"
+    }
+]
