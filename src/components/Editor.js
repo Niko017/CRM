@@ -210,10 +210,10 @@ function Editor (){
 
     const insertarImagen = ()=>{
         if(linkImagen!==""){
-            cajaTexto.current.innerHTML+=`<div draggable="true" style="overflow:hidden; resize:both; width:${sizeImg.width}px; height:${sizeImg.height}px; display:flex;justifi-content:center;"><a href="${linkImagen}"><img width="100%" src="${srcImg}" style="object-fit: contain;"/></a></div><br>`;
+            cajaTexto.current.innerHTML+=`<div style="overflow:hidden; resize:both; width:${sizeImg.width}px; height:${sizeImg.height}px; display:flex;justifi-content:center;"><a href="${linkImagen}"><img width="100%" src="${srcImg}" style="object-fit: contain;"/></a></div><br>`;
             setLinkImagen("");
         }else{
-        cajaTexto.current.innerHTML+=`<div draggable="true" style="overflow:hidden; resize:both; width:${sizeImg.width}px; height:${sizeImg.height}px; display:flex;justifi-content:center;"><img width="100%" src="${srcImg}" style="object-fit: contain;"/></div><br>`;
+        cajaTexto.current.innerHTML+=`<div style="overflow:hidden; resize:both; width:auto; height:auto; display:flex;justifi-content:center;"><img width="100%" src="${srcImg}" style="object-fit: contain;"/></div><br>`;
         }
         handleImgClose();
         setRefTexto(cajaTexto);
@@ -334,10 +334,10 @@ function Editor (){
       headers: {
         accept: 'application/json',
         'content-type': 'application/json',
-        'api-key': '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'
+        'api-key': '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'
       },
       body: JSON.stringify({
-        sender: {name: 'Pepe', email: 'nikolaydiaz.alu@iespacomolla.es'},
+        sender: {name: 'Pepe', email: 'pepe69@yopmail.com'},
         to: emailsDatos.map((correo)=>{
           return {
               email: correo,
@@ -585,24 +585,88 @@ function Editor (){
             id='pruebas'
             contentEditable={true}
             suppressContentEditableWarning={true}
-            //draggable
-            onDragOver={(event)=>{
-                event.target.classList.add("marcoDrop")
+            onDragEnter={(event)=>{
+                event.target.classList.add("marcoDrop");
                 }}
+            onDragLeave={(event)=>{
+                event.target.classList.remove("marcoDrop");
+            }}
             onDrop={(event)=>{
                 event.preventDefault();
+                event.target.classList.remove("marcoDrop");
                 let reader = new FileReader();
                 let archivo = event.dataTransfer.files[0];
-                reader.readAsText(archivo);
+                let terminacion = archivo.name.substring(archivo.name.length, archivo.name.length-5);
+                if(terminacion===".html"){
+                    reader.readAsText(archivo);
                 reader.onload = ()=>{
-                    console.log(reader.result);
                     cajaTexto.current.innerHTML+= reader.result;
                   };
-                
-                  reader.onerror = function() {
+                }
+                reader.onerror = function() {
                     console.log(reader.error);
-                  };
+                    mensajeError("Error al leer el archivo, Intentalo de nuevo");
+                  }
                 event.target.classList.remove("marcoDrop")
+            }}
+            onMouseOver={(event)=>{
+                if(event.target.nodeName==="IMG"){
+                    event.target.style='cursor: pointer;';
+                }
+            }}
+            onSelectCapture={(event)=>{
+                console.log("Evento de seleccion.");
+                console.log(event);
+                if(event.nativeEvent.target.nodeName){
+                        const selectedNode = event.nativeEvent.target;
+
+                        // Obtener la posición y dimensiones del nodo en relación con su elemento padre
+                        const left = selectedNode.offsetLeft;
+                        const top = selectedNode.offsetTop;
+                        const right = selectedNode.offsetLeft + selectedNode.offsetWidth;
+                        const bottom = selectedNode.offsetHeight + selectedNode.offsetTop;
+                        const width = selectedNode.offsetWidth;
+                        const height = selectedNode.offsetHeight;
+
+                        // Obtener la posición del nodo en relación con el documento
+                        let currentElement = selectedNode;
+                        let totalOffsetLeft = left;
+                        let totalOffsetRight = right;
+                        let totalOffsetTop = top;
+                        let totalOffsetBot = bottom;
+                        while (currentElement && currentElement.offsetParent) {
+                        totalOffsetLeft += currentElement.offsetLeft;
+                        totalOffsetTop += currentElement.offsetTop;
+                        totalOffsetRight += currentElement.offsetRight;
+                        totalOffsetBot += currentElement.offsetBottom;
+                        currentElement = currentElement.offsetParent;
+                        }
+
+                        // Esquina superior izquierda del nodo.
+                        const topLeft = {
+                        x: totalOffsetLeft,
+                        y: totalOffsetTop
+                        };
+                        // Esquina superior derecha del nodo.
+                        const topRight = {
+                            x:totalOffsetRight,
+                            y:totalOffsetTop
+                        }
+                        //Esquina inferior izquierda del nodo.
+                        const botLeft = {
+                            x:totalOffsetLeft,
+                            y:totalOffsetBot
+                        }
+                        //Esquina inferior derecha del nodo.
+                        const botRight = {
+                            x:totalOffsetRight,
+                            y:totalOffsetBot
+                        }
+                        console.log('La esquina superior izquierda del nodo es:', topLeft);
+                        console.log('La esquina superior derecha del nodo es:', topRight);
+                        console.log('La esquina inferior izquierda del nodo es:', botLeft);
+                        console.log('La esquina inferior derecha del nodo es:', botRight);
+                }
             }}
             style={{
                 minHeight:'400px',

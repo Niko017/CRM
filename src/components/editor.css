@@ -10,14 +10,18 @@
     border: 1px solid #666261;
     outline: 1px solid #666261;
 }
-.marcoDrop::after{
-    content: '-';
-    transform: rotateX('45deg');
-    width: 100%;
-}
 .marcoDrop{
-    outline: 1px solid #666261;
+    border: 1px dotted #666261;
+    position: relative;
 }
+.marcoDrop::after{
+    content: "¡Solo estan permitidos archivos .html!";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 html, body {
     height:100%;
     width:100%;
