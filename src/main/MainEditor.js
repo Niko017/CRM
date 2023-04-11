@@ -9,18 +9,17 @@ function MainEditor(){
 
   
 
-  const { emailsDatos, refTexto, setMotivo } = useContext(emailsContexto);
+  const { setMotivo } = useContext(emailsContexto);
 
-
-
-  console.log(emailsDatos);
 
     return (
       <Container maxWidth="xl">
       <FormControl>
         <TextField fullWidth label="titulo" id="fullWidth" onChange={(event)=>{
-          setMotivo(event.target.value);
-        }}/>
+          setMotivo(event.target.value); 
+        }} style={{
+          marginBlock: '15px'
+        }} />
         <Editor/>
       </FormControl>
       </Container>

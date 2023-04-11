@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef, useState} from 'react';
 import { emailsContexto } from 'contexts/ProvedorEmails';
 import { generarUUID } from 'functions/Funciones.js';
+import { useNavigate } from "react-router-dom";
 import 'components/editor.css';
 /////////////////////////////ICONOS DE MATERIAL///////////////////////////////////////
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
@@ -32,39 +33,42 @@ import FormGroup from '@mui/material/FormGroup';
 import Snackbar from '@mui/material/Snackbar';
 import MenuItem from '@mui/material/MenuItem';
 import Divider from '@mui/material/Divider';
-import MuiAlert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import Select from '@mui/material/Select';
+import Alerta from 'components/Alerta.js';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 ///////////////////////COMPONENTES MATERIAL UI///////////////////////////////////
 
-const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
 
 function Editor (){
-    const cajaTexto = useRef(null);
+
+    //varibles para controlar todo el texto.
     const { setRefTexto } = useContext(emailsContexto);
-    const [formato, setFormato] = useState([]);
     const [listados,setListados] = useState([]);
-    const [cajas, setCaja] = useState([]);
-    const [alineo, setAlineo] = useState("");
-
-    const [font, setFont] = useState("");
-
-    const [link,setLink] = useState("");
-    const [eventTag,setEventTag] = useState(null);
+    const [formato, setFormato] = useState([]);
+    
+    
+    const [linkImagen,setLinkImagen] = useState("");
     const [seleccion,setSeleccion] = useState("");
-    const [type, setType] = useState("p");
-    const [list,setList] = useState("");
     const [mensaje,setMensaje] = useState("");
+    const [alineo, setAlineo] = useState("");
+    const [type, setType] = useState("p");
+    const [font, setFont] = useState("");
+    const [link,setLink] = useState("");
+    const [list,setList] = useState("");
+
+    const [eventTag,setEventTag] = useState(null);
+    const cajaTexto = useRef(null);
+
     const [size, setSize] = useState(21);
-    const [imgOpen,setImgOpen] = useState(false);
-    const [linkOpen,setLinkOpen] = useState(false);
+    
     const [messageOpen,setMessageOpen] = useState(false);
+    const [linkOpen,setLinkOpen] = useState(false);
+    const [imgOpen,setImgOpen] = useState(false);
+    const navigate = useNavigate();
 
     const [srcImg,setSrcImg] = useState('https://ceslava.s3-accelerate.amazonaws.com/2016/04/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png');
     const [sizeImg,setSizeImg] = useState({
@@ -205,7 +209,12 @@ function Editor (){
         }
 
     const insertarImagen = ()=>{
+        if(linkImagen!==""){
+            cajaTexto.current.innerHTML+=`<div draggable="true" style="overflow:hidden; resize:both; width:${sizeImg.width}px; height:${sizeImg.height}px; display:flex;justifi-content:center;"><a href="${linkImagen}"><img width="100%" src="${srcImg}" style="object-fit: contain;"/></a></div><br>`;
+            setLinkImagen("");
+        }else{
         cajaTexto.current.innerHTML+=`<div draggable="true" style="overflow:hidden; resize:both; width:${sizeImg.width}px; height:${sizeImg.height}px; display:flex;justifi-content:center;"><img width="100%" src="${srcImg}" style="object-fit: contain;"/></div><br>`;
+        }
         handleImgClose();
         setRefTexto(cajaTexto);
     }
@@ -325,7 +334,7 @@ function Editor (){
       headers: {
         accept: 'application/json',
         'content-type': 'application/json',
-        'api-key': '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'
+        'api-key': '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'
       },
       body: JSON.stringify({
         sender: {name: 'Pepe', email: 'nikolaydiaz.alu@iespacomolla.es'},
@@ -335,7 +344,7 @@ function Editor (){
               name: correo,
           }
         }),
-        textContent: cajaTexto.target.outerHTML,
+        textContent: cajaTexto.current.outerHTML,
         subject: motivo,
       })
     }
@@ -345,6 +354,14 @@ function Editor (){
     .then(response => console.log(response))
     .catch(err => console.error(err));
   }
+
+  useEffect(()=>{
+    if(emailsDatos.length===0){
+        navigate("/");
+    }
+  },[emailsDatos])
+
+  
 
     return(
         <React.Fragment>
@@ -532,23 +549,35 @@ function Editor (){
                             onChange={(event)=>{
                                 setSizeImg({...sizeImg,height:`${event.target.value}px`});
                             }}/>
+                        <TextField
+                        fullWidth
+                        label="Enlace de la Imagen"
+                        onChange={(event)=>{
+                            setSrcImg(event.target.value);
+                        }}/>
+                        <TextField
+                        fullWidth
+                        label="Link para vincular"
+                        onChange={(event)=>{
+                            setLinkImagen(event.target.value);
+                        }}/>
                     </FormControl>
                 </div>
                 <div style={{margin:'10px 0px'}}>
                     <Button variant="contained" onClick={insertarImagen}>Insertar Imagen</Button>
-                    <IconButton color="primary" aria-label="Subir Imagen" component="label">
+                    {/* <IconButton color="primary" aria-label="Subir Imagen" component="label">
                         <input onChange={editarImagen} hidden accept="image/*" type="file" />
                         <PhotoCamera />
-                    </IconButton>
+                    </IconButton> */}
                     <Button onClick={handleImgClose}>Cerrar</Button>
                 </div>
             </Stack>
         </Box>
       </Modal>
         <Snackbar open={messageOpen} autoHideDuration={2000} onClose={handleErrorClose} anchorOrigin={{ vertical:'bottom', horizontal: 'center', }}>
-            <Alert onClose={handleErrorClose} severity="error" sx={{ width: '100%' }}>
+            <Alerta onClose={handleErrorClose} severity="error" sx={{ width: '100%' }}>
                 {mensaje}
-            </Alert>
+            </Alerta>
         </Snackbar>
 
         <div className='textCustom' ref={cajaTexto}
@@ -556,6 +585,25 @@ function Editor (){
             id='pruebas'
             contentEditable={true}
             suppressContentEditableWarning={true}
+            //draggable
+            onDragOver={(event)=>{
+                event.target.classList.add("marcoDrop")
+                }}
+            onDrop={(event)=>{
+                event.preventDefault();
+                let reader = new FileReader();
+                let archivo = event.dataTransfer.files[0];
+                reader.readAsText(archivo);
+                reader.onload = ()=>{
+                    console.log(reader.result);
+                    cajaTexto.current.innerHTML+= reader.result;
+                  };
+                
+                  reader.onerror = function() {
+                    console.log(reader.error);
+                  };
+                event.target.classList.remove("marcoDrop")
+            }}
             style={{
                 minHeight:'400px',
                 fontSize:`${size}px`,
