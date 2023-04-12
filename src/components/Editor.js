@@ -326,19 +326,31 @@ function Editor (){
       };
     ///////////////////////////////////Fin Estilos para los modales//////////////////////////////////
 
+    const escalarHTML = (nodo)=>{
+        const escala = 0.5;
+        let elementos = nodo.children;
+        for(let elemento of elementos){
+            elemento.style.transform = `scale(${escala})`;
+            elemento.style.fontSize = `${parseFloat(window.getComputedStyle(elemento).fontSize) / escala}px`;
+        }
+    }
+
     const { emailsDatos, motivo } = useContext(emailsContexto);
 
     const enviarDatos=()=>{
+
+    //console.log(cajaTexto);
+    escalarHTML(cajaTexto.current);
 
     const options = {
       method: 'POST',
       headers: {
         accept: 'application/json',
         'content-type': 'application/json',
-        'api-key': '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'
+        'api-key': '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'
       },
       body: JSON.stringify({
-        sender: {name: 'Pepe', email: 'pepe69@yopmail.com'},
+        sender: {name: 'Pabolo', email: 'pablo@gmail.com'},
         to: emailsDatos.map((correo)=>{
           return {
               email: correo,
