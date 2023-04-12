@@ -50,7 +50,8 @@ function Editor (){
     const [listados,setListados] = useState([]);
     const [formato, setFormato] = useState([]);
     
-    
+    const [coordenadas,setCoordenadas] = useState({});
+
     const [linkImagen,setLinkImagen] = useState("");
     const [seleccion,setSeleccion] = useState("");
     const [mensaje,setMensaje] = useState("");
@@ -334,7 +335,7 @@ function Editor (){
       headers: {
         accept: 'application/json',
         'content-type': 'application/json',
-        'api-key': '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'
+        'api-key': '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'
       },
       body: JSON.stringify({
         sender: {name: 'Pepe', email: 'pepe69@yopmail.com'},
@@ -593,6 +594,7 @@ function Editor (){
             }}
             onDrop={(event)=>{
                 event.preventDefault();
+                if(event.target.id==='pruebas'){
                 event.target.classList.remove("marcoDrop");
                 let reader = new FileReader();
                 let archivo = event.dataTransfer.files[0];
@@ -607,7 +609,11 @@ function Editor (){
                     console.log(reader.error);
                     mensajeError("Error al leer el archivo, Intentalo de nuevo");
                   }
-                event.target.classList.remove("marcoDrop")
+                }else{
+                    return;
+                }
+                
+               event.target.classList.remove("marcoDrop")
             }}
             onMouseOver={(event)=>{
                 if(event.target.nodeName==="IMG"){
@@ -617,55 +623,54 @@ function Editor (){
             onSelectCapture={(event)=>{
                 console.log("Evento de seleccion.");
                 console.log(event);
-                if(event.nativeEvent.target.nodeName){
-                        const selectedNode = event.nativeEvent.target;
+                const selectedNode = event.nativeEvent.target;
+            if(selectedNode.id !== 'pruebas'){
+                // Obtener la posición y dimensiones del nodo en relación con su elemento padre
+                const left = selectedNode.offsetLeft;
+                const top = selectedNode.offsetTop;
+                const right = selectedNode.offsetLeft + selectedNode.offsetWidth;
+                const bottom = selectedNode.offsetHeight + selectedNode.offsetTop;
 
-                        // Obtener la posición y dimensiones del nodo en relación con su elemento padre
-                        const left = selectedNode.offsetLeft;
-                        const top = selectedNode.offsetTop;
-                        const right = selectedNode.offsetLeft + selectedNode.offsetWidth;
-                        const bottom = selectedNode.offsetHeight + selectedNode.offsetTop;
-                        const width = selectedNode.offsetWidth;
-                        const height = selectedNode.offsetHeight;
+                // Obtener la posición del nodo en relación con el documento
+                let currentElement = selectedNode;
+                let totalOffsetLeft = left;
+                let totalOffsetRight = right;
+                let totalOffsetTop = top;
+                let totalOffsetBot = bottom;
+                while (currentElement && currentElement.offsetParent) {
+                totalOffsetLeft += currentElement.offsetLeft;
+                totalOffsetTop += currentElement.offsetTop;
+                totalOffsetRight += currentElement.offsetLeft + currentElement.offsetWidth;
+                totalOffsetBot += currentElement.offsetHeight + currentElement.offsetTop;
+                currentElement = currentElement.offsetParent;
+                }
 
-                        // Obtener la posición del nodo en relación con el documento
-                        let currentElement = selectedNode;
-                        let totalOffsetLeft = left;
-                        let totalOffsetRight = right;
-                        let totalOffsetTop = top;
-                        let totalOffsetBot = bottom;
-                        while (currentElement && currentElement.offsetParent) {
-                        totalOffsetLeft += currentElement.offsetLeft;
-                        totalOffsetTop += currentElement.offsetTop;
-                        totalOffsetRight += currentElement.offsetRight;
-                        totalOffsetBot += currentElement.offsetBottom;
-                        currentElement = currentElement.offsetParent;
-                        }
+                // Esquina superior izquierda del nodo.
+                const topLeft = {
+                    x: totalOffsetLeft,
+                    y: totalOffsetTop
+                };
+                // Esquina superior derecha del nodo.
+                const topRight = {
+                    x:totalOffsetRight,
+                    y:totalOffsetTop
+                };
+                //Esquina inferior izquierda del nodo.
+                const botLeft = {
+                    x:totalOffsetLeft,
+                    y:totalOffsetBot
+                };
+                //Esquina inferior derecha del nodo.
+                const botRight = {
+                    x:totalOffsetRight,
+                    y:totalOffsetBot
+                };
 
-                        // Esquina superior izquierda del nodo.
-                        const topLeft = {
-                        x: totalOffsetLeft,
-                        y: totalOffsetTop
-                        };
-                        // Esquina superior derecha del nodo.
-                        const topRight = {
-                            x:totalOffsetRight,
-                            y:totalOffsetTop
-                        }
-                        //Esquina inferior izquierda del nodo.
-                        const botLeft = {
-                            x:totalOffsetLeft,
-                            y:totalOffsetBot
-                        }
-                        //Esquina inferior derecha del nodo.
-                        const botRight = {
-                            x:totalOffsetRight,
-                            y:totalOffsetBot
-                        }
-                        console.log('La esquina superior izquierda del nodo es:', topLeft);
-                        console.log('La esquina superior derecha del nodo es:', topRight);
-                        console.log('La esquina inferior izquierda del nodo es:', botLeft);
-                        console.log('La esquina inferior derecha del nodo es:', botRight);
+                setCoordenadas({ topLeft, topRight, botLeft, botRight,});
+                console.log('La esquina superior izquierda del nodo es:', topLeft);
+                console.log('La esquina superior derecha del nodo es:', topRight);
+                console.log('La esquina inferior izquierda del nodo es:', botLeft);
+                console.log('La esquina inferior derecha del nodo es:', botRight);
                 }
             }}
             style={{
