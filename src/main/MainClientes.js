@@ -75,7 +75,7 @@ const MainClientes = () => {
   const seleccionEmails =()=>{
     if(customersSelection.selected.length!==0){
       setEmailsDatos(customersSelection.selected);
-      navigate("/editor");
+      navigate("/prueba");
     }else{
       mensajeAdvertencia("Selecciona al menos un correo!")
     }

@@ -25,7 +25,7 @@ function SideNav(){
         </Link>
     </ListItem>
     <ListItem disablePadding>
-        <Link to="/editor">
+        <Link to="/prueba">
         <ListItemButton>
         <ListItemIcon>
 <Icon path={mdiAccountMultiple} size={1} />
