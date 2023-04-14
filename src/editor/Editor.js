@@ -17,7 +17,7 @@ function Editor(){
     return(
     <React.Fragment>
     <div className="text-editor">
-      <ToolbarEditor />
+      <ToolbarEditor/>
       <ReactQuill
       ref={refContenido}
         theme="snow"

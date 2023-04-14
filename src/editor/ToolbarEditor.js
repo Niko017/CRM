@@ -1,10 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Quill from 'quill';
 import ImageResize from 'quill-image-resize-module-react';
 import FormatBoldIcon from '@mui/icons-material/FormatBold';
+import WallpaperIcon from '@mui/icons-material/Wallpaper';
 import { ImageDrop } from 'quill-image-drop-module';
 import ImageIcon from '@mui/icons-material/Image';
+import FormControl from '@mui/material/FormControl';
+import Stack from '@mui/material/Stack';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 import 'react-quill/dist/quill.snow.css';
+
 
 // Registrar los módulos antes de renderizar el componente.
 Quill.register('modules/imageResize', ImageResize);
@@ -38,37 +46,41 @@ Quill.register('modules/imageDrop', ImageDrop);
     this.quill.history.redo();
   }
 
-  function insertRemoteImage(){
-    const range = this.quill.getSelection();
-    let url = 'https://www.elecnor.com/resources/thumbs/98298d330422b774f2df1ab6389c3e2a'
-    this.quill.insertEmbed(range.index, 'image', url, Quill.sources.USER);
-  }
-  
-    // Add sizes to whitelist and register them
-    const Size = Quill.import("formats/size");
-    Size.whitelist = ["extra-small", "small", "medium", "large"];
-    Quill.register(Size, true);
+  // Add sizes to whitelist and register them
+  const Size = Quill.import("formats/size");
+  Size.whitelist = ["extra-small", "small", "medium", "large"];
+  Quill.register(Size, true);
 
-    // Add fonts to whitelist and register them
-    const Font = Quill.import("formats/font");
-    Font.whitelist = [
-    "arial",
-    "comic-sans",
-    "courier-new",
-    "georgia",
-    "helvetica",
-    "lucida"
-    ];
-    Quill.register(Font, true);
+  // Add fonts to whitelist and register them
+  const Font = Quill.import("formats/font");
+  Font.whitelist = [
+  "arial",
+  "comic-sans",
+  "courier-new",
+  "georgia",
+  "helvetica",
+  "lucida"
+  ];
+  Quill.register(Font, true);
+
+
+  const insertRemoteImage = (evento)=>{
+      console.log(evento);
+      console.log(this.quill);
+      //const range = this.quill.getSelection();
+      //this.quill.insertEmbed(range.index, 'image', 'imgUrl', Quill.sources.USER);
+      //setImgModal(false);
+      //setImgUrl('https://ceslava.s3-accelerate.amazonaws.com/2016/04/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png');
+  }
 
 // Modules object for setting up the Quill editor
-    export const modules = {
+  export const modules = {
     toolbar: {
       container: "#toolbar",
       handlers: {
         undo: undoChange,
         redo: redoChange,
-        imagenRemota: insertRemoteImage
+        imagenRemota: (e)=>{insertRemoteImage(e)},
       },
     },
     imageDrop: true,
@@ -96,7 +108,7 @@ Quill.register('modules/imageDrop', ImageDrop);
         maxStack: 100,
         userOnly: true
       }
-};
+  };
 
 // Formats objects for setting up the Quill editor
 export const formats = [
@@ -122,22 +134,48 @@ export const formats = [
 
 
 function ToolbarEditor(){
+
+  const [imgModal,setImgModal] = useState(false);
+  const [imgUrl,setImgUrl] = useState("https://ceslava.s3-accelerate.amazonaws.com/2016/04/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png");
+
+  const imagenEstilos = {
+    marginRight:'30px',
+    width:300,
+    height:300,
+    objectFit:'contain',
+  }
+
+  const modalStyle = {
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      bgcolor: 'background.paper',
+      border: '2px solid #000',
+      boxShadow: 24,
+      pt: 2,
+      px: 4,
+      pb: 3,
+      display:'flex',
+      width: 'auto'
+  }
+
     return(
 <React.Fragment>
   <div id="toolbar">
-      <span className="ql-formats">
+    <span className="ql-formats">
       <button className="ql-bold"></button>
       <button className="ql-italic" />
       <button className="ql-underline" />
       <button className="ql-strike" />
-      </span>
-      <span className="ql-formats">
+    </span>
+    <span className="ql-formats">
       <button className="ql-list" value="ordered" />
       <button className="ql-list" value="bullet" />
       <button className="ql-indent" value="-1" />
       <button className="ql-indent" value="+1" />
-      </span>
-      <span className="ql-formats">
+    </span>
+    <span className="ql-formats">
       <select className="ql-font" defaultValue="arial">
           <option value="arial">Arial</option>
           <option value="comic-sans">Comic Sans</option>
@@ -157,37 +195,64 @@ function ToolbarEditor(){
           <option value="2">Subtitulo</option>
           <option value="3">Normal</option>
       </select>
-      </span>
-      <span className="ql-formats">
+    </span>
+    <span className="ql-formats">
       <button className="ql-script" value="super" />
       <button className="ql-script" value="sub" />
       <button className="ql-blockquote" />
       <button className="ql-direction" />
-      </span>
-      <span className="ql-formats">
+    </span>
+    <span className="ql-formats">
       <select className="ql-align" />
       <select className="ql-color" />
       <select className="ql-background" />
-      </span>
-      <span className="ql-formats">
+    </span>
+    <span className="ql-formats">
       <button className="ql-link" />
-      <button className="ql-imagenRemota"><ImageIcon/></button>
+      <button className="ql-imagenRemota"><WallpaperIcon/></button>
+      <button onClick={()=>{setImgModal(true)}}><ImageIcon/></button>
       <button className="ql-video" />
-      </span>
+    </span>
       <span className="ql-formats">
       <button className="ql-formula"/>
       <button className="ql-code-block" />
       <button className="ql-clean" />
-      </span>
-      <span className="ql-formats">
+    </span>
+    <span className="ql-formats">
       <button className="ql-undo">
           <CustomUndo />
       </button>
       <button className="ql-redo">
           <CustomRedo />
       </button>
-      </span>
+    </span>
   </div>
-</React.Fragment>
-    )
+  <Modal
+    open={imgModal}
+    onClose={()=>{setImgModal(false)}}>
+    <Box sx={modalStyle}>
+        <img src={imgUrl} style={imagenEstilos}  alt="Imagen para Insertar"/>
+        <Stack spacing={2} justifyContent="center" alignItems="center">
+            <h2 style={{margin:'10px 0px'}}>Imagen</h2>
+            <div style={{margin:'10px 0px'}}>
+              <FormControl>
+                  <TextField
+                  fullWidth
+                  label="Enlace de la Imagen"
+                  onChange={(event)=>{
+                  setImgUrl(event.target.value);
+                  }}/>
+              </FormControl>
+            </div>
+            <div style={{margin:'10px 0px'}}>
+                <Button variant="contained">Insertar Imagen</Button>
+                <Button onClick={()=>{
+                  setImgModal(false);
+                  setImgUrl('https://ceslava.s3-accelerate.amazonaws.com/2016/04/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png');
+                  }}>Cerrar</Button>
+            </div>
+        </Stack>
+      </Box>
+   </Modal>
+</React.Fragment>)
 }export default ToolbarEditor;

@@ -1,10 +1,12 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { emailsContexto } from 'contexts/ProvedorEmails';
 import ColoresProvedor from 'contexts/ColoresProvedor';
 import TextField from '@mui/material/TextField';
 import SideNav from 'layouts/dashboard/SideNav';
 import Grid from '@mui/material/Unstable_Grid2';
+import Alerta from 'components/Alerta.js';
 import { useNavigate } from "react-router-dom";
+import Snackbar from '@mui/material/Snackbar';
 import Button from '@mui/material/Button'
 import Editor from 'editor/Editor';
 import axios from 'axios';
@@ -12,11 +14,35 @@ import axios from 'axios';
 function PagePrueba() {
 
   const navigate = useNavigate();
+  const url  = 'https://api.sendinblue.com/v3/smtp/email';
+  const apiKey = process.env.REACT_APP_API_KEY;
+  const [alerta,setAlerta] = useState({
+    open:false,
+    tipo: 'info',
+    mensaje:''
+  });
   let {emailsDatos, refTexto, setMotivo, motivo} = useContext(emailsContexto);
 
-  const enviarDatos = async()=>{
+  const handleErrorClose = (event, reason)=>{
+    if (reason === 'clickaway') {
+        return;
+      }
+      setAlerta({...alerta,open:false,tipo:'info'});
+}
 
-    const url  = 'https://api.sendinblue.com/v3/smtp/email';
+/**
+ * Abre una alerta personalizable con los datos pasados por parametro.
+ * @param {String} mensaje Mensaje personalizado para el mensaje.
+ * @param {String} tipo Tipo de alerta que se define como, ['error','warning','info','success'].
+ */
+  const mensajeAlerta = (mensaje,tipo)=>{
+    setAlerta({...alerta,
+        open:true,
+        tipo:tipo,
+        mensaje:mensaje})
+  }
+
+  const enviarDatos = async()=>{
 
     const datos = {
     sender: {name: 'Maria', email: 'maria85@gmail.com'},
@@ -33,13 +59,22 @@ function PagePrueba() {
       headers: {
         accept: 'application/json',
         'content-type': 'application/json',
-        'api-key': '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'
+        'api-key': `${apiKey}`
       }
     }
+    
+    if(motivo!==""){
+      try {
+        await axios.post(url,datos,cabeceras);
+        mensajeAlerta('Correos enviados correctamente','success');
+      }catch(error){
+        console.log(error);
+        mensajeAlerta('Error, contacte con el Administrador','error');
+      }
+    }else{
+      mensajeAlerta('Añade motivo del correo','warning');
+    }
 
-    let respuesta = await axios.post(url,datos,cabeceras);
-    console.log(respuesta);
-    console.log(respuesta);
   }
 
     useEffect(()=>{
@@ -56,8 +91,7 @@ function PagePrueba() {
           <SideNav/>
         </Grid> 
         <Grid xs={10}>
-          
-        <TextField fullWidth label="titulo" id="fullWidth" onChange={(event)=>{
+        <TextField fullWidth label="Motivo" id="fullWidth" onChange={(event)=>{
           setMotivo(event.target.value); 
         }} style={{
           marginBlock: '15px'
@@ -72,7 +106,12 @@ function PagePrueba() {
         </div>
         </Grid>
       </Grid>
-    </ColoresProvedor>    
+    </ColoresProvedor>
+    <Snackbar open={alerta.open} autoHideDuration={2000} onClose={handleErrorClose} anchorOrigin={{ vertical:'bottom', horizontal: 'center', }}>
+      <Alerta onClose={handleErrorClose} severity={alerta.tipo} sx={{ width: '100%' }}>
+        {alerta.mensaje}
+      </Alerta>
+    </Snackbar>   
 
     </React.Fragment>
   );
