@@ -1,3 +1,7 @@
 .ql-container{
     min-height: 300px;
 }
+.quill-editor iframe,
+.quill-editor video {
+    pointer-events: none;
+}

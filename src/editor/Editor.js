@@ -11,7 +11,8 @@ function Editor(){
     const { setRefTexto } = useContext(emailsContexto);
 
     const actualizarDatos = ()=>{
-        setRefTexto(refContenido.current.editor.container.outerHTML);
+      console.log(refContenido.current.editor.container.firstElementChild.outerHTML);
+        setRefTexto(refContenido.current.editor.container.firstElementChild.outerHTML);
     }
 
     return(

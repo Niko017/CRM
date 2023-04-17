@@ -12,11 +12,12 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import 'react-quill/dist/quill.snow.css';
-
+import 'editor/editor.css';
 
 // Registrar los módulos antes de renderizar el componente.
 Quill.register('modules/imageResize', ImageResize);
 Quill.register('modules/imageDrop', ImageDrop);
+
 
   const CustomUndo = () => (
     <svg viewBox="0 0 18 18">
@@ -46,6 +47,19 @@ Quill.register('modules/imageDrop', ImageDrop);
     this.quill.history.redo();
   }
 
+  function insertRemoteImage(){
+    //console.log(evento);
+    console.log(this.quill);
+    const range = this.quill.getSelection();
+    let url = prompt("Introduce una url");
+    console.log(url);
+    if(url===null || url!==""){
+      this.quill.insertEmbed(range.index, 'image', url, Quill.sources.USER_PASTE);
+    }else{
+      return;
+    }
+}
+
   // Add sizes to whitelist and register them
   const Size = Quill.import("formats/size");
   Size.whitelist = ["extra-small", "small", "medium", "large"];
@@ -64,15 +78,6 @@ Quill.register('modules/imageDrop', ImageDrop);
   Quill.register(Font, true);
 
 
-  const insertRemoteImage = (evento)=>{
-      console.log(evento);
-      console.log(this.quill);
-      //const range = this.quill.getSelection();
-      //this.quill.insertEmbed(range.index, 'image', 'imgUrl', Quill.sources.USER);
-      //setImgModal(false);
-      //setImgUrl('https://ceslava.s3-accelerate.amazonaws.com/2016/04/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png');
-  }
-
 // Modules object for setting up the Quill editor
   export const modules = {
     toolbar: {
@@ -80,7 +85,7 @@ Quill.register('modules/imageDrop', ImageDrop);
       handlers: {
         undo: undoChange,
         redo: redoChange,
-        imagenRemota: (e)=>{insertRemoteImage(e)},
+        imagenremota: insertRemoteImage,
       },
     },
     imageDrop: true,
@@ -107,7 +112,7 @@ Quill.register('modules/imageDrop', ImageDrop);
         delay: 500,
         maxStack: 100,
         userOnly: true
-      }
+      },
   };
 
 // Formats objects for setting up the Quill editor
@@ -128,6 +133,7 @@ export const formats = [
   "indent",
   "link",
   "image",
+  "video",
   "color",
   "code-block"
 ];
@@ -209,8 +215,8 @@ function ToolbarEditor(){
     </span>
     <span className="ql-formats">
       <button className="ql-link" />
-      <button className="ql-imagenRemota"><WallpaperIcon/></button>
-      <button onClick={()=>{setImgModal(true)}}><ImageIcon/></button>
+      <button className="ql-imagenremota"> <WallpaperIcon/></button>
+      <button className='ql-image'><ImageIcon/></button>
       <button className="ql-video" />
     </span>
       <span className="ql-formats">
@@ -226,7 +232,7 @@ function ToolbarEditor(){
           <CustomRedo />
       </button>
     </span>
-  </div>
+  
   <Modal
     open={imgModal}
     onClose={()=>{setImgModal(false)}}>
@@ -245,7 +251,7 @@ function ToolbarEditor(){
               </FormControl>
             </div>
             <div style={{margin:'10px 0px'}}>
-                <Button variant="contained">Insertar Imagen</Button>
+                <button  type='button'>Insertar Imagen</button>
                 <Button onClick={()=>{
                   setImgModal(false);
                   setImgUrl('https://ceslava.s3-accelerate.amazonaws.com/2016/04/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png');
@@ -254,5 +260,6 @@ function ToolbarEditor(){
         </Stack>
       </Box>
    </Modal>
+   </div>
 </React.Fragment>)
 }export default ToolbarEditor;

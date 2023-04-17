@@ -62,10 +62,10 @@ function PagePrueba() {
         'api-key': `${apiKey}`
       }
     }
-    
+    console.log(refTexto);
     if(motivo!==""){
       try {
-        await axios.post(url,datos,cabeceras);
+        //await axios.post(url,datos,cabeceras);
         mensajeAlerta('Correos enviados correctamente','success');
       }catch(error){
         console.log(error);
