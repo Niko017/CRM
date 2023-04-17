@@ -29,7 +29,7 @@ function Editor(){
         formats={formats}
       />
     </div>
-    
+
     </React.Fragment>
     )
 } export default Editor;

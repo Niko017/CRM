@@ -14,7 +14,7 @@ function PageClientes(){
       <Grid xs={10}>
         <MainClientes/>
       </Grid>
-    </Grid>      
+    </Grid>
   </React.Fragment>
   )
 }

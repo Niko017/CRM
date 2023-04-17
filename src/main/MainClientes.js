@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState, Fragment, useContext } from 'react'
+import { useCallback, useMemo, useState, Fragment, useContext, useEffect } from 'react';
 import ArrowDownOnSquareIcon from '@heroicons/react/24/solid/ArrowDownOnSquareIcon';
 import { Box, Button, Container, Stack, SvgIcon, Typography } from '@mui/material';
 import ArrowUpOnSquareIcon from '@heroicons/react/24/solid/ArrowUpOnSquareIcon';
@@ -14,12 +14,17 @@ import Alerta from 'components/Alerta.js';
 import datos from 'data/datos.json';
 import Head from 'next/head';
 
-const useCustomers = (page, rowsPerPage) => {
+
+const MainClientes = () => {
+
+  const { setEmailsDatos, empleados } = useContext(emailsContexto);
+
+  const useCustomers = (page, rowsPerPage) => {
   return useMemo(
     () => {
-      return applyPagination(datos, page, rowsPerPage);
+      return applyPagination(empleados, page, rowsPerPage);
     },
-    [page, rowsPerPage]
+    [page, rowsPerPage, empleados]
   );
 };
 
@@ -32,11 +37,13 @@ const useCustomerIds = (customers) => {
   );
 };
 
-const MainClientes = () => {
+useEffect(()=>{
+
+},[empleados])
 
   //Variables para el control de los clientes.
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const customers = useCustomers(page, rowsPerPage);
   const customersIds = useCustomerIds(customers);
   const customersSelection = useSelection(customersIds);
@@ -44,7 +51,6 @@ const MainClientes = () => {
   const [mensaje,setMensaje] = useState("");
   const navigate = useNavigate();
 
-  const { setEmailsDatos } = useContext(emailsContexto);
 
   const handlePageChange = useCallback(
     (event, value) => {
@@ -103,25 +109,8 @@ const MainClientes = () => {
               spacing={4}
             >
               <Stack spacing={1}>
-                <Typography variant="h4">
-                  Customers
-                </Typography>
-                <Stack alignItems="center" direction="row"spacing={1}>
-                  <Button
-                    color="inherit"
-                    startIcon={(
-                      <SvgIcon fontSize="small">
-                        <ArrowUpOnSquareIcon />
-                      </SvgIcon>
-                    )}>Import</Button>
-                  <Button
-                    color="inherit"
-                    startIcon={(
-                      <SvgIcon fontSize="small">
-                        <ArrowDownOnSquareIcon />
-                      </SvgIcon>
-                    )}>Export</Button>
-                </Stack>
+                <Typography variant="h4">Empleados</Typography>
+                
               </Stack>
               <div>
                 <Button
@@ -132,9 +121,7 @@ const MainClientes = () => {
                   )}
                   variant="contained"
                   onClick={seleccionEmails}
-                >
-                  Siguiente 
-                </Button>
+                >Siguiente  </Button>
               </div>
             </Stack>
             <CustomersSearch />

@@ -1,5 +1,4 @@
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import Table from 'tables/Table.js';
 import PageClientes from 'Pages/PageClientes.js';
 import PageEditor from 'Pages/PageEditor.js';
 import PagePrueba from "Pages/PagePrueba.js";
@@ -23,9 +22,6 @@ function App() {
       element: <PageEditor/>
     },
     {
-      path: "/table",
-      element: <Table/>
-    },{
       path: "/prueba",
       element: <PagePrueba/>
     }

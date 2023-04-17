@@ -44,6 +44,13 @@ function PagePrueba() {
 
   const enviarDatos = async()=>{
 
+    let caja = document.createElement("div");
+    caja.innerHTML+=`<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">`;
+    caja.innerHTML+=refTexto;
+    caja.firstElementChild.setAttribute("contenteditable","false");
+
+    console.log(caja);
+
     const datos = {
     sender: {name: 'Maria', email: 'maria85@gmail.com'},
     to: emailsDatos.map((correo)=>{
@@ -52,7 +59,7 @@ function PagePrueba() {
           name: correo,
         }
     }),
-    textContent: refTexto,
+    textContent: caja.outerHTML,
     subject: motivo,
     }
     const cabeceras = {
@@ -62,10 +69,10 @@ function PagePrueba() {
         'api-key': `${apiKey}`
       }
     }
-    console.log(refTexto);
+
     if(motivo!==""){
       try {
-        //await axios.post(url,datos,cabeceras);
+        await axios.post(url,datos,cabeceras);
         mensajeAlerta('Correos enviados correctamente','success');
       }catch(error){
         console.log(error);

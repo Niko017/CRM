@@ -7,10 +7,7 @@ import { emailsContexto } from 'contexts/ProvedorEmails';
 
 function MainEditor(){
 
-  
-
   const { setMotivo } = useContext(emailsContexto);
-
 
     return (
       <Container maxWidth="xl">
