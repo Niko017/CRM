@@ -1,6 +1,6 @@
 import React, { useRef, useContext } from 'react';
-import { emailsContexto } from 'contexts/ProvedorEmails';
 import ToolbarEditor, { modules, formats } from 'editor/ToolbarEditor';
+import { emailsContexto } from 'contexts/ProvedorEmails';
 import ReactQuill from 'react-quill';
 import 'editor/editor.css'
 
@@ -11,7 +11,6 @@ function Editor(){
     const { setRefTexto } = useContext(emailsContexto);
 
     const actualizarDatos = ()=>{
-      console.log(refContenido.current.editor.container.firstElementChild.outerHTML);
         setRefTexto(refContenido.current.editor.container.firstElementChild.outerHTML);
     }
 

@@ -1,18 +1,17 @@
 import React, { useState } from 'react'
-import Quill from 'quill';
 import ImageResize from 'quill-image-resize-module-react';
-import FormatBoldIcon from '@mui/icons-material/FormatBold';
 import WallpaperIcon from '@mui/icons-material/Wallpaper';
+import FormControl from '@mui/material/FormControl';
 import { ImageDrop } from 'quill-image-drop-module';
 import ImageIcon from '@mui/icons-material/Image';
-import FormControl from '@mui/material/FormControl';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import 'react-quill/dist/quill.snow.css';
 import Stack from '@mui/material/Stack';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import 'react-quill/dist/quill.snow.css';
 import 'editor/editor.css';
+import Quill from 'quill';
 
 // Registrar los módulos antes de renderizar el componente.
 Quill.register('modules/imageResize', ImageResize);

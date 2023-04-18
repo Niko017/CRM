@@ -38,10 +38,7 @@ function CustomersSearch(){
       placeholder="Buscador empleados..."
       startAdornment={(
         <InputAdornment position="start">
-          <SvgIcon
-            color="action"
-            fontSize="small"
-          >
+          <SvgIcon color="action" fontSize="small">
             <MagnifyingGlassIcon />
           </SvgIcon>
         </InputAdornment>

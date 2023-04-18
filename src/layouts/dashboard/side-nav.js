@@ -18,7 +18,7 @@ import { Scrollbar } from 'components/scrollbar';
 import { items } from './config';
 import { SideNavItem } from './side-nav-item';
 
-export const SideNav = (props) => {
+function SideNav(props){
   const { open, onClose } = props;
   const pathname = usePathname();
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
@@ -216,7 +216,7 @@ export const SideNav = (props) => {
       {content}
     </Drawer>
   );
-};
+}; export default SideNav;
 
 SideNav.propTypes = {
   onClose: PropTypes.func,

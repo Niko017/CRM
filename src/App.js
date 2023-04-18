@@ -1,4 +1,3 @@
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import PageClientes from 'Pages/PageClientes.js';
 import PageEditor from 'Pages/PageEditor.js';
 import PagePrueba from "Pages/PagePrueba.js";

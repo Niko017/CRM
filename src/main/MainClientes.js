@@ -1,7 +1,5 @@
 import { useCallback, useMemo, useState, Fragment, useContext, useEffect } from 'react';
-import ArrowDownOnSquareIcon from '@heroicons/react/24/solid/ArrowDownOnSquareIcon';
 import { Box, Button, Container, Stack, SvgIcon, Typography } from '@mui/material';
-import ArrowUpOnSquareIcon from '@heroicons/react/24/solid/ArrowUpOnSquareIcon';
 import CustomersSearch from 'secciones/clientes/CustomersSearch';
 import CustomersTable from 'secciones/clientes/CustomersTable';
 import KeyboardTabIcon from '@mui/icons-material/KeyboardTab';
