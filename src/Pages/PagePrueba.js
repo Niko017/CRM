@@ -49,8 +49,6 @@ function PagePrueba() {
     caja.innerHTML+=refTexto;
     caja.firstElementChild.setAttribute("contenteditable","false");
 
-    console.log(caja);
-
     const datos = {
     sender: {name: 'Maria', email: 'maria85@gmail.com'},
     to: emailsDatos.map((correo)=>{

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import Editor from 'components/Editor';
+import Editor from 'editor/Editor';
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
 import Container from '@mui/material/Container';
