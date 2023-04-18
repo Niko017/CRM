@@ -1,7 +1,7 @@
 import PageClientes from 'Pages/PageClientes.js';
 import PageEditor from 'Pages/PageEditor.js';
 import PagePrueba from "Pages/PagePrueba.js";
-import ProvedorEmails from 'contexts/ProvedorEmails.js'
+import ProvedorEmails from 'contexts/ProvedorEmails.js';
 import './App.css';
 import {
   createBrowserRouter,
@@ -10,7 +10,7 @@ import {
 
 
 
-function App() {
+function App({children}) {
   const router = createBrowserRouter([
     {
       path: "/",
@@ -28,7 +28,7 @@ function App() {
   
   return (
     <ProvedorEmails>
-      <RouterProvider router={router} />
+      <RouterProvider router={router}/>
     </ProvedorEmails>
   );
 }

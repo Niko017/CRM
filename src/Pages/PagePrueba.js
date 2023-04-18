@@ -1,9 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
+import  DashboardLayout from 'layouts/dashboard/layout';
 import { emailsContexto } from 'contexts/ProvedorEmails';
-import ColoresProvedor from 'contexts/ColoresProvedor';
 import TextField from '@mui/material/TextField';
-import SideNav from 'layouts/dashboard/SideNav';
-import Grid from '@mui/material/Unstable_Grid2';
 import Alerta from 'components/Alerta.js';
 import { useNavigate } from "react-router-dom";
 import Snackbar from '@mui/material/Snackbar';
@@ -72,6 +70,9 @@ function PagePrueba() {
       try {
         await axios.post(url,datos,cabeceras);
         mensajeAlerta('Correos enviados correctamente','success');
+        setTimeout(()=>{
+          navigate("/");
+        },1000)
       }catch(error){
         console.log(error);
         mensajeAlerta('Error, contacte con el Administrador','error');
@@ -82,42 +83,35 @@ function PagePrueba() {
 
   }
 
-    useEffect(()=>{
-    if(emailsDatos.length===0){
-        navigate("/");
-    }
-  },[emailsDatos])
+  //   useEffect(()=>{
+  //   if(emailsDatos.length===0){
+  //       navigate("/");
+  //   }
+  // },[emailsDatos])
 
   return (
     <React.Fragment>
-          <ColoresProvedor>
-      <Grid container disableEqualOverflow alignItems="center" justifyContent="center" spacing={1}>
-        <Grid xs={2}>
-          <SideNav/>
-        </Grid> 
-        <Grid xs={10}>
+      <DashboardLayout>
         <TextField fullWidth label="Motivo" id="fullWidth" onChange={(event)=>{
           setMotivo(event.target.value); 
         }} style={{
           marginBlock: '15px'
         }} />
-        <Editor/>
-        <div style={{
-                marginTop:'30px',
-                display:'flex',
-                justifyContent:'center'
-            }}>
-                <Button variant="contained" onClick={enviarDatos}>Enviar</Button>
-        </div>
-        </Grid>
-      </Grid>
-    </ColoresProvedor>
-    <Snackbar open={alerta.open} autoHideDuration={2000} onClose={handleErrorClose} anchorOrigin={{ vertical:'bottom', horizontal: 'center', }}>
-      <Alerta onClose={handleErrorClose} severity={alerta.tipo} sx={{ width: '100%' }}>
-        {alerta.mensaje}
-      </Alerta>
-    </Snackbar>   
-
+          <Editor/>
+          <div style={{
+                  marginTop:'30px',
+                  display:'flex',
+                  justifyContent:'center'
+              }}>
+                  <Button variant="contained" onClick={enviarDatos}>Enviar</Button>
+          </div>
+      <Snackbar open={alerta.open} autoHideDuration={2000} onClose={handleErrorClose} anchorOrigin={{ vertical:'bottom', horizontal: 'center', }}>
+        <Alerta onClose={handleErrorClose} severity={alerta.tipo} sx={{ width: '100%' }}>
+          {alerta.mensaje}
+        </Alerta>
+      </Snackbar>
+    </DashboardLayout>
     </React.Fragment>
   );
-} export default PagePrueba;
+} 
+;export default PagePrueba;

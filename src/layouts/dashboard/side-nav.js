@@ -1,7 +1,7 @@
-import NextLink from 'next/link';
-import { usePathname } from 'next/navigation';
+import { Link, useLocation } from 'react-router-dom'
 import PropTypes from 'prop-types';
 import ArrowTopRightOnSquareIcon from '@heroicons/react/24/solid/ArrowTopRightOnSquareIcon';
+import Cog8ToothIcon from '@heroicons/react/24/solid/Cog8ToothIcon';
 import ChevronUpDownIcon from '@heroicons/react/24/solid/ChevronUpDownIcon';
 import {
   Box,
@@ -13,7 +13,7 @@ import {
   Typography,
   useMediaQuery
 } from '@mui/material';
-import { useTheme } from '@mui/material/styles'
+
 //import { Logo } from 'src/components/logo';
 import { Scrollbar } from 'components/scrollbar';
 import { items } from './config';
@@ -21,10 +21,8 @@ import { SideNavItem } from './side-nav-item';
 
 function SideNav(props){
   const { open, onClose } = props;
-  const pathname = usePathname();
-  const theme = useTheme();
-  //useMediaQuery(tema => console.log(tema));
-  const lgUp = useMediaQuery(theme.breakpoints.up('lg'));
+  const pathname = useLocation();
+  const lgUp = useMediaQuery( theme => theme.breakpoints.up('lg'));
 
   const content = (
     <Scrollbar
@@ -48,7 +46,7 @@ function SideNav(props){
       >
         <Box sx={{ p: 3 }}>
           <Box
-            component={NextLink}
+            component={Link}
             href="/"
             sx={{
               display: 'inline-flex',
@@ -63,7 +61,6 @@ function SideNav(props){
               alignItems: 'center',
               backgroundColor: 'rgba(255, 255, 255, 0.04)',
               borderRadius: 1,
-              cursor: 'pointer',
               display: 'flex',
               justifyContent: 'space-between',
               mt: 2,
@@ -81,14 +78,14 @@ function SideNav(props){
                 color="neutral.400"
                 variant="body2"
               >
-                Production
+                Panel de Control
               </Typography>
             </div>
             <SvgIcon
               fontSize="small"
               sx={{ color: 'neutral.500' }}
             >
-              <ChevronUpDownIcon />
+              <Cog8ToothIcon />
             </SvgIcon>
           </Box>
         </Box>
@@ -111,7 +108,7 @@ function SideNav(props){
             }}
           >
             {items.map((item) => {
-              const active = item.path ? (pathname === item.path) : false;
+              const active = item.path ? (pathname.pathname === item.path) : false;
 
               return (
                 <SideNavItem
