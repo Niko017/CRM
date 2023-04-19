@@ -1,16 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import ImageResize from 'quill-image-resize-module-react';
-import WallpaperIcon from '@mui/icons-material/Wallpaper';
-import FormControl from '@mui/material/FormControl';
 import { ImageDrop } from 'quill-image-drop-module';
 import ImageIcon from '@mui/icons-material/Image';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
 import 'react-quill/dist/quill.snow.css';
-import Stack from '@mui/material/Stack';
-import Modal from '@mui/material/Modal';
-import Box from '@mui/material/Box';
-import 'editor/editor.css';
+
+import 'secciones/editor/editor.css';
 import Quill from 'quill';
 
 // Registrar los módulos antes de renderizar el componente.
@@ -140,31 +134,6 @@ export const formats = [
 
 function ToolbarEditor(){
 
-  const [imgModal,setImgModal] = useState(false);
-  const [imgUrl,setImgUrl] = useState("https://ceslava.s3-accelerate.amazonaws.com/2016/04/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png");
-
-  const imagenEstilos = {
-    marginRight:'30px',
-    width:300,
-    height:300,
-    objectFit:'contain',
-  }
-
-  const modalStyle = {
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      bgcolor: 'background.paper',
-      border: '2px solid #000',
-      boxShadow: 24,
-      pt: 2,
-      px: 4,
-      pb: 3,
-      display:'flex',
-      width: 'auto'
-  }
-
     return(
 <React.Fragment>
   <div id="toolbar">
@@ -214,8 +183,7 @@ function ToolbarEditor(){
     </span>
     <span className="ql-formats">
       <button className="ql-link" />
-      <button className="ql-imagenremota"> <WallpaperIcon/></button>
-      <button className='ql-image'><ImageIcon/></button>
+      <button className="ql-imagenremota"><ImageIcon/></button>
       <button className="ql-video" />
     </span>
       <span className="ql-formats">
@@ -231,34 +199,6 @@ function ToolbarEditor(){
           <CustomRedo />
       </button>
     </span>
-  
-  <Modal
-    open={imgModal}
-    onClose={()=>{setImgModal(false)}}>
-    <Box sx={modalStyle}>
-        <img src={imgUrl} style={imagenEstilos}  alt="Imagen para Insertar"/>
-        <Stack spacing={2} justifyContent="center" alignItems="center">
-            <h2 style={{margin:'10px 0px'}}>Imagen</h2>
-            <div style={{margin:'10px 0px'}}>
-              <FormControl>
-                  <TextField
-                  fullWidth
-                  label="Enlace de la Imagen"
-                  onChange={(event)=>{
-                  setImgUrl(event.target.value);
-                  }}/>
-              </FormControl>
-            </div>
-            <div style={{margin:'10px 0px'}}>
-                <button  type='button'>Insertar Imagen</button>
-                <Button onClick={()=>{
-                  setImgModal(false);
-                  setImgUrl('https://ceslava.s3-accelerate.amazonaws.com/2016/04/mistery-man-gravatar-wordpress-avatar-persona-misteriosa-510x510.png');
-                  }}>Cerrar</Button>
-            </div>
-        </Stack>
-      </Box>
-   </Modal>
    </div>
 </React.Fragment>)
 }export default ToolbarEditor;

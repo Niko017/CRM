@@ -1,12 +1,15 @@
 import React from 'react';
 import  DashboardLayout  from 'layouts/dashboard/layout';
 import MainClientes from 'main/MainClientes';
+import { CssBaseline } from '@mui/material';
 
 function PageClientes(){
   return (
   <React.Fragment>
     <DashboardLayout>
-      <MainClientes/>
+      <CssBaseline>
+        <MainClientes/>
+      </CssBaseline>
     </DashboardLayout>
   </React.Fragment>
   )

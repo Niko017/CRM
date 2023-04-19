@@ -10,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 import Snackbar from '@mui/material/Snackbar';
 import Alerta from 'components/Alerta.js';
 import datos from 'data/datos.json';
-import Head from 'next/head';
 
 
 const MainClientes = () => {
@@ -26,7 +25,7 @@ const MainClientes = () => {
   );
 };
 
-const useCustomerIds = (customers) => {
+const useCustomerEmails = (customers) => {
   return useMemo(
     () => {
       return customers.map((customer) => customer.email);
@@ -43,8 +42,8 @@ useEffect(()=>{
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const customers = useCustomers(page, rowsPerPage);
-  const customersIds = useCustomerIds(customers);
-  const customersSelection = useSelection(customersIds);
+  const customersEmails = useCustomerEmails(customers);
+  const customersSelection = useSelection(customersEmails);
   const [alertOpen,setAlertOpen] = useState(false);
   const [mensaje,setMensaje] = useState("");
   const navigate = useNavigate();
@@ -79,7 +78,7 @@ useEffect(()=>{
   const seleccionEmails =()=>{
     if(customersSelection.selected.length!==0){
       setEmailsDatos(customersSelection.selected);
-      navigate("/prueba");
+      navigate("/editor");
     }else{
       mensajeAdvertencia("Selecciona al menos un correo!")
     }
@@ -87,11 +86,6 @@ useEffect(()=>{
 
   return (
     <Fragment>
-      <Head>
-        <title>
-          Customers | Devias Kit
-        </title>
-      </Head>
       <Box
         component="main"
         sx={{
@@ -119,7 +113,7 @@ useEffect(()=>{
                   )}
                   variant="contained"
                   onClick={seleccionEmails}
-                >Siguiente  </Button>
+                >Siguiente</Button>
               </div>
             </Stack>
             <CustomersSearch />

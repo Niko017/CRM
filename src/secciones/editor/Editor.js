@@ -1,8 +1,8 @@
 import React, { useRef, useContext } from 'react';
-import ToolbarEditor, { modules, formats } from 'editor/ToolbarEditor';
+import ToolbarEditor, { modules, formats } from 'secciones/editor/ToolbarEditor';
 import { emailsContexto } from 'contexts/ProvedorEmails';
 import ReactQuill from 'react-quill';
-import 'editor/editor.css'
+import 'secciones/editor/editor.css'
 
 function Editor(){
 

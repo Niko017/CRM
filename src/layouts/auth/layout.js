@@ -1,11 +1,10 @@
-import PropTypes from 'prop-types';
-import NextLink from 'next/link';
+import { Link } from 'react-router-dom'
 import { Box, Typography, Unstable_Grid2 as Grid } from '@mui/material';
 //import { Logo } from 'src/components/logo';
 
 // TODO: Change subtitle text
 
-export const Layout = (props) => {
+function Layout (props){
   const { children } = props;
 
   return (
@@ -41,8 +40,8 @@ export const Layout = (props) => {
             }}
           >
             <Box
-              component={NextLink}
-              href="/"
+              component={Link}
+              to="/"
               sx={{
                 display: 'inline-flex',
                 height: 32,
@@ -104,8 +103,4 @@ export const Layout = (props) => {
       </Grid>
     </Box>
   );
-};
-
-Layout.prototypes = {
-  children: PropTypes.node
-};
+}; export default Layout;

@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { usePathname } from 'next/navigation';
 import { styled } from '@mui/material/styles';
 import CreateTheme from 'theme/index';
 import { ThemeProvider } from '@mui/material/styles';

@@ -1,26 +1,10 @@
-import NextLink from 'next/link';
 import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types';
 import { Box, ButtonBase } from '@mui/material';
 
 export const SideNavItem = (props) => {
-  const { active = false, disabled, external, icon, path, title } = props;
-
-  const linkProps = path
-    ? external
-      ? {
-        component: 'a',
-        href: path,
-        target: '_blank'
-      }
-      : {
-        component: Link ,
-        href: path
-      }
-    : {};
-
+  const { active = false, disabled, icon, path, title } = props;
     
-
   return (
     <li>
       <Link style={{ textDecoration: 'none'}} to={path}>

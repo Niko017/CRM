@@ -20,7 +20,7 @@ export const items = [
   },
   {
     title: 'Customers',
-    path: '/prueba',
+    path: '/clientes',
     icon: (
       <SvgIcon fontSize="small">
         <UsersIcon />
@@ -29,7 +29,7 @@ export const items = [
   },
   {
     title: 'Companies',
-    path: '/editor',
+    path: '/otro',
     icon: (
       <SvgIcon fontSize="small">
         <ShoppingBagIcon />
@@ -56,7 +56,7 @@ export const items = [
   },
   {
     title: 'Login',
-    path: '/auth/login',
+    path: '/login',
     icon: (
       <SvgIcon fontSize="small">
         <LockClosedIcon />
@@ -65,7 +65,7 @@ export const items = [
   },
   {
     title: 'Register',
-    path: '/auth/register',
+    path: '/register',
     icon: (
       <SvgIcon fontSize="small">
         <UserPlusIcon />

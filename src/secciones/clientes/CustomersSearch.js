@@ -1,41 +1,25 @@
-import React , { useContext, useEffect, useState }  from 'react';
+import React , { useState }  from 'react';
 import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
 import { Card, InputAdornment, OutlinedInput, SvgIcon } from '@mui/material';
-import { emailsContexto } from 'contexts/ProvedorEmails';
-import datos from 'data/datos.json';
+import { useSearchCustomers } from 'hooks/useSearchCustomers';
 
 function CustomersSearch(){
 
-  const [value,setValue] = useState("");
-
-  const { setEmpleados } = useContext(emailsContexto);
+  const [search,setSearch] = useState("");
 
   const handleChange = event =>{
-    setValue(event.target.value);
+    setSearch(event.target.value);
   }
-
-  /**
-   * Busca en todos los valores de cada objeto y devuelve las coincidencias.
-   */
-  const buscarDatos = async()=>{
-    return await datos.filter( objeto =>  Object.keys(objeto).some( clave => String(objeto[clave]).includes(value)) )
-  }
-
-  useEffect(()=>{
-    let datos = buscarDatos();
-    datos.then(
-      datos => setEmpleados(datos)
-    )
-    
-  },[value])
+  
+  useSearchCustomers({search}); 
 
   return(
   <Card sx={{ p: 2 }}>
     <OutlinedInput
       fullWidth
-      value={value}
+      value={search}
       onChange={handleChange}
-      placeholder="Buscador empleados..."
+      placeholder="Maria Rodrigu..., 6452..., pepe@gmail..."
       startAdornment={(
         <InputAdornment position="start">
           <SvgIcon color="action" fontSize="small">
