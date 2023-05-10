@@ -90,7 +90,10 @@ useEffect(()=>{
         component="main"
         sx={{
           flexGrow: 1,
-          py: 8
+          py: '50px'
+        }}
+        style={{
+          marginTop:'350px'
         }}
       >
         <Container maxWidth="xl">
@@ -115,6 +118,10 @@ useEffect(()=>{
                   onClick={seleccionEmails}
                 >Siguiente</Button>
               </div>
+            </Stack>
+            <Stack>
+              hola
+              <div>a</div>
             </Stack>
             <CustomersSearch />
             <CustomersTable

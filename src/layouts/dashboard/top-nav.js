@@ -17,7 +17,7 @@ import { alpha } from '@mui/material/styles';
 import { usePopover } from 'hooks/use-popover';
 import { AccountPopover } from './account-popover';
 
-const SIDE_NAV_WIDTH = 280;
+const SIDE_NAV_WIDTH = 680;
 const TOP_NAV_HEIGHT = 64;
 
 const TopNav = (props) => {
@@ -30,7 +30,7 @@ const TopNav = (props) => {
       <Box
         component="header"
         sx={{
-          backdropFilter: 'blur(6px)',
+          backdropFilter: 'blur(5px)',
           backgroundColor: (theme) => alpha(theme.palette.background.default, 0.8),
           position: 'sticky',
           left: {
@@ -38,7 +38,7 @@ const TopNav = (props) => {
           },
           top: 0,
           width: {
-            lg: `calc(100% - ${SIDE_NAV_WIDTH}px)`
+            lg: `100%`
           },
           zIndex: (theme) => theme.zIndex.appBar
         }}
