@@ -32,7 +32,7 @@ const TopNav = (props) => {
         sx={{
           backdropFilter: 'blur(5px)',
           backgroundColor: (theme) => alpha(theme.palette.background.default, 0.8),
-          position: 'sticky',
+          position: 'static',
           left: {
             lg: `${SIDE_NAV_WIDTH}px`
           },

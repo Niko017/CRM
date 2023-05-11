@@ -5,11 +5,14 @@ import CustomersTable from 'secciones/clientes/CustomersTable';
 import KeyboardTabIcon from '@mui/icons-material/KeyboardTab';
 import { emailsContexto } from 'contexts/ProvedorEmails';
 import { applyPagination } from 'utils/apply-pagination';
+import CodPostal from 'components/Filtros/CodigoPostal';
 import { useSelection } from 'hooks/use-selection';
 import { useNavigate } from "react-router-dom";
 import Snackbar from '@mui/material/Snackbar';
 import Alerta from 'components/Alerta.js';
 import datos from 'data/datos.json';
+import Localidades from 'components/Filtros/Localidades';
+import Actividades from 'components/Filtros/Actividades';
 
 
 const MainClientes = () => {
@@ -120,8 +123,9 @@ useEffect(()=>{
               </div>
             </Stack>
             <Stack>
-              hola
-              <div>a</div>
+              <CodPostal />
+              <Localidades />
+              <Actividades />
             </Stack>
             <CustomersSearch />
             <CustomersTable
