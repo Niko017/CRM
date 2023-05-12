@@ -11,14 +11,16 @@ import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-function Localidades() {
+function Provincias() {
   const { select } = useContext(selectContexto);
-  const {filtros, setFiltros } = useContext(filtrosContexto);
+  const { filtros, setFiltros } = useContext(filtrosContexto);
   const [open, setOpen] = useState(false);
-  const loading =  open && select.localidades.length === 0;
-  const handleChange = (event, value)=>{
-    setFiltros(prev => ({...prev,localidades:value}));
+  const loading =  open && select.provincias.length === 0;
+
+  const handleChange = (event, value) => {
+    setFiltros(prev => ({...prev,provincias: value }));
   }
+
   return (
     <Autocomplete
       multiple
@@ -27,11 +29,12 @@ function Localidades() {
       onClose={() => setOpen(false)}
       loading={loading}
       id="checkboxes-tags-demo"
-      value={filtros.localidades}
+      value={filtros.provincias}
       onChange={handleChange}
-      options={select.localidades}
+      options={select.provincias}
       disableCloseOnSelect
-      getOptionLabel={(option) => option}
+      renderGroup={option => console.log(option)}
+      getOptionLabel={(option) => option }
       renderOption={(props, option, { selected }) => (
         <li  {...props}>
           <Checkbox
@@ -46,7 +49,7 @@ function Localidades() {
       style={{ flexGrow: 1, maxWidth: '220px' }}
       renderInput={(params) => (
         <TextField {...params}
-        label="Localidad"
+        label="Provincias"
         InputProps={{
           ...params.InputProps,
           endAdornment: (
@@ -59,4 +62,4 @@ function Localidades() {
       )}
     />
   );
-}export default Localidades;
+}export default Provincias;

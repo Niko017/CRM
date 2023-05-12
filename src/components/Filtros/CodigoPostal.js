@@ -18,7 +18,6 @@ function CodPostal() {
   const loading =  open && select.codPostal.length === 0;
   const handleChange = (event, value)=>{
     setFiltros(prev => ({...prev,codPostal:value}));
-    console.log(value)
   }
   return (
     <Autocomplete
@@ -44,7 +43,7 @@ function CodPostal() {
           {option}
         </li>
       )}
-      style={{ width: 150 }}
+      style={{flexGrow: 1 , maxWidth: '220px'}}
       renderInput={(params) => (
         <TextField {...params}
         label="Codigo Postal"

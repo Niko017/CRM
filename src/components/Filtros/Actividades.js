@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -13,15 +13,23 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 function Actividades() {
   const { select } = useContext(selectContexto);
-  const {filtros, setFiltros } = useContext(filtrosContexto);
+  const { filtros, setFiltros } = useContext(filtrosContexto);
   const [open, setOpen] = useState(false);
+  const [vista, setVista] = useState([]);
   const loading =  open && select.actividades.length === 0;
 
-  //TODO: SOLO PASAR LOS CODIGOS.
-  const handleChange = (event, value)=>{
-
-    setFiltros(prev => ({...prev,actividades: value }));
+  const handleChange = (event, value) => {
+    const codigos = value.map( valor => valor.Codigo );
+    setFiltros(prev => ({...prev,actividades: codigos }));
+    setVista(value);
   }
+
+  useEffect(()=>{
+    if(filtros.actividades.length === 0){
+      setVista([]);
+    }
+  },[filtros.actividades])
+
   return (
     <Autocomplete
       multiple
@@ -30,7 +38,7 @@ function Actividades() {
       onClose={() => setOpen(false)}
       loading={loading}
       id="checkboxes-tags-demo"
-      value={filtros.actividades}
+      value={vista}
       onChange={handleChange}
       options={select.actividades}
       disableCloseOnSelect
@@ -47,7 +55,7 @@ function Actividades() {
           {option.Descripcion}
         </li>
       )}
-      style={{ width: 300 }}
+      style={{ flexGrow: 1, maxWidth: '220px' }}
       renderInput={(params) => (
         <TextField {...params}
         label="Actividades"

@@ -1,21 +1,25 @@
 import axios from "axios";
-import { useState, createContext, useEffect } from "react";
+import { useState, createContext, useEffect, useContext } from "react";
+import { filtrosContexto } from "./ProvedorFiltros";
 
 const selectContexto = createContext();
 
 function ProvedorSelect (props){
   
   const BASE_URL = "http://localhost:2000";
+  const { estadoAsegurado } = useContext(filtrosContexto);
 
-    const [select,setSelect] = useState({
-        codPostal: [],
-        actividades: [],
-        grupos: [],
-        localidades: [],
-        mercados: [],
-        provincias: [],
-        polizas: [],
-    });
+  const selectInitial = {
+    codPostal: [],
+    actividades: [],
+    grupos: [],
+    localidades: [],
+    mercados: [],
+    provincias: [],
+    polizas: [],
+  }
+    const [select,setSelect] = useState(selectInitial);
+    
     const localidades = "/localidades";
     const actividades = "/actividades";
     const codigoPostal = "/codPostal";
@@ -34,20 +38,19 @@ function ProvedorSelect (props){
         provincias: `${BASE_URL}${provincias}`,
         polizas: `${BASE_URL}${polizas}`,
       }
-      let nuevoObjetoPromesas = Object.keys(urlsObjeto).map(async(objeto) => await axios.post( urlsObjeto[objeto],{estadoAsegurado:2}));
+      let nuevoObjetoPromesas = Object.keys(urlsObjeto).map(async(objeto) => await axios.post( urlsObjeto[objeto],{ estadoAsegurado }));
       let claves = Object.keys(urlsObjeto).map(objeto => objeto);
       let resultado = await Promise.allSettled(nuevoObjetoPromesas);
       let nuevoObjeto = {};
       resultado.map((objeto, indice) => nuevoObjeto[claves[indice]] = objeto.value.data);
       setSelect(nuevoObjeto);
-      console.log(nuevoObjeto);
     }
 
-      useEffect(()=>{
-        cargar();
-      },[])
+    useEffect(()=>{
+      cargar();
+    },[estadoAsegurado])
 
-    const datos = {select};
+    const datos = { select };
 
 
   return(

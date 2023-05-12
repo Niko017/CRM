@@ -81,7 +81,7 @@ function MainEditor() {
 
     useEffect(()=>{
     if(emailsDatos.length===0){
-        navigate("/");
+        navigate("/clientes");
     }
   },[emailsDatos, navigate])
 

@@ -6,18 +6,17 @@ import ProvedorFiltros from 'contexts/ProvedorFiltros';
 import ProvedorSelect from 'contexts/ProvedorSelects';
 
 function PageClientes(){
-  console.log("Problems hiunton")
   return (
   <React.Fragment>
-    <ProvedorSelect>
       <ProvedorFiltros>
+        <ProvedorSelect>
         <DashboardLayout>
           <CssBaseline>
             <MainClientes/>
           </CssBaseline>
         </DashboardLayout>
-      </ProvedorFiltros>
-    </ProvedorSelect>
+      </ProvedorSelect>
+    </ProvedorFiltros>
   </React.Fragment>
   )
 }

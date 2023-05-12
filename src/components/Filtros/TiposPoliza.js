@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -11,14 +11,25 @@ import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-function Localidades() {
+function TiposPoliza() {
   const { select } = useContext(selectContexto);
-  const {filtros, setFiltros } = useContext(filtrosContexto);
+  const { filtros, setFiltros } = useContext(filtrosContexto);
   const [open, setOpen] = useState(false);
-  const loading =  open && select.localidades.length === 0;
-  const handleChange = (event, value)=>{
-    setFiltros(prev => ({...prev,localidades:value}));
+  const [vista, setVista] = useState([]);
+  const loading =  open && select.polizas.length === 0;
+
+  const handleChange = (event, value) => {
+    const codigos = value.map( valor => valor.Codigo );
+    setFiltros(prev => ({...prev,polizas: codigos }));
+    setVista(value);
   }
+
+  useEffect(()=>{
+    if(filtros.polizas.length === 0){
+      setVista([]);
+    }
+  },[filtros.polizas])
+
   return (
     <Autocomplete
       multiple
@@ -26,12 +37,12 @@ function Localidades() {
       onOpen={()=> setOpen(true)}
       onClose={() => setOpen(false)}
       loading={loading}
-      id="checkboxes-tags-demo"
-      value={filtros.localidades}
+      value={vista}
       onChange={handleChange}
-      options={select.localidades}
+      options={select.polizas}
       disableCloseOnSelect
-      getOptionLabel={(option) => option}
+      renderGroup={option => console.log(option)}
+      getOptionLabel={(option) => option.Descripcion }
       renderOption={(props, option, { selected }) => (
         <li  {...props}>
           <Checkbox
@@ -40,13 +51,13 @@ function Localidades() {
             style={{ marginRight: 8 }}
             checked={selected}
           />
-          {option}
+          {option.Descripcion}
         </li>
       )}
       style={{ flexGrow: 1, maxWidth: '220px' }}
       renderInput={(params) => (
         <TextField {...params}
-        label="Localidad"
+        label="Tipos de Poliza"
         InputProps={{
           ...params.InputProps,
           endAdornment: (
@@ -59,4 +70,4 @@ function Localidades() {
       )}
     />
   );
-}export default Localidades;
+}export default TiposPoliza;
