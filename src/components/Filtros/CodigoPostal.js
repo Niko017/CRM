@@ -27,6 +27,7 @@ function CodPostal() {
       onClose={() => setOpen(false)}
       loading={loading}
       id="checkboxes-tags-demo"
+      noOptionsText={'Sin Opciones'}
       value={filtros.codPostal}
       onChange={handleChange}
       options={select.codPostal}

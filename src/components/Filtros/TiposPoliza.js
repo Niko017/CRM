@@ -34,6 +34,7 @@ function TiposPoliza() {
     <Autocomplete
       multiple
       open={open}
+      noOptionsText={'Sin Opciones'}
       onOpen={()=> setOpen(true)}
       onClose={() => setOpen(false)}
       loading={loading}

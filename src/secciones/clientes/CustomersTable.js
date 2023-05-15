@@ -52,11 +52,12 @@ const CustomersTable = (props) => {
                     }}
                   />
                 </TableCell>
+                <TableCell>Código</TableCell>
                 <TableCell>Nombre</TableCell>
+                <TableCell>Provincia</TableCell>
+                <TableCell>Grupo</TableCell>
+                <TableCell>Actividad</TableCell>
                 <TableCell>Email</TableCell>
-                <TableCell>Localizacion</TableCell>
-                <TableCell>Telefono</TableCell>
-                <TableCell>Creado</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -74,16 +75,17 @@ const CustomersTable = (props) => {
                           }
                         }}/>
                     </TableCell>
+                    <TableCell>{customer.codigo}</TableCell>
                     <TableCell>
-                      <Stack alignItems="center" direction="row" spacing={2}>
-                        <Avatar src={customer.avatar}>{getInitials(customer.name)}</Avatar>
-                        <Typography variant="subtitle2">{customer.name} {customer.surname}</Typography>
+                    <Stack alignItems="center" direction="row">
+                        <Avatar sx={{marginRight:'15px'}}>{getInitials(customer.nombre)}</Avatar>
+                        {customer.nombre}
                       </Stack>
-                    </TableCell>
-                    <TableCell>{customer.email}</TableCell>
-                    <TableCell>{customer.direccion}</TableCell>
-                    <TableCell>{customer.phone}</TableCell>
-                    <TableCell>{customer.fecha}</TableCell>
+                      </TableCell>
+                    <TableCell>{customer.provincia ?? 'Sin Provincia'}</TableCell>
+                    <TableCell>{customer.grupo ?? 'Sin grupo'}</TableCell>
+                    <TableCell>{customer.actividad ?? 'Sin Actividad'}</TableCell>
+                    <TableCell>{customer.email ?? 'Sin Email'}</TableCell>
                   </TableRow>
                 );
               })}

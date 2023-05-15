@@ -38,6 +38,7 @@ function GruposEmp() {
       onClose={() => setOpen(false)}
       loading={loading}
       id="checkboxes-tags-demo"
+      noOptionsText={'Sin Opciones'}
       value={vista}
       onChange={handleChange}
       options={select.grupos}

@@ -27,6 +27,7 @@ function Localidades() {
       onClose={() => setOpen(false)}
       loading={loading}
       id="checkboxes-tags-demo"
+      noOptionsText={'Sin Opciones'}
       value={filtros.localidades}
       onChange={handleChange}
       options={select.localidades}

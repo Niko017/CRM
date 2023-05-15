@@ -29,6 +29,7 @@ function Provincias() {
       onClose={() => setOpen(false)}
       loading={loading}
       id="checkboxes-tags-demo"
+      noOptionsText={'Sin Opciones'}
       value={filtros.provincias}
       onChange={handleChange}
       options={select.provincias}

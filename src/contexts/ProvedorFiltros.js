@@ -3,7 +3,7 @@ import { useState, createContext, useEffect } from "react";
 const filtrosContexto = createContext();
 
 function ProvedorFiltros (props){
-  
+  const [estadoAsegurado,setEstadoAsegurado] = useState(2);
   const filtrosInital = {
     codPostal: [],
     actividades: [],
@@ -12,16 +12,18 @@ function ProvedorFiltros (props){
     mercados: [],
     provincias: [],
     polizas: [],
+    estadoAsegurado,
   }
   const [filtros,setFiltros] = useState(filtrosInital);
-
-  const [estadoAsegurado,setEstadoAsegurado] = useState(2);
 
   const resetFiltros = () => {
     setFiltros(filtrosInital);
   }
+
+  const [bdDatos, setBdDatos] = useState([]);
   
-  const datos = {filtros, setFiltros, estadoAsegurado, setEstadoAsegurado, resetFiltros};
+  
+  const datos = {filtros, setFiltros, estadoAsegurado, setEstadoAsegurado, resetFiltros, setBdDatos, bdDatos};
 
   useEffect(()=>{
     resetFiltros();
