@@ -14,16 +14,20 @@ function ProvedorFiltros (props){
     polizas: [],
     estadoAsegurado,
   }
+
   const [filtros,setFiltros] = useState(filtrosInital);
+  const [bdDatos, setBdDatos] = useState([]);
+  const [selected, setSelected] = useState([]);
 
   const resetFiltros = () => {
     setFiltros(filtrosInital);
   }
+  
+  const datos = {filtros, setFiltros, estadoAsegurado, setEstadoAsegurado, resetFiltros, setBdDatos, bdDatos, selected, setSelected};
 
-  const [bdDatos, setBdDatos] = useState([]);
-  
-  
-  const datos = {filtros, setFiltros, estadoAsegurado, setEstadoAsegurado, resetFiltros, setBdDatos, bdDatos};
+  useEffect(()=>{
+    setSelected([]);
+  },[bdDatos])
 
   useEffect(()=>{
     resetFiltros();

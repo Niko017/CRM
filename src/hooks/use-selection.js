@@ -1,11 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
+import { filtrosContexto } from 'contexts/ProvedorFiltros';
+import { useCallback, useContext, useEffect, useState } from 'react';
 
 export const useSelection = (items = []) => {
-  const [selected, setSelected] = useState([]);
-
-  useEffect(() => {
-    setSelected([]);
-  }, [items]);
+  const {selected , setSelected } = useContext(filtrosContexto);
 
   const handleSelectAll = useCallback(() => {
     setSelected([...items]);

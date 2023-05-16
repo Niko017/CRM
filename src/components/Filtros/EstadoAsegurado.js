@@ -11,12 +11,8 @@ function EstadoAsegurado() {
     const handleChange = event => setEstadoAsegurado(Number(event.target.value));
   return (
     <FormControl sx={{ flexShrink:2}}>
-      <FormLabel id="demo-row-radio-buttons-group-label">Estado</FormLabel>
-      <RadioGroup
-        row
-        aria-labelledby="demo-row-radio-buttons-group-label"
-        name="row-radio-buttons-group"
-      >
+      <FormLabel id="estados-label">Estado</FormLabel>
+      <RadioGroup row aria-labelledby="estados-label">
         <FormControlLabel value={2} control={<Radio checked={ estadoAsegurado === 2 } onChange={handleChange} />} label="Activos" />
         <FormControlLabel value={1} control={<Radio checked={ estadoAsegurado === 1 } onChange={handleChange} />} label="Captacion" />
       </RadioGroup>

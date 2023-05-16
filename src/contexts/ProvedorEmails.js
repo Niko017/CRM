@@ -1,4 +1,4 @@
-import React, { useState, createContext } from "react";
+import { useState, createContext } from "react";
 
 const emailsContexto = createContext();
 
@@ -11,8 +11,6 @@ function ProvedorEmails (props){
 
 
     const datos = {emailsDatos, setEmailsDatos, refTexto, setRefTexto, motivo,setMotivo,empleados, setEmpleados};
-
-
   return(
     <emailsContexto.Provider value={datos}>
        {props.children}

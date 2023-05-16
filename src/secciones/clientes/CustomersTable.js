@@ -1,3 +1,4 @@
+import { useState, useMemo, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import {
   Avatar,
@@ -8,12 +9,12 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
   TablePagination,
   TableRow,
   Typography
 } from '@mui/material';
 import { getInitials } from 'utils/get-initials';
+import CustomerHeaderTable from './CustomerHeaderTable';
 
 const CustomersTable = (props) => {
   const {
@@ -21,59 +22,113 @@ const CustomersTable = (props) => {
     items = [],
     onDeselectAll,
     onDeselectOne,
-    onPageChange = () => {},
+    onPageChange,
     onRowsPerPageChange,
     onSelectAll,
     onSelectOne,
     page = 0,
     rowsPerPage = 0,
-    selected = []
+    selected = [],
+    compacto = false,
   } = props;
 
   const selectedSome = (selected.length > 0) && (selected.length < items.length);
-  const selectedAll = (items.length > 0) && (selected.length === items.length);
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState('');
+
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+  };
+
+  ///////////////ORDENAR POR COLUMUNAS/////////////
+  function descendingComparator(a, b, orderBy) {
+    if (b[orderBy] < a[orderBy]) {
+      return -1;
+    }
+    if (b[orderBy] > a[orderBy]) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  function getComparator(order, orderBy) {
+    return order === 'desc'
+      ? (a, b) => descendingComparator(a, b, orderBy)
+      : (a, b) => -descendingComparator(a, b, orderBy);
+  }
+
+  function stableSort(array, comparator) {
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+      const order = comparator(a[0], b[0]);
+      if (order !== 0) {
+        return order;
+      }
+      return a[1] - b[1];
+    });
+    return stabilizedThis.map((el) => el[0]);
+  }
+
+  const visibleRows = useMemo(
+    () =>
+      stableSort(items, getComparator(order, orderBy)).slice(
+        page * rowsPerPage,
+        page * rowsPerPage + rowsPerPage,
+      ),
+    [items, order, orderBy, page, rowsPerPage],
+  );
+
+  ///////////////FIN ORDENAR POR COLUMUNAS/////////////
+
+  const handleClick = (event, name) => {
+    const validacion  = selected.includes(name);
+    if(!validacion){
+      onSelectOne?.(name);
+    }else{
+      onDeselectOne?.(name);  
+    }
+  };
+
+  const handleCheckChange = (event,selector) =>{
+    if (event.target.checked) {
+      onSelectOne?.(selector);
+    } else {
+      onDeselectOne?.(selector);
+    }
+  }
 
   return (
     <Card>
         <Box sx={{ minWidth: 800 }}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell padding="checkbox">
-                  <Checkbox
-                    checked={selectedAll}
-                    indeterminate={selectedSome}
-                    onChange={(event) => {
-                      if (event.target.checked) {
-                        onSelectAll?.();
-                      } else {
-                        onDeselectAll?.();
-                      }
-                    }}
-                  />
-                </TableCell>
-                <TableCell>Código</TableCell>
-                <TableCell>Nombre</TableCell>
-                <TableCell>Provincia</TableCell>
-                <TableCell>Grupo</TableCell>
-                <TableCell>Actividad</TableCell>
-                <TableCell>Email</TableCell>
-              </TableRow>
-            </TableHead>
+          <Table
+          size={compacto ? 'small' : 'medium'}>
+            <CustomerHeaderTable
+              numSelected={selected.length}
+              total={items.length}
+              order={order}
+              orderBy={orderBy}
+              onSelectAllClick={onSelectAll}
+              onDeselectAll={onDeselectAll}
+              selectedSome={selectedSome}
+              onRequestSort={handleRequestSort}
+            />
             <TableBody>
-              {items.map((customer) => {
-                const isSelected = selected.includes(customer.email)
+              {visibleRows.length!==0 ? 
+              visibleRows.map((customer) => {
+                const isSelected = selected.includes(customer.email);
                 return (
-                  <TableRow hover key={customer.id} selected={isSelected}>
+                  <TableRow
+                  hover
+                  key={customer.codigo}
+                  selected={isSelected} 
+                  onClick={(event)=> { handleClick(event, customer.email) }}
+                  sx={{ cursor:'pointer' }}
+                  >
                     <TableCell padding="checkbox">
                       <Checkbox checked={isSelected}
-                        onChange={(event) => {
-                          if (event.target.checked) {
-                            onSelectOne?.(customer.email);
-                          } else {
-                            onDeselectOne?.(customer.email);
-                          }
-                        }}/>
+                        onChange={event => handleCheckChange(event,customer.email)}/>
                     </TableCell>
                     <TableCell>{customer.codigo}</TableCell>
                     <TableCell>
@@ -88,18 +143,21 @@ const CustomersTable = (props) => {
                     <TableCell>{customer.email ?? 'Sin Email'}</TableCell>
                   </TableRow>
                 );
-              })}
+              }):
+              <TableRow><TableCell colSpan={7} style={{textAlign:'center'}}>Sin Resultados</TableCell></TableRow>}
             </TableBody>
           </Table>
         </Box>
       <TablePagination
         component="div"
         count={count}
-        onPageChange={onPageChange}
-        onRowsPerPageChange={onRowsPerPageChange}
         page={page}
+        onPageChange={onPageChange}
         rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={[5, 10, 25, count]}
+        onRowsPerPageChange={onRowsPerPageChange}
+        rowsPerPageOptions={[ 10, 25, 50, 100, count]}
+        labelDisplayedRows={({ from, to, count }) => `Mostrando ${from}-${to} de ${count} filas`}
+        labelRowsPerPage="Filas por página"
       />
     </Card>
   );

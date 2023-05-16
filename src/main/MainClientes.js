@@ -1,10 +1,11 @@
 import { useCallback, useMemo, useState, Fragment, useContext, useEffect } from 'react';
-import { Box, Button, Container, Stack, SvgIcon, ToggleButton, Typography, Card  } from '@mui/material';
+import { Box, Button, Container, Stack, SvgIcon, ToggleButton, Typography, Card, Switch, FormControlLabel  } from '@mui/material';
 import CustomersSearch from 'secciones/clientes/CustomersSearch';
 import EstadoAsegurado from 'components/Filtros/EstadoAsegurado';
 import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
 import CustomersTable from 'secciones/clientes/CustomersTable';
 import KeyboardTabIcon from '@mui/icons-material/KeyboardTab';
+import { filtrosContexto } from 'contexts/ProvedorFiltros';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { emailsContexto } from 'contexts/ProvedorEmails';
 import { applyPagination } from 'utils/apply-pagination';
@@ -21,7 +22,6 @@ import Snackbar from '@mui/material/Snackbar';
 import Alerta from 'components/Alerta.js';
 import datos from 'data/datos.json';
 import '../App.css';
-import { filtrosContexto } from 'contexts/ProvedorFiltros';
 
 
 const MainClientes = () => {
@@ -38,7 +38,7 @@ const MainClientes = () => {
   );
 };
 
-const useCustomerEmails = (customers) => {
+const useUsuariosEmails = (customers) => {
   return useMemo(
     () => {
       return customers.map((customer) => customer.email);
@@ -47,15 +47,11 @@ const useCustomerEmails = (customers) => {
   );
 };
 
-useEffect(()=>{
-
-},[empleados])
-
   //Variables para el control de los clientes.
+  const [denso, setDenso] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const customers = useCustomers(page, rowsPerPage);
-  const customersEmails = useCustomerEmails(customers);
+  const customersEmails = useUsuariosEmails(empleados);
   const customersSelection = useSelection(customersEmails);
   const [alertOpen,setAlertOpen] = useState(false);
   const [mensaje,setMensaje] = useState("");
@@ -72,7 +68,9 @@ useEffect(()=>{
 
   const handleRowsPerPageChange = useCallback(
     (event) => {
-      setRowsPerPage(event.target.value);
+      console.log(event)
+      setRowsPerPage(Number(event.target.value));
+      setPage(0);
     },
     []
   );
@@ -116,6 +114,7 @@ useEffect(()=>{
             <Stack direction="row"justifyContent="space-between" spacing={4}>
                 <Typography variant="h4">Email Masivo</Typography>
                 <div style={{display: 'flex', gap:10}}>
+                  <FormControlLabel control={<Switch checked={denso} onChange={(event)=>{setDenso(event.target.checked)}} />} label='Compacto' />
                 { activo && <Button variant='contained' onClick={resetFiltros}>Limpiar Filtros</Button> }
                 <ToggleButton 
                 value='filters'
@@ -150,8 +149,8 @@ useEffect(()=>{
             </Card> }
             <CustomersSearch activo={activo} />
             <CustomersTable
-              count={datos.length}
-              items={customers}
+              count={empleados.length}
+              items={empleados}
               onDeselectAll={customersSelection.handleDeselectAll}
               onDeselectOne={customersSelection.handleDeselectOne}
               onPageChange={handlePageChange}
@@ -161,6 +160,7 @@ useEffect(()=>{
               page={page}
               rowsPerPage={rowsPerPage}
               selected={customersSelection.selected}
+              compacto={denso}
             />
           </Stack>
         </Container>

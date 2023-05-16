@@ -7,7 +7,7 @@ export function useSearchCustomers({ search }){
 
     const { setEmpleados } = useContext(emailsContexto);
     const { bdDatos } = useContext(filtrosContexto);
-    /**
+  /**
    * Busca en todos los valores de cada objeto y devuelve las coincidencias.
    */
   const buscarDatos = (search)=>{
@@ -21,6 +21,5 @@ export function useSearchCustomers({ search }){
 
   useEffect(()=>{
     setEmpleados(buscarDatos(''));
-  },[bdDatos])
-  return {  }
+  },[bdDatos]);
 }
