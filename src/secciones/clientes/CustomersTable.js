@@ -29,7 +29,6 @@ const CustomersTable = (props) => {
     page = 0,
     rowsPerPage = 0,
     selected = [],
-    compacto = false,
   } = props;
 
   const selectedSome = (selected.length > 0) && (selected.length < items.length);
@@ -103,7 +102,7 @@ const CustomersTable = (props) => {
     <Card>
         <Box sx={{ minWidth: 800 }}>
           <Table
-          size={compacto ? 'small' : 'medium'}>
+          size={'small'}>
             <CustomerHeaderTable
               numSelected={selected.length}
               total={items.length}
