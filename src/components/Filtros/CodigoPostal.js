@@ -21,6 +21,7 @@ function CodPostal() {
   }
   return (
     <Autocomplete
+      size='small'
       multiple
       open={open}
       onOpen={()=> setOpen(true)}
@@ -47,7 +48,7 @@ function CodPostal() {
       style={{flexGrow: 1 , maxWidth: '220px'}}
       renderInput={(params) => (
         <TextField {...params}
-        label="Codigo Postal"
+        label="Código Postal"
         InputProps={{
           ...params.InputProps,
           endAdornment: (

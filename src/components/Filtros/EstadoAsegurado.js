@@ -14,7 +14,7 @@ function EstadoAsegurado() {
       <FormLabel id="estados-label">Estado</FormLabel>
       <RadioGroup row aria-labelledby="estados-label">
         <FormControlLabel value={2} control={<Radio checked={ estadoAsegurado === 2 } onChange={handleChange} />} label="Activos" />
-        <FormControlLabel value={1} control={<Radio checked={ estadoAsegurado === 1 } onChange={handleChange} />} label="Captacion" />
+        <FormControlLabel value={1} control={<Radio checked={ estadoAsegurado === 1 } onChange={handleChange} />} label="Captación" />
       </RadioGroup>
     </FormControl>
   );

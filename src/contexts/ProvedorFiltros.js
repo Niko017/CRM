@@ -18,12 +18,39 @@ function ProvedorFiltros (props){
   const [filtros,setFiltros] = useState(filtrosInital);
   const [bdDatos, setBdDatos] = useState([]);
   const [selected, setSelected] = useState([]);
+  const [captacion, setCaptacion] = useState({
+    prioridad: false,
+    agentes: [],
+    prospeccion:false,
+    volumen:false,
+    selector: "",
+    rango: {
+      desde: 0,
+      hasta: 0,
+    },
+    fecha: {
+      desde: '',
+      hasta: '',
+    },
+  });
 
   const resetFiltros = () => {
     setFiltros(filtrosInital);
   }
   
-  const datos = {filtros, setFiltros, estadoAsegurado, setEstadoAsegurado, resetFiltros, setBdDatos, bdDatos, selected, setSelected};
+  const datos = {
+    filtros,
+    setFiltros,
+    estadoAsegurado,
+    setEstadoAsegurado,
+    resetFiltros,
+    setBdDatos,
+    bdDatos,
+    selected,
+    setSelected,
+    captacion,
+    setCaptacion,
+  };
 
   useEffect(()=>{
     setSelected([]);

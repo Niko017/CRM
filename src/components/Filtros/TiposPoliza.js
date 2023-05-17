@@ -32,6 +32,7 @@ function TiposPoliza() {
 
   return (
     <Autocomplete
+      size='small'
       multiple
       open={open}
       noOptionsText={'Sin Opciones'}
@@ -58,7 +59,7 @@ function TiposPoliza() {
       style={{ flexGrow: 1, maxWidth: '220px' }}
       renderInput={(params) => (
         <TextField {...params}
-        label="Tipos de Poliza"
+        label="Tipos de Póliza"
         InputProps={{
           ...params.InputProps,
           endAdornment: (

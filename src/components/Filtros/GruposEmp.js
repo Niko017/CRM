@@ -33,6 +33,7 @@ function GruposEmp() {
   return (
     <Autocomplete
       multiple
+      size='small'
       open={open}
       onOpen={()=> setOpen(true)}
       onClose={() => setOpen(false)}

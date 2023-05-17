@@ -10,6 +10,7 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import Localidades from 'components/Filtros/Localidades';
 import Actividades from 'components/Filtros/Actividades';
 import TiposPoliza from 'components/Filtros/TiposPoliza';
+import { emailsContexto } from 'contexts/ProvedorEmails';
 import CodPostal from 'components/Filtros/CodigoPostal';
 import Provincias from 'components/Filtros/Provincias';
 import GruposEmp from 'components/Filtros/GruposEmp';
@@ -20,7 +21,8 @@ import { useBuscar } from 'hooks/useBuscar';
 import Alerta from 'components/Alerta.js';
 import { useTabla } from 'hooks/useTabla';
 import '../App.css';
-import { emailsContexto } from 'contexts/ProvedorEmails';
+import Prioridad from 'components/filtrosCaptacion/Prioridad';
+import FechaProspeccion from 'components/filtrosCaptacion/FechaProspeccion';
 
 
 const MainClientes = () => {
@@ -64,25 +66,31 @@ const MainClientes = () => {
         <Container maxWidth="xl">
           <Stack spacing={3}>
             <Stack direction="row"justifyContent="space-between" spacing={4}>
-                <Typography variant="h4">Email Masivo</Typography>
                 <div style={{display: 'flex', gap:10}}>
-                { activo && <Button variant='contained' onClick={resetFiltros}>Limpiar Filtros</Button> }
                 <ToggleButton 
+                sx={{height:30}}
                 value='filters'
                 color='primary'
+                size='small'
                 selected={activo} 
                 onChange={() => setActivo(prev => !prev)}
                 >Filtros{activo ? <FilterAltOffIcon/> : <FilterAltIcon/>}</ToggleButton>
+                { activo && <> <Button sx={{height:30}} variant='contained' size='small' onClick={resetFiltros}>Limpiar Filtros</Button>
+                <Button sx={{height:30}} variant='contained' onClick={handleSearch}>Buscar</Button></> }
                 <Button
+                sx={{height:30, marginLeft:3}}
                   endIcon={(
                     <SvgIcon fontSize="small">
                      <KeyboardTabIcon/>
                     </SvgIcon>
                   )}
                   variant="contained"
+                  size="small"
                   onClick={seleccionEmails}
                   >Siguiente</Button>
+
                   </div>
+                  <Typography variant="h4">Email Masivo</Typography>
             </Stack>
             { activo && <Card sx={{ p:1, padding:'20px' }}>
                 <div className='filtros'>
@@ -97,10 +105,13 @@ const MainClientes = () => {
                   <Mercados />
                   <TiposPoliza />
                 </div>
-                <div style={{display:'flex',justifyContent:'flex-end'}}>
-                <Button variant='contained' onClick={handleSearch}>Buscar</Button>
-                </div>
             </Card> }
+            <Card sx={{p:1, padding:'20px'}}>
+              <div className='filtros'>
+                <Prioridad />
+                <FechaProspeccion />
+              </div>
+            </Card>
             <CustomersSearch />
             <CustomersTable
               count={count}

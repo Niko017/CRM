@@ -28,10 +28,12 @@ function Actividades() {
     if(filtros.actividades.length === 0){
       setVista([]);
     }
-  },[filtros.actividades])
+  },[filtros.actividades]);
+
 
   return (
     <Autocomplete
+      size='small'
       multiple
       open={open}
       onOpen={()=> setOpen(true)}
@@ -43,7 +45,6 @@ function Actividades() {
       onChange={handleChange}
       options={select.actividades}
       disableCloseOnSelect
-      renderGroup={option => console.log(option)}
       getOptionLabel={(option) => option.Descripcion }
       renderOption={(props, option, { selected }) => (
         <li  {...props}>

@@ -17,6 +17,7 @@ function ProvedorSelect (props){
     mercados: [],
     provincias: [],
     polizas: [],
+    agentes: [],
   }
     const [select,setSelect] = useState(selectInitial);
     
@@ -27,6 +28,7 @@ function ProvedorSelect (props){
     const mercados = "/mercados";
     const polizas = "/polizas";
     const grupos = "/grupos";
+    const agentes = "/agentes";
 
     const cargar = async()=>{
       let urlsObjeto = {
@@ -37,6 +39,7 @@ function ProvedorSelect (props){
         mercados: `${BASE_URL}${mercados}`,
         provincias: `${BASE_URL}${provincias}`,
         polizas: `${BASE_URL}${polizas}`,
+        agentes: `${BASE_URL}${agentes}`
       }
       let nuevoObjetoPromesas = Object.keys(urlsObjeto).map(async(objeto) => await axios.post( urlsObjeto[objeto],{ estadoAsegurado }));
       let claves = Object.keys(urlsObjeto).map(objeto => objeto);

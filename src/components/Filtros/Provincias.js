@@ -23,6 +23,7 @@ function Provincias() {
 
   return (
     <Autocomplete
+      size='small'
       multiple
       open={open}
       onOpen={()=> setOpen(true)}

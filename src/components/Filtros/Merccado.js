@@ -32,6 +32,7 @@ function Mercados() {
 
   return (
     <Autocomplete
+      size='small'
       multiple
       open={open}
       onOpen={()=> setOpen(true)}
