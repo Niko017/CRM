@@ -36,9 +36,7 @@ export function useBuscar(){
         if(datos.rango.desde=== "" && datos.rango.hasta=== ""){
           datos = {...datos,rango:{desde:0,hasta:0}}
         }
-        
         let respuesta = await axios.post(`${BASE_URL}/filtrar`,datos);
-        console.log(respuesta.data);  
         setBdDatos(respuesta.data);
         resetFiltros();
       }catch(error){

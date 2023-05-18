@@ -1,4 +1,5 @@
 import { useState, createContext, useEffect } from "react";
+import dayjs from 'dayjs';
 
 const filtrosContexto = createContext();
 
@@ -44,7 +45,7 @@ function ProvedorFiltros (props){
       setCaptacion(prev => ({...prev, selector:"", rango: {desde: 0, hasta: 0}}))
     }
     if(!captacion.prospeccion){
-      setCaptacion(prev => ({...prev, fecha: {desde:'', hasta:''}}));
+      setCaptacion(prev => ({...prev, fecha: {desde: dayjs().format('DD/MM/YYYY'), hasta:dayjs().format('DD/MM/YYYY')}}));
     }
   }
 
