@@ -3,7 +3,6 @@ import { useLocation } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import CreateTheme from 'theme/index';
 import { ThemeProvider } from '@mui/material/styles';
-//import { withAuthGuard } from 'hooks/with-auth-guard';
 import SideNav from './side-nav';
 import TopNav from './top-nav';
 
@@ -26,7 +25,7 @@ const LayoutContainer = styled('div')({
   width: '100%'
 });
 
-const Layout = /*withAuthGuard*/((props) => {
+const Layout = ((props) => {
   const { children } = props;
   const pathname = useLocation();
   const [openNav, setOpenNav] = useState(false);
@@ -44,7 +43,6 @@ const Layout = /*withAuthGuard*/((props) => {
     () => {
       handlePathnameChange();
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [pathname]
   );
 

@@ -2,9 +2,7 @@ import { useCallback, useMemo, useState, useContext } from 'react';
 import { emailsContexto } from 'contexts/ProvedorEmails';
 import { useSelection } from 'hooks/use-selection';
 
-
 export function useTabla(){
-
 
   const useUsuariosEmails = (customers) => {
     return useMemo(
@@ -25,7 +23,7 @@ export function useTabla(){
       },
       []
     );
-    const { empleados } = useContext(emailsContexto); //De aqui solo empleados.
+    const { empleados } = useContext(emailsContexto);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const customersEmails = useUsuariosEmails(empleados);

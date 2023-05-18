@@ -1,5 +1,4 @@
 import { Link, useLocation } from 'react-router-dom'
-import ArrowTopRightOnSquareIcon from '@heroicons/react/24/solid/ArrowTopRightOnSquareIcon';
 import Cog8ToothIcon from '@heroicons/react/24/solid/Cog8ToothIcon';
 import 'simplebar-react/dist/simplebar.min.css';
 import PropTypes from 'prop-types';

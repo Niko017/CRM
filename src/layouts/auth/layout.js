@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Box, Typography, Unstable_Grid2 as Grid } from '@mui/material';
-//import { Logo } from 'src/components/logo';
+import LogoCreditoYCaucion from 'components/LogoCreditoYCaucion';
 
-// TODO: Change subtitle text
 
 function Layout (props){
   const { children } = props;
@@ -48,7 +47,7 @@ function Layout (props){
                 width: 32
               }}
             >
-             {/*  <Logo /> */}
+              <LogoCreditoYCaucion />
             </Box>
           </Box>
           {children}

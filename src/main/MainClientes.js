@@ -25,6 +25,7 @@ import Prioridad from 'components/filtrosCaptacion/Prioridad';
 import FechaProspeccion from 'components/filtrosCaptacion/FechaProspeccion';
 import { useAlert } from 'hooks/useAlert';
 import Volumen from 'components/filtrosCaptacion/Volumen';
+import LogoCreditoYCaucion from 'components/LogoCreditoYCaucion';
 
 
 const MainClientes = () => {
@@ -108,6 +109,7 @@ const MainClientes = () => {
               </div>
             </Card>
             }
+            <LogoCreditoYCaucion />
             <CustomersSearch />
             <CustomersTable
               count={count}

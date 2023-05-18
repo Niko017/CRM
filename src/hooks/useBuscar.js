@@ -13,19 +13,6 @@ export function useBuscar(){
     const handleChange = event =>{
       setSearch(event.target.value);
     }
-    
-    const { mensajeError, mensajeConfirmacion } = useAlert();
-    const validarDatosCaptacion = () => {
-      if(captacion.prioridad && captacion.agentes.length === 0){
-        mensajeError("Debes seleccionar al menos un agente");
-        return false;
-      }
-      if(captacion.prospeccion && captacion.fecha.desde === "" && captacion.fecha.hasta === ""){
-        mensajeError("Debes seleccionar dos fechas");
-        return false;
-      }
-      return true;
-    }
   
     const handleSearch = async() => {
       let filtrosBuenos = {...filtros}
