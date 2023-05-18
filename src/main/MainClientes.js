@@ -1,4 +1,4 @@
-import {  useState, Fragment, useContext } from 'react';
+import {  useState, Fragment, useContext, useEffect } from 'react';
 import { Box, Button, Container, Stack, SvgIcon, ToggleButton, Typography, Card } from '@mui/material';
 import CustomersSearch from 'secciones/clientes/CustomersSearch';
 import EstadoAsegurado from 'components/Filtros/EstadoAsegurado';
@@ -23,6 +23,8 @@ import { useTabla } from 'hooks/useTabla';
 import '../App.css';
 import Prioridad from 'components/filtrosCaptacion/Prioridad';
 import FechaProspeccion from 'components/filtrosCaptacion/FechaProspeccion';
+import { useAlert } from 'hooks/useAlert';
+import Volumen from 'components/filtrosCaptacion/Volumen';
 
 
 const MainClientes = () => {
@@ -31,24 +33,13 @@ const MainClientes = () => {
   
   
   //Variables para el control de los clientes.
-  const { resetFiltros } = useContext(filtrosContexto);
+  const { filtros, resetFiltros } = useContext(filtrosContexto);
   const { setEmailsDatos } = useContext(emailsContexto);
-  const [alertOpen,setAlertOpen] = useState(false);
-  const [mensaje,setMensaje] = useState("");
   const [activo, setActivo] = useState(false);
   const { handleSearch } = useBuscar();
   const navigate = useNavigate();
   const { count, items, page, rowsPerPage, handlePageChange, handleRowsPerPageChange,  handleDeselectAll, handleDeselectOne, handleSelectAll, handleSelectOne, selected } = useTabla();
-
-  const handleErrorClose = (event, reason) => {
-    if (reason === 'clickaway') return;
-    setAlertOpen(false);
-  }
-
-  const mensajeAdvertencia = (mensaje) => {
-    setMensaje(mensaje);
-    setAlertOpen(true);
-  }
+  const { alert, handleErrorClose, mensajeAdvertencia } = useAlert();
 
   const seleccionEmails = () => {
     if(selected.length!==0){
@@ -56,9 +47,10 @@ const MainClientes = () => {
       setEmailsDatos(emailsSeleccionados);
       navigate("/editor");
     }else{
-      mensajeAdvertencia("Selecciona al menos un correo!")
+      mensajeAdvertencia("Selecciona al menos un correo!");
     }
   }
+
 
   return (
     <Fragment>
@@ -106,12 +98,16 @@ const MainClientes = () => {
                   <TiposPoliza />
                 </div>
             </Card> }
-            <Card sx={{p:1, padding:'20px'}}>
+            {
+              filtros.estadoAsegurado === 1 && activo &&
+              <Card sx={{p:1, padding:'20px'}}>
               <div className='filtros'>
                 <Prioridad />
                 <FechaProspeccion />
+                <Volumen />
               </div>
             </Card>
+            }
             <CustomersSearch />
             <CustomersTable
               count={count}
@@ -129,9 +125,9 @@ const MainClientes = () => {
           </Stack>
         </Container>
       </Box>
-      <Snackbar open={alertOpen} autoHideDuration={2000} onClose={handleErrorClose} anchorOrigin={{ vertical:'bottom', horizontal: 'center', }}>
-            <Alerta onClose={handleErrorClose} severity="warning" sx={{ width: '100%' }}>
-                {mensaje}
+      <Snackbar open={alert.open} autoHideDuration={2000} onClose={handleErrorClose} anchorOrigin={{ vertical:'bottom', horizontal: 'center', }}>
+            <Alerta onClose={handleErrorClose} severity={alert.type} sx={{ width: '100%' }}>
+                {alert.message}
             </Alerta>
         </Snackbar>
     </Fragment>
