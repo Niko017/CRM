@@ -59,6 +59,7 @@ function TiposPoliza() {
       style={{ flexGrow: 1, maxWidth: '220px' }}
       renderInput={(params) => (
         <TextField {...params}
+        color='error'
         label="Tipos de Póliza"
         InputProps={{
           ...params.InputProps,

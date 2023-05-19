@@ -51,12 +51,13 @@ function Provincias() {
       style={{ flexGrow: 1, maxWidth: '220px' }}
       renderInput={(params) => (
         <TextField {...params}
+        color='error'
         label="Provincias"
         InputProps={{
           ...params.InputProps,
           endAdornment: (
             <>
-            {loading ? <CircularProgress color="primary" size={20} /> : null}
+            {loading ? <CircularProgress color="error" size={20} /> : null}
             {params.InputProps.endAdornment}
             </>
           ),

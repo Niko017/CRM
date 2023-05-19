@@ -30,12 +30,13 @@ function Volumen(){
     <React.Fragment>
     <FormControl sx={{ flexShrink:2}}>
         <FormGroup aria-labelledby="estados-label">
-            <FormControlLabel control={<Checkbox checked={captacion.volumen} onChange={handleVolumen}  />} label="Volumen"/>
+            <FormControlLabel control={<Checkbox color='error' checked={captacion.volumen} onChange={handleVolumen}  />} label="Volumen"/>
             {
                 captacion.volumen && 
                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                <InputLabel id="select-volumen">Volumen</InputLabel>
+                <InputLabel color='error' id="select-volumen">Volumen</InputLabel>
                 <Select
+                color='error'
                 labelId="select-volumen"
                 value={captacion.selector}
                 label="Volumen"
@@ -55,6 +56,7 @@ function Volumen(){
                 captacion.selector === "entre" &&
                 <FormControl sx={{ m: 1, minWidth: 120, display:'flex', flexDirection:'row' }} size="small">
                 <TextField
+                    color='error'
                     value={captacion.rango.desde}
                     sx={{ m: 1, minWidth: 120 }}
                     size="small"
@@ -63,6 +65,7 @@ function Volumen(){
                     onChange={handleDesde}
                 />
                 <TextField
+                    color='error'
                     value={captacion.rango.hasta}
                     sx={{ m: 1, minWidth: 120 }}
                     size="small"
@@ -76,6 +79,7 @@ function Volumen(){
                 opciones.includes(captacion.selector) &&
                 <FormControl sx={{ m: 1, minWidth: 120, display:'flex', flexDirection:'row' }} size="small">
                     <TextField
+                    color='error'
                     value={captacion.rango.desde}
                     sx={{ m: 1, minWidth: 120 }}
                     size="small"
@@ -85,8 +89,6 @@ function Volumen(){
                 />
                 </FormControl>
             }
-
-
         </FormGroup>
     </FormControl>
     </React.Fragment>

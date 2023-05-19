@@ -127,6 +127,7 @@ const CustomersTable = (props) => {
                   >
                     <TableCell padding="checkbox">
                       <Checkbox checked={isSelected}
+                      color='error'
                         onChange={event => handleCheckChange(event,customer.email)}/>
                     </TableCell>
                     <TableCell>{customer.codigo}</TableCell>

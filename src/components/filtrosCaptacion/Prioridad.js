@@ -46,7 +46,7 @@ function Prioridad(){
     <FormControl sx={{ flexShrink:2}}>
     <FormGroup aria-labelledby="estados-label">
        
-      <FormControlLabel value={2} control={<Checkbox checked={captacion.prioridad} onChange={handleCaptacion}  />} label="Prioridad Alta"/>
+      <FormControlLabel value={2} control={<Checkbox color='error' checked={captacion.prioridad} onChange={handleCaptacion}  />} label="Prioridad Alta"/>
       {captacion.prioridad && 
       <Autocomplete
         size='small'
@@ -76,6 +76,7 @@ function Prioridad(){
         style={{ flexGrow: 1, maxWidth: '220px', minWidth: '220px'}}
         renderInput={(params) => (
           <TextField {...params}
+          color='error'
           label="Agentes"
           InputProps={{
             ...params.InputProps,

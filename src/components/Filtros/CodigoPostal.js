@@ -48,6 +48,7 @@ function CodPostal() {
       style={{flexGrow: 1 , maxWidth: '220px'}}
       renderInput={(params) => (
         <TextField {...params}
+        color='error'
         label="Código Postal"
         InputProps={{
           ...params.InputProps,

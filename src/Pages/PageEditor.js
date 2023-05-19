@@ -9,7 +9,7 @@ function PageEditor(){
     <React.Fragment>
       <DashboardLayout>
         <CssBaseline>
-        <MainEditor/>
+          <MainEditor/>
         </CssBaseline>
       </DashboardLayout> 
   </React.Fragment>

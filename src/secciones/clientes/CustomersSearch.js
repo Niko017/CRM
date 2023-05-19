@@ -13,7 +13,8 @@ function CustomersSearch(){
       fullWidth
       value={search}
       onChange={handleChange}
-      placeholder="Paula Rodrigu..., 6452..., pepe@gmail..."
+      placeholder="reformas pep..., murci..., pepe@gmail..."
+      color='error'
       startAdornment={(
         <InputAdornment position="start">
           <SvgIcon color="action" fontSize="small">

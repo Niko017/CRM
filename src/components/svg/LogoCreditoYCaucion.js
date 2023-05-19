@@ -1,9 +1,9 @@
-function Logo (props) { 
+function LogoCreditoYCaucion (props) { 
 return(
     <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="113.387"
-    height="18.987"
+    width="600"
+    height="110"
     version="1.1"
     viewBox="0 0 113.387 18.987"
     xmlSpace="preserve"
@@ -114,4 +114,4 @@ return(
       </g>
     </g>
   </svg>
-)} export default Logo;
+)} export default LogoCreditoYCaucion;

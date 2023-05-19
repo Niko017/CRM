@@ -40,16 +40,16 @@ function FechaProspeccion(){
     <FormControl sx={{ flexShrink:2}}>
     <FormGroup aria-labelledby="estados-label">
        
-      <FormControlLabel control={<Checkbox checked={captacion.prospeccion} onChange={handleCaptacion}  />} label="Fecha de Prospección"/>
+      <FormControlLabel control={<Checkbox color='error' checked={captacion.prospeccion} onChange={handleCaptacion}  />} label="Fecha de Prospección"/>
       {captacion.prospeccion && 
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DemoContainer components={['DatePicker']} sx={{display:'flex',flexDirection:'row'}}>
-        <div style={{flexGrow:1}}>
+      <DemoContainer components={['DatePicker']}>
+        <div style={{maxWidth:170}}>
           <DemoItem label="Desde">
             <DatePicker ref={estilado1} views={['year', 'month', 'day']} label={'dia, mes, año'} onChange={handleDateDesde} format="DD/MM/YYYY" defaultValue={dayjs()}/>
           </DemoItem>
         </div>
-        <div style={{flexGrow:1}}>
+        <div style={{maxWidth:170}}>
           <DemoItem label="Hasta">
             <DatePicker views={['year', 'month', 'day']} label={'dia, mes, año'} onChange={handleDateHasta} format="DD/MM/YYYY" defaultValue={dayjs()}/>
           </DemoItem>

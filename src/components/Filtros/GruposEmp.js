@@ -60,6 +60,7 @@ function GruposEmp() {
       style={{ flexGrow: 1, maxWidth: '220px' }}
       renderInput={(params) => (
         <TextField {...params}
+        color='error'
         label="Grupos Empresariales"
         InputProps={{
           ...params.InputProps,

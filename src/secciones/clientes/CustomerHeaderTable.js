@@ -58,7 +58,7 @@ function CustomerHeaderTable(props) {
         <TableRow>
           <TableCell padding="checkbox">
             <Checkbox
-              color="primary"
+              color="error"
               checked={numSelected === total}
               indeterminate={numSelected > 0 && numSelected-1 < total}
               onChange={(event) => {

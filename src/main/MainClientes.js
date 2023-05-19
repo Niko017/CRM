@@ -25,7 +25,6 @@ import Prioridad from 'components/filtrosCaptacion/Prioridad';
 import FechaProspeccion from 'components/filtrosCaptacion/FechaProspeccion';
 import { useAlert } from 'hooks/useAlert';
 import Volumen from 'components/filtrosCaptacion/Volumen';
-import LogoCreditoYCaucion from 'components/LogoCreditoYCaucion';
 
 
 const MainClientes = () => {
@@ -63,13 +62,13 @@ const MainClientes = () => {
                 <ToggleButton 
                 sx={{height:30}}
                 value='filters'
-                color='primary'
+                color='error'
                 size='small'
                 selected={activo} 
                 onChange={() => setActivo(prev => !prev)}
-                >Filtros{activo ? <FilterAltOffIcon/> : <FilterAltIcon/>}</ToggleButton>
-                { activo && <> <Button sx={{height:30}} variant='contained' size='small' onClick={resetFiltros}>Limpiar Filtros</Button>
-                <Button sx={{height:30}} variant='contained' onClick={handleSearch}>Buscar</Button></> }
+                >Filtros{activo ? <FilterAltOffIcon /> : <FilterAltIcon />}</ToggleButton>
+                { activo && <> <Button sx={{height:30}} color='error' variant='contained' size='small' onClick={resetFiltros}>Limpiar Filtros</Button>
+                <Button sx={{height:30}} color='error' variant='contained' onClick={handleSearch}>Buscar</Button></> }
                 <Button
                 sx={{height:30, marginLeft:3}}
                   endIcon={(
@@ -77,13 +76,14 @@ const MainClientes = () => {
                      <KeyboardTabIcon/>
                     </SvgIcon>
                   )}
+                  color='error'
                   variant="contained"
                   size="small"
                   onClick={seleccionEmails}
                   >Siguiente</Button>
 
                   </div>
-                  <Typography variant="h4">Email Masivo</Typography>
+                  <Typography color='#868889' variant="h4">Email Masivo</Typography>
             </Stack>
             { activo && <Card sx={{ p:1, padding:'20px' }}>
                 <div className='filtros'>
@@ -109,7 +109,6 @@ const MainClientes = () => {
               </div>
             </Card>
             }
-            <LogoCreditoYCaucion />
             <CustomersSearch />
             <CustomersTable
               count={count}

@@ -60,6 +60,7 @@ function Mercados() {
       style={{ flexGrow: 1, maxWidth: '220px' }}
       renderInput={(params) => (
         <TextField {...params}
+        color='error'
         label="Mercados"
         InputProps={{
           ...params.InputProps,

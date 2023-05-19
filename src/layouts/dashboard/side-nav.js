@@ -17,6 +17,8 @@ import {
 import { Scrollbar } from 'components/scrollbar';
 import { items } from './config';
 import { SideNavItem } from './side-nav-item';
+import LogoCreditoYCaucion from 'components/svg/LogoCreditoYCaucion';
+import LogoFrancesYGarcia from 'components/svg/LogoFrancesYGarcia';
 
 function SideNav(props){
   const { open, onClose } = props;
@@ -46,46 +48,15 @@ function SideNav(props){
         <Box sx={{ p: 3 }}>
           <Box
             component={Link}
-            href="/"
+            to="/"
             sx={{
               display: 'inline-flex',
-              height: 32,
-              width: 32
+              height: 60,
+              width: 400
             }}
-          >
-            {/* <Logo /> */}
-          </Box>
-          <Box
-            sx={{
-              alignItems: 'center',
-              backgroundColor: 'rgba(255, 255, 255, 0.04)',
-              borderRadius: 1,
-              display: 'flex',
-              justifyContent: 'space-between',
-              mt: 2,
-              p: '12px'
-            }}
-          >
-            <div>
-              <Typography
-                color="inherit"
-                variant="subtitle1"
-              >
-                Devias
-              </Typography>
-              <Typography
-                color="neutral.400"
-                variant="body2"
-              >
-                Panel de Control
-              </Typography>
-            </div>
-            <SvgIcon
-              fontSize="small"
-              sx={{ color: 'neutral.500' }}
-            >
-              <Cog8ToothIcon />
-            </SvgIcon>
+          > 
+         <LogoFrancesYGarcia />
+
           </Box>
         </Box>
         <Divider sx={{ borderColor: 'neutral.700' }} />
@@ -134,7 +105,7 @@ function SideNav(props){
         open
         PaperProps={{
           sx: {
-            backgroundColor: 'neutral.800',
+            backgroundColor: '#868889',
             color: 'common.white',
             width: 280
           }
@@ -153,7 +124,7 @@ function SideNav(props){
       open={open}
       PaperProps={{
         sx: {
-          backgroundColor: 'neutral.800',
+          backgroundColor: '#868889',
           color: 'common.white',
           width: 280
         }
