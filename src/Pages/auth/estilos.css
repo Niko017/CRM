@@ -1,12 +1,6 @@
-*,
-*:before,
-*:after{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
+
 .general{
-    background-color: #080710;
+    background-color: #252527;
 	width: 100vw;
 	height: 100vh;
 }
@@ -18,31 +12,23 @@
     left: 50%;
     top: 50%;
 }
-.background .shape{
+
+.shape{
     height: 200px;
-    width: 200px;
     position: absolute;
-    border-radius: 50%;
 }
-.shape:first-child{
-    background: linear-gradient(
-        #1845ad,
-        #23a2f6
-    );
-    left: -80px;
-    top: -80px;
+.logo-arriba{
+    height: 500px;
+    left: -220px;
+    top: -250px;
 }
-.shape:last-child{
-    background: linear-gradient(
-        to right,
-        #ff512f,
-        #f09819
-    );
-    right: -30px;
-    bottom: -80px;
+.logo-abajo{
+    width: 200px;
+    right: -10px;
+    bottom: 75px;
 }
-form{
-    height: 520px;
+.formLogin{
+    height: 440px;
     width: 400px;
     background-color: rgba(255,255,255,0.13);
     position: absolute;
@@ -55,41 +41,49 @@ form{
     box-shadow: 0 0 40px rgba(8,7,16,0.6);
     padding: 50px 35px;
 }
-form *{
+.formLogin *{
     font-family: 'Poppins',sans-serif;
     color: #ffffff;
     letter-spacing: 0.5px;
     outline: none;
     border: none;
 }
-form h3{
+.formLogin h3{
     font-size: 32px;
     font-weight: 500;
     line-height: 42px;
     text-align: center;
 }
+.logo{
+    position: absolute;
+    top: 8px;
+    left: 134px;
+    width: 200px;
+    z-index: 20;
+}
 
-label{
+.labelLogin{
     display: block;
     margin-top: 30px;
     font-size: 16px;
     font-weight: 500;
 }
-input{
+.inputForm{
     display: block;
     height: 50px;
     width: 100%;
     background-color: rgba(255,255,255,0.07);
-    border-radius: 3px;
+    border-radius: 5px;
     padding: 0 10px;
     margin-top: 8px;
     font-size: 14px;
     font-weight: 300;
+    box-sizing: border-box;
 }
-::placeholder{
+.inputForm::placeholder{
     color: #e5e5e5;
 }
-button{
+.botonLogin{
     margin-top: 50px;
     width: 100%;
     background-color: #ffffff;
@@ -100,25 +94,32 @@ button{
     border-radius: 5px;
     cursor: pointer;
 }
-.social{
-  margin-top: 30px;
-  display: flex;
+.cuenta{
+    display: block;
+    font-size: 14px;
+    margin-top: 10px;
+    text-decoration: none;
 }
-.social div{
-  background: red;
-  width: 150px;
-  border-radius: 3px;
-  padding: 5px 10px 10px 5px;
-  background-color: rgba(255,255,255,0.27);
-  color: #eaf0fb;
-  text-align: center;
+
+.normas-container{
+    width: 230px;
+    font-size: 14px;
+    background-color: #d64646;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 0 auto;
 }
-.social div:hover{
-  background-color: rgba(255,255,255,0.47);
+.normas-lista{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-top: 5px;
 }
-.social .fb{
-  margin-left: 25px;
-}
-.social i{
-  margin-right: 4px;
+
+.normas-lista li::before{
+    content: "- ";
 }

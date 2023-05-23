@@ -51,6 +51,11 @@ const MainClientes = () => {
     }
   }
 
+  useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    if(!token) navigate('/login');
+  },[])
+
 
   return (
     <Fragment>
@@ -126,11 +131,11 @@ const MainClientes = () => {
           </Stack>
         </Container>
       </Box>
-      <Snackbar open={alert.open} autoHideDuration={2000} onClose={handleErrorClose} anchorOrigin={{ vertical:'bottom', horizontal: 'center', }}>
-            <Alerta onClose={handleErrorClose} severity={alert.type} sx={{ width: '100%' }}>
-                {alert.message}
-            </Alerta>
-        </Snackbar>
+        <Snackbar open={alert.open} autoHideDuration={2000} onClose={handleErrorClose} anchorOrigin={{ vertical:'bottom', horizontal: 'center', }}>
+              <Alerta onClose={handleErrorClose} severity={alert.type} sx={{ width: '100%' }}>
+                  {alert.message}
+              </Alerta>
+          </Snackbar>
     </Fragment>
   );
 };

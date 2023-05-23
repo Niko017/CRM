@@ -41,7 +41,13 @@ function ProvedorSelect (props){
         polizas: `${BASE_URL}${polizas}`,
         agentes: `${BASE_URL}${agentes}`
       }
-      let nuevoObjetoPromesas = Object.keys(urlsObjeto).map(async(objeto) => await axios.post( urlsObjeto[objeto],{ estadoAsegurado }));
+      const cabecera = {
+        headers: {
+          Authorization: sessionStorage.getItem('token'),
+        }
+      }
+
+      let nuevoObjetoPromesas = Object.keys(urlsObjeto).map(async(objeto) => await axios.post( urlsObjeto[objeto],{ estadoAsegurado }, cabecera));
       let claves = Object.keys(urlsObjeto).map(objeto => objeto);
       let resultado = await Promise.allSettled(nuevoObjetoPromesas);
       let nuevoObjeto = {};

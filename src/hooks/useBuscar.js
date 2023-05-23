@@ -2,10 +2,9 @@ import { useContext, useEffect, useState }  from 'react';
 import { useSearchCustomers } from 'hooks/useSearchCustomers';
 import { filtrosContexto } from 'contexts/ProvedorFiltros';
 import axios from 'axios';
-import { useAlert } from './useAlert';
+import { BASE_URL } from 'constant/constantes';
 
 export function useBuscar(){
-    const BASE_URL = "http://localhost:2000";
     const [search,setSearch] = useState("");
     const { setBdDatos, filtros, resetFiltros, captacion } = useContext(filtrosContexto);
     useSearchCustomers({search});
@@ -23,7 +22,12 @@ export function useBuscar(){
         if(datos.rango.desde=== "" && datos.rango.hasta=== ""){
           datos = {...datos,rango:{desde:0,hasta:0}}
         }
-        let respuesta = await axios.post(`${BASE_URL}/filtrar`,datos);
+        const cabecera = {
+          headers: {
+            Authorization: sessionStorage.getItem('token')
+          }
+        }
+        let respuesta = await axios.post(`${BASE_URL}/filtrar`,datos, cabecera);
         setBdDatos(respuesta.data);
         resetFiltros();
       }catch(error){

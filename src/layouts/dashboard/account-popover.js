@@ -10,10 +10,13 @@ export const AccountPopover = (props) => {
   const handleSignOut = useCallback(
     () => {
       onClose?.();
-      navigate('/');
+      navigate('/login');
+      sessionStorage.clear();
     },
     [onClose, navigate]
   );
+
+  const { Usuario } = JSON.parse(sessionStorage.getItem('user')) ?? 'User';
 
   return (
     <Popover
@@ -33,13 +36,13 @@ export const AccountPopover = (props) => {
         }}
       >
         <Typography variant="overline">
-          Account
+          Cuenta
         </Typography>
         <Typography
           color="text.secondary"
           variant="body2"
         >
-          Anika Visser
+          { Usuario ?? 'User' }
         </Typography>
       </Box>
       <Divider />
@@ -54,7 +57,7 @@ export const AccountPopover = (props) => {
         }}
       >
         <MenuItem onClick={handleSignOut}>
-          Sign out
+          Salir 
         </MenuItem>
       </MenuList>
     </Popover>

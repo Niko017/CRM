@@ -1,6 +1,6 @@
 import PageClientes from 'Pages/PageClientes.js';
 import PageEditor from 'Pages/PageEditor.js';
-import PageLoginRegister from 'Pages/auth/PageLoginRegister';
+import PageLogin from 'Pages/auth/PageLogin';
 import PageHome from 'Pages/PageHome';
 import ProvedorEmails from 'contexts/ProvedorEmails.js';
 import './App.css';
@@ -9,6 +9,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Page404 from 'Pages/Page404';
+import PageRegister from 'Pages/auth/PageRegister';
 
 
 
@@ -19,11 +20,7 @@ function App({children}) {
       element: <Page404 />,
     },
     {
-      path: "/",
-      element:<PageHome />
-    },
-    {
-      path: "/clientes",
+      path: "/email",
       element: <PageClientes/>,
     },
     {
@@ -32,8 +29,12 @@ function App({children}) {
     },
     {
       path: "/login",
-      element : <PageLoginRegister />
+      element : <PageLogin />
     },
+    {
+      path: '/register',
+      element : <PageRegister />
+    }
   ]);
   
   return (

@@ -6,39 +6,12 @@ import { SvgIcon } from '@mui/material';
 
 export const items = [
   {
-    title: 'Panel',
-    path: '/',
-    icon: (
-      <SvgIcon fontSize="small">
-        <ChartBarIcon />
-      </SvgIcon>
-    )
-  },
-  {
     title: 'Email Masivo',
-    path: '/clientes',
+    path: '/email',
     icon: (
       <SvgIcon fontSize="small">
         <EnvelopeIcon />
       </SvgIcon>
     )
   },
-  {
-    title: 'Login',
-    path: '/login',
-    icon: (
-      <SvgIcon fontSize="small">
-        <LockClosedIcon />
-      </SvgIcon>
-    )
-  },
-  {
-    title: 'Error',
-    path: '/404',
-    icon: (
-      <SvgIcon fontSize="small">
-        <XCircleIcon />
-      </SvgIcon>
-    )
-  }
 ];

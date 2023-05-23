@@ -78,14 +78,15 @@ const TopNav = (props) => {
             direction="row"
             spacing={2}
           >
-            <Tooltip title="Contacts">
+            {/* WIDGETS PARA NAVEGAR */}
+            {/* <Tooltip title="Contacts">
               <IconButton>
                 <SvgIcon fontSize="small">
                   <UsersIcon />
                 </SvgIcon>
               </IconButton>
-            </Tooltip>
-            <Tooltip title="Notifications">
+            </Tooltip> */}
+           {/*  <Tooltip title="Notifications">
               <IconButton>
                 <Badge
                   badgeContent={4}
@@ -97,7 +98,7 @@ const TopNav = (props) => {
                   </SvgIcon>
                 </Badge>
               </IconButton>
-            </Tooltip>
+            </Tooltip> */}
             <Avatar
               onClick={accountPopover.handleOpen}
               ref={accountPopover.anchorRef}
@@ -106,7 +107,7 @@ const TopNav = (props) => {
                 height: 40,
                 width: 40
               }}
-              src="https://material-kit-pro-react.devias.io/assets/avatars/avatar-anika-visser.png"
+              src={require('assets/avatar.png')}
             />
           </Stack>
         </Stack>
