@@ -31,10 +31,6 @@ function App({children}) {
       path: "/login",
       element : <PageLogin />
     },
-    {
-      path: '/register',
-      element : <PageRegister />
-    }
   ]);
   
   return (

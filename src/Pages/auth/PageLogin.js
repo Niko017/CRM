@@ -52,7 +52,7 @@ function PageLogin(){
       <input name="username" className='inputForm' type="text" placeholder="Username"/>
       <label className='labelLogin' htmlFor="password">Contraseña</label>
       <input name='password' className='inputForm' type="password" placeholder="Contraseña"/>
-      <Link className='cuenta' to='/register'><span>¿No tienes cuenta? Registrate</span></Link>
+     {/*  <Link className='cuenta' to='/register'><span>¿No tienes cuenta? Registrate</span></Link> */}
       <button className='botonLogin'>Iniciar Sesión</button>
     </form>
     <Snackbar open={alert.open} autoHideDuration={2000} onClose={handleErrorClose} anchorOrigin={{ vertical:'bottom', horizontal: 'center', }}>
