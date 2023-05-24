@@ -75,16 +75,16 @@ const MainClientes = () => {
                 { activo && <> <Button sx={{height:30}} color='error' variant='contained' size='small' onClick={resetFiltros}>Limpiar Filtros</Button>
                 <Button sx={{height:30}} color='error' variant='contained' onClick={handleSearch}>Buscar</Button></> }
                 <Button
-                sx={{height:30, marginLeft:3}}
-                  endIcon={(
-                    <SvgIcon fontSize="small">
-                     <KeyboardTabIcon/>
-                    </SvgIcon>
-                  )}
-                  color='error'
-                  variant="contained"
-                  size="small"
-                  onClick={seleccionEmails}
+                  sx={{height:30, marginLeft:3}}
+                    endIcon={(
+                      <SvgIcon fontSize="small">
+                      <KeyboardTabIcon/>
+                      </SvgIcon>
+                    )}
+                    color='error'
+                    variant="contained"
+                    size="small"
+                    onClick={seleccionEmails}
                   >Siguiente</Button>
 
                   </div>
