@@ -36,6 +36,7 @@ function ProvedorFiltros (props){
   const [bdDatos, setBdDatos] = useState([]);
   const [selected, setSelected] = useState([]);
   const [captacion, setCaptacion] = useState(captacionInit);
+  const [firmar,setFirmar] = useState(false);
 
   const resetSeleccion = () => {
     if(!captacion.prioridad){
@@ -64,6 +65,8 @@ function ProvedorFiltros (props){
     setSelected,
     captacion,
     setCaptacion,
+    firmar,
+    setFirmar
   };
 
   useEffect(()=>{

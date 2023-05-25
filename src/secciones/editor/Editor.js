@@ -10,10 +10,12 @@ function Editor(){
 
     const { setRefTexto, textoActual, setTextoActual } = useContext(emailsContexto);
 
-    const actualizarDatos = ()=>{
-        setRefTexto(refContenido.current.editor.container.firstElementChild.outerHTML);
-        setTextoActual(refContenido.current.unprivilegedEditor.getContents())
+    const actualizarDatos = () => {
+      setRefTexto(refContenido.current.unprivilegedEditor.getHTML());
+      setTextoActual(refContenido.current.unprivilegedEditor.getContents());
+      console.log(textoActual);
     }
+    
     useEffect(()=>{
       if(textoActual !== null){
         refContenido.current.setEditorContents(refContenido.current.editor, textoActual);
@@ -33,7 +35,6 @@ function Editor(){
         formats={formats}
       />
     </div>
-
     </React.Fragment>
     )
 } export default Editor;

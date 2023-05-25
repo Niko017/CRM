@@ -13,6 +13,8 @@ import SvgIcon from '@mui/material/SvgIcon';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import axios from 'axios';
 import { filtrosContexto } from 'contexts/ProvedorFiltros';
+import { Checkbox, FormControlLabel } from '@mui/material';
+import { BASE_URL } from 'constant/constantes';
 
 function MainEditor() {
 
@@ -24,7 +26,7 @@ function MainEditor() {
     mensaje:''
   });
   let {emailsDatos, setEmailsDatos, refTexto, setRefTexto, setMotivo, motivo, setTextoActual} = useContext(emailsContexto);
-  const { resetFiltros, setSelected } = useContext(filtrosContexto);
+  const { resetFiltros, setSelected, firmar, setFirmar } = useContext(filtrosContexto);
 
   const handleErrorClose = (event, reason)=>{
     if (reason === 'clickaway') return;
@@ -48,8 +50,10 @@ function MainEditor() {
     let caja = document.createElement("div");
     caja.innerHTML+=`<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">`;
     caja.innerHTML+=refTexto;
-    caja.firstElementChild.setAttribute("contenteditable","false");
-
+    if(firmar){
+       caja.innerHTML+=`<img src='${BASE_URL}/images/firma.png' style='width:100%;' alt="pie de firma" />`;
+    }
+    console.log(caja);
     const { correo, nombreEnvio } =  JSON.parse(sessionStorage.getItem('user'));
     const datos = {
     sender: {name: nombreEnvio, email: correo},
@@ -119,7 +123,8 @@ function MainEditor() {
                   display:'flex',
                   justifyContent:'center'
               }}>
-                <Button variant="contained" onClick={enviarDatos}>Enviar</Button>
+                {/* <FormControlLabel control={ <Checkbox checked={firmar} onChange={e => setFirmar(e.target.checked)} color='error'/>} label="Firma"/> */}
+                <Button sx={{height:30}} size='small' color='error' variant="contained" onClick={enviarDatos}>Enviar</Button>
           </div>
       <Snackbar open={alerta.open} autoHideDuration={2000} onClose={handleErrorClose} anchorOrigin={{ vertical:'bottom', horizontal: 'center', }}>
         <Alerta onClose={handleErrorClose} severity={alerta.tipo} sx={{ width: '100%' }}>
