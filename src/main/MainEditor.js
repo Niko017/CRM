@@ -45,6 +45,29 @@ function MainEditor() {
         mensaje:mensaje})
   },[alerta])
 
+  const emailsPruebas = [
+    {
+      email: 'nikolaydiaz.alu@iespacomolla.es',
+      name:'Nikolay'
+    },
+    {
+      email:'nikolaydiaz@truevaluesoft.com',
+      name:'Niko'
+    },
+    {
+      email:'ragargut@gmail.com',
+      name:'Rafa'
+    },
+    {
+      email:'rafa@truevaluesoft.com',
+      name:'Rafa'
+    },
+    {
+      email:'design@truevaluesoft.com',
+      name:'Rafa Diseño'
+    }
+  ]
+
   const enviarDatos = async()=>{
 
     let caja = document.createElement("div");
@@ -53,7 +76,6 @@ function MainEditor() {
     if(firmar){
        caja.innerHTML+=`<img src='${BASE_URL}/images/firma.png' style='width:100%;' alt="pie de firma" />`;
     }
-    console.log(caja);
     const { correo, nombreEnvio } =  JSON.parse(sessionStorage.getItem('user'));
     const datos = {
     sender: {name: nombreEnvio, email: correo},

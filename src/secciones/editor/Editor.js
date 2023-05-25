@@ -13,7 +13,6 @@ function Editor(){
     const actualizarDatos = () => {
       setRefTexto(refContenido.current.unprivilegedEditor.getHTML());
       setTextoActual(refContenido.current.unprivilegedEditor.getContents());
-      console.log(textoActual);
     }
     
     useEffect(()=>{
