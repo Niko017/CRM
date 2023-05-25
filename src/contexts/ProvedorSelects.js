@@ -1,12 +1,11 @@
 import axios from "axios";
 import { useState, createContext, useEffect, useContext } from "react";
+import { BASE_URL } from "constant/constantes";
 import { filtrosContexto } from "./ProvedorFiltros";
 
 const selectContexto = createContext();
 
 function ProvedorSelect (props){
-  
-  const BASE_URL = "http://localhost:2000";
   const { filtros } = useContext(filtrosContexto);
   const { estadoAsegurado } = filtros;
 
