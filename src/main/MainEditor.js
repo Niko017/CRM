@@ -76,7 +76,7 @@ function MainEditor() {
 
     if(motivo!==""){
       try {
-        //await axios.post(SENDING_EMAIL,datos,cabeceras);
+        await axios.post(SENDING_EMAIL,datos,cabeceras);
         mensajeAlerta('Correos enviados correctamente','success');
         setTimeout(() =>{
           navigate("/email")
