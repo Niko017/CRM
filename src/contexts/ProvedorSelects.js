@@ -7,7 +7,8 @@ const selectContexto = createContext();
 function ProvedorSelect (props){
   
   const BASE_URL = "http://localhost:2000";
-  const { estadoAsegurado } = useContext(filtrosContexto);
+  const { filtros } = useContext(filtrosContexto);
+  const { estadoAsegurado } = filtros;
 
   const selectInitial = {
     codPostal: [],
@@ -30,7 +31,7 @@ function ProvedorSelect (props){
     const grupos = "/grupos";
     const agentes = "/agentes";
 
-    const cargar = async()=>{
+    const cargar = async() => {
       let urlsObjeto = {
         codPostal: `${BASE_URL}${codigoPostal}`,
         actividades: `${BASE_URL}${actividades}`,

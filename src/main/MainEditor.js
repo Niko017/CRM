@@ -4,12 +4,15 @@ import { emailsContexto } from 'contexts/ProvedorEmails';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Container from '@mui/material/Container';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Snackbar from '@mui/material/Snackbar';
 import Editor from 'secciones/editor/Editor';
 import Alerta from 'components/Alerta.js';
 import Button from '@mui/material/Button';
+import SvgIcon from '@mui/material/SvgIcon';
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import axios from 'axios';
+import { filtrosContexto } from 'contexts/ProvedorFiltros';
 
 function MainEditor() {
 
@@ -20,7 +23,8 @@ function MainEditor() {
     tipo: 'info',
     mensaje:''
   });
-  let {emailsDatos, refTexto, setMotivo, motivo} = useContext(emailsContexto);
+  let {emailsDatos, setEmailsDatos, refTexto, setRefTexto, setMotivo, motivo, setTextoActual} = useContext(emailsContexto);
+  const { resetFiltros, setSelected } = useContext(filtrosContexto);
 
   const handleErrorClose = (event, reason)=>{
     if (reason === 'clickaway') return;
@@ -46,8 +50,9 @@ function MainEditor() {
     caja.innerHTML+=refTexto;
     caja.firstElementChild.setAttribute("contenteditable","false");
 
+    const { correo, nombreEnvio } =  JSON.parse(sessionStorage.getItem('user'));
     const datos = {
-    sender: {name: 'Maria', email: 'maria85@gmail.com'},
+    sender: {name: nombreEnvio, email: correo},
     to: emailsDatos.map((correo) => {
         return {
           email: correo,
@@ -67,9 +72,18 @@ function MainEditor() {
 
     if(motivo!==""){
       try {
-        await axios.post(SENDING_EMAIL,datos,cabeceras);
+        //await axios.post(SENDING_EMAIL,datos,cabeceras);
         mensajeAlerta('Correos enviados correctamente','success');
-        setTimeout(() => navigate("/"), 800);
+        setTimeout(() =>{
+          navigate("/email")
+          setEmailsDatos([]);
+          setSelected([]);
+          resetFiltros();
+          setMotivo('');
+          setRefTexto(null);
+          setTextoActual(null);
+        }, 800);
+
       }catch(error){
         console.log(error);
         mensajeAlerta('Error, contacte con el Administrador','error');
@@ -81,7 +95,7 @@ function MainEditor() {
 
     useEffect(()=>{
     if(emailsDatos.length===0){
-        navigate("/clientes");
+        navigate("/email");
     }
   },[emailsDatos, navigate])
 
@@ -89,7 +103,12 @@ function MainEditor() {
     <React.Fragment>
       <CssBaseline>
         <Container maxWidth="xl">
-        <TextField fullWidth label="Motivo" id="fullWidth" onChange={(event)=>{
+          <Link to='/email'>
+          <Button startIcon={(              
+          <SvgIcon fontSize="small">
+            <KeyboardBackspaceIcon/>
+          </SvgIcon>)} sx={{height:30}} size='small' variant='contained' color='error'>Atras</Button></Link>
+        <TextField fullWidth label="Motivo" id="fullWidth" value={motivo} onChange={(event)=>{
           setMotivo(event.target.value); 
         }} style={{
           marginBlock: '15px'

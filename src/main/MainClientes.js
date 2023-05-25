@@ -53,9 +53,8 @@ const MainClientes = () => {
 
   useEffect(() => {
     const token = sessionStorage.getItem('token');
-    if(!token) navigate('/login');
+    if(!token) navigate('/');
   },[])
-
 
   return (
     <Fragment>
@@ -63,19 +62,13 @@ const MainClientes = () => {
         <Container maxWidth="xl">
           <Stack spacing={3}>
             <Stack direction="row"justifyContent="space-between" spacing={4}>
-                <div style={{display: 'flex', gap:10}}>
-                <ToggleButton 
-                sx={{height:30}}
-                value='filters'
-                color='error'
-                size='small'
-                selected={activo} 
-                onChange={() => setActivo(prev => !prev)}
-                >Filtros{activo ? <FilterAltOffIcon /> : <FilterAltIcon />}</ToggleButton>
-                { activo && <> <Button sx={{height:30}} color='error' variant='contained' size='small' onClick={resetFiltros}>Limpiar Filtros</Button>
-                <Button sx={{height:30}} color='error' variant='contained' onClick={handleSearch}>Buscar</Button></> }
+                <div style={{display: 'flex'}}>
+                <Button sx={{height:30}} color='error' variant='contained' size='small' onClick={()=>{
+                  resetFiltros();
+                  handleSearch();
+                }}>Limpiar Filtros</Button>
                 <Button
-                  sx={{height:30, marginLeft:3}}
+                  sx={{height:30, marginLeft:1}}
                     endIcon={(
                       <SvgIcon fontSize="small">
                       <KeyboardTabIcon/>
@@ -90,7 +83,7 @@ const MainClientes = () => {
                   </div>
                   <Typography color='#868889' variant="h4">Email Masivo</Typography>
             </Stack>
-            { activo && <Card sx={{ p:1, padding:'20px' }}>
+            <Card sx={{ p:1, padding:'20px' }}>
                 <div className='filtros'>
                   <EstadoAsegurado />
                   <CodPostal />
@@ -103,10 +96,10 @@ const MainClientes = () => {
                   <Mercados />
                   <TiposPoliza />
                 </div>
-            </Card> }
+            </Card> 
             {
-              filtros.estadoAsegurado === 1 && activo &&
-              <Card sx={{p:1, padding:'20px'}}>
+              filtros.estadoAsegurado === 1 && 
+            <Card sx={{p:1, padding:'20px'}}>
               <div className='filtros'>
                 <Prioridad />
                 <FechaProspeccion />

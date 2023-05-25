@@ -11,6 +11,7 @@ import {
   Stack,
   SvgIcon,
   Tooltip,
+  Typography,
   useMediaQuery
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
@@ -24,6 +25,8 @@ const TopNav = (props) => {
   const { onNavOpen } = props;
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   const accountPopover = usePopover();
+  const { nombreEnvio, correo } = JSON.parse(sessionStorage.getItem('user'));
+
 
   return (
     <>
@@ -78,6 +81,18 @@ const TopNav = (props) => {
             direction="row"
             spacing={2}
           >
+            <Typography
+            sx={{marginRight:10}}
+            color='#868889'
+            variant="h4"
+            >{nombreEnvio}
+            </Typography>
+            <Typography
+            style={{display:'block', marginRight:20}}
+            color='#868889'
+            variant="body1"
+            >{correo}
+            </Typography>
             {/* WIDGETS PARA NAVEGAR */}
             {/* <Tooltip title="Contacts">
               <IconButton>

@@ -2,6 +2,7 @@ import React from 'react';
 import  DashboardLayout from 'layouts/dashboard/layout';
 import MainEditor from 'main/MainEditor';
 import { CssBaseline } from '@mui/material';
+import ProvedorFiltros from 'contexts/ProvedorFiltros';
 
 
 function PageEditor(){
@@ -11,7 +12,7 @@ function PageEditor(){
         <CssBaseline>
           <MainEditor/>
         </CssBaseline>
-      </DashboardLayout> 
+      </DashboardLayout>
   </React.Fragment>
   )
 }

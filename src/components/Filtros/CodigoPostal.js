@@ -16,9 +16,11 @@ function CodPostal() {
   const {filtros, setFiltros } = useContext(filtrosContexto);
   const [open, setOpen] = useState(false);
   const loading =  open && select.codPostal.length === 0;
-  const handleChange = (event, value)=>{
+
+  const handleChange = (event, value) => {
     setFiltros(prev => ({...prev,codPostal:value}));
   }
+
   return (
     <Autocomplete
       size='small'
@@ -54,7 +56,7 @@ function CodPostal() {
           ...params.InputProps,
           endAdornment: (
             <>
-            {loading ? <CircularProgress color="primary" size={20} /> : null}
+            {loading && <CircularProgress color="primary" size={20} />}
             {params.InputProps.endAdornment}
             </>
           ),

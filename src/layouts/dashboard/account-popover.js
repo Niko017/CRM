@@ -10,13 +10,13 @@ export const AccountPopover = (props) => {
   const handleSignOut = useCallback(
     () => {
       onClose?.();
-      navigate('/login');
+      navigate('/');
       sessionStorage.clear();
     },
     [onClose, navigate]
   );
 
-  const { Usuario } = JSON.parse(sessionStorage.getItem('user')) ?? 'User';
+  const { nombreEnvio } = JSON.parse(sessionStorage.getItem('user')) ?? 'User';
 
   return (
     <Popover
@@ -36,13 +36,13 @@ export const AccountPopover = (props) => {
         }}
       >
         <Typography variant="overline">
-          Cuenta
+          User
         </Typography>
         <Typography
           color="text.secondary"
           variant="body2"
         >
-          { Usuario ?? 'User' }
+          { nombreEnvio ?? 'User' }
         </Typography>
       </Box>
       <Divider />

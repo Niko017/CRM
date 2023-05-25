@@ -182,9 +182,9 @@ function ToolbarEditor(){
       <select className="ql-background" />
     </span>
     <span className="ql-formats">
-      <button className="ql-link" />
+      {/* <button className="ql-link" /> */}
       <button className="ql-imagenremota"><ImageIcon/></button>
-      <button className="ql-video" />
+      {/* <button className="ql-video" /> */}
     </span>
       <span className="ql-formats">
       <button className="ql-formula"/>

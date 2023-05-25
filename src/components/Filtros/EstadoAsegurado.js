@@ -7,14 +7,14 @@ import FormLabel from '@mui/material/FormLabel';
 import { filtrosContexto } from 'contexts/ProvedorFiltros';
 
 function EstadoAsegurado() {
-    const { estadoAsegurado, setEstadoAsegurado } = useContext(filtrosContexto);
-    const handleChange = event => setEstadoAsegurado(Number(event.target.value));
+    const { filtros, setFiltros } = useContext(filtrosContexto);
+    const handleChange = event => setFiltros(prev =>  ({...prev, estadoAsegurado:Number(event.target.value)}));
   return (
     <FormControl sx={{ flexShrink:2}}>
       <FormLabel color='error' id="estados-label">Estado</FormLabel>
       <RadioGroup row aria-labelledby="estados-label">
-        <FormControlLabel value={2} control={<Radio color='error' checked={ estadoAsegurado === 2 } onChange={handleChange} />} label="Activos" />
-        <FormControlLabel value={1} control={<Radio color='error' checked={ estadoAsegurado === 1 } onChange={handleChange} />} label="Captación" />
+        <FormControlLabel value={2} control={<Radio color='error' checked={ filtros.estadoAsegurado === 2 } onChange={handleChange} />} label="Activos" />
+        <FormControlLabel value={1} control={<Radio color='error' checked={ filtros.estadoAsegurado === 1 } onChange={handleChange} />} label="Captación" />
       </RadioGroup>
     </FormControl>
   );

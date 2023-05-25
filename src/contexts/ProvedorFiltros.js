@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 const filtrosContexto = createContext();
 
 function ProvedorFiltros (props){
-  const [estadoAsegurado,setEstadoAsegurado] = useState(2);
+
   const filtrosInital = {
     codPostal: [],
     actividades: [],
@@ -13,7 +13,7 @@ function ProvedorFiltros (props){
     mercados: [],
     provincias: [],
     polizas: [],
-    estadoAsegurado,
+    estadoAsegurado: 2,
   }
 
   const captacionInit = {
@@ -57,8 +57,6 @@ function ProvedorFiltros (props){
   const datos = {
     filtros,
     setFiltros,
-    estadoAsegurado,
-    setEstadoAsegurado,
     resetFiltros,
     setBdDatos,
     bdDatos,
@@ -69,12 +67,19 @@ function ProvedorFiltros (props){
   };
 
   useEffect(()=>{
-    setSelected([]);
-  },[bdDatos])
+    setFiltros(prev =>  ({...prev,codPostal: [],
+      actividades: [],
+      grupos: [],
+      localidades: [],
+      mercados: [],
+      provincias: [],
+      polizas: []}))
+    },[filtros.estadoAsegurado])
 
   useEffect(()=>{
-    resetFiltros();
-  },[estadoAsegurado]);
+    setSelected([]);
+  },[filtros,captacion])
+
 
   useEffect(()=>{
     resetSeleccion();

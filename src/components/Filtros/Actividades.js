@@ -66,7 +66,7 @@ function Actividades() {
           ...params.InputProps,
           endAdornment: (
             <>
-            {loading ? <CircularProgress color="primary" size={20} /> : null}
+            {loading && <CircularProgress color="primary" size={20} />}
             {params.InputProps.endAdornment}
             </>
           ),

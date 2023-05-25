@@ -8,7 +8,6 @@ import ProvedorSelect from 'contexts/ProvedorSelects';
 function PageClientes(){
   return (
   <React.Fragment>
-      <ProvedorFiltros>
         <ProvedorSelect>
         <DashboardLayout>
           <CssBaseline>
@@ -16,7 +15,6 @@ function PageClientes(){
           </CssBaseline>
         </DashboardLayout>
       </ProvedorSelect>
-    </ProvedorFiltros>
   </React.Fragment>
   )
 }

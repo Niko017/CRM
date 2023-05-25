@@ -10,10 +10,11 @@ import {
 } from "react-router-dom";
 import Page404 from 'Pages/Page404';
 import PageRegister from 'Pages/auth/PageRegister';
+import ProvedorFiltros from 'contexts/ProvedorFiltros';
 
 
 
-function App({children}) {
+function App() {
   const router = createBrowserRouter([
     {
       path: "*",
@@ -28,15 +29,17 @@ function App({children}) {
       element: <PageEditor/>,
     },
     {
-      path: "/login",
+      path: "/",
       element : <PageLogin />
     },
   ]);
   
   return (
-    <ProvedorEmails>
-      <RouterProvider router={router}/>
-    </ProvedorEmails>
+    <ProvedorFiltros>
+      <ProvedorEmails>
+        <RouterProvider router={router}/>
+      </ProvedorEmails>
+    </ProvedorFiltros>
   );
 }
 

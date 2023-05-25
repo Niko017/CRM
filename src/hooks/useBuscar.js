@@ -6,7 +6,7 @@ import { BASE_URL } from 'constant/constantes';
 
 export function useBuscar(){
     const [search,setSearch] = useState("");
-    const { setBdDatos, filtros, resetFiltros, captacion } = useContext(filtrosContexto);
+    const { setBdDatos, filtros, captacion } = useContext(filtrosContexto);
     useSearchCustomers({search});
     
     const handleChange = event =>{
@@ -29,7 +29,6 @@ export function useBuscar(){
         }
         let respuesta = await axios.post(`${BASE_URL}/filtrar`,datos, cabecera);
         setBdDatos(respuesta.data);
-        resetFiltros();
       }catch(error){
         console.error(error)
       }
@@ -37,7 +36,7 @@ export function useBuscar(){
   
     useEffect(()=>{
       handleSearch();
-    },[])
+    },[filtros,captacion])
 
     return { handleChange, search, handleSearch}
 }

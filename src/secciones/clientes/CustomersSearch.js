@@ -22,7 +22,7 @@ function CustomersSearch(){
           </SvgIcon>
         </InputAdornment>
       )}
-      sx={{ maxWidth: 500 }}
+      sx={{ maxWidth: 500, height:30 }}
     />
   </Card>
   </>)
