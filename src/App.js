@@ -11,6 +11,7 @@ import {
 import Page404 from 'Pages/Page404';
 import PageRegister from 'Pages/auth/PageRegister';
 import ProvedorFiltros from 'contexts/ProvedorFiltros';
+import PagePlantillasEmail from 'Pages/PagePlantillasEmail';
 
 
 
@@ -23,6 +24,10 @@ function App() {
     {
       path: "/email",
       element: <PageClientes/>,
+    },
+    {
+      path: '/tipoEmail',
+      element: <PagePlantillasEmail/>,
     },
     {
       path: "/editor",

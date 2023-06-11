@@ -1,39 +1,32 @@
 import React, { useRef, useContext, useEffect } from 'react';
-import ToolbarEditor, { modules, formats } from 'secciones/editor/ToolbarEditor';
+import ToolbarEditor from 'secciones/editor/ToolbarEditor';
 import { emailsContexto } from 'contexts/ProvedorEmails';
-import ReactQuill from 'react-quill';
-import 'secciones/editor/editor.css'
 
-function Editor(){
+function Editor({ quillRef }) {
 
-    const refContenido = useRef(null);
+  const refContenido = useRef(null);
+  const { setRefTexto, textoActual, setTextoActual } = useContext(emailsContexto);
 
-    const { setRefTexto, textoActual, setTextoActual } = useContext(emailsContexto);
+  const actualizarDatos = () => {
+    setRefTexto(refContenido.current.unprivilegedEditor.getHTML());
+    setTextoActual(refContenido.current.unprivilegedEditor.getContents());
+  }
 
-    const actualizarDatos = () => {
-      setRefTexto(refContenido.current.unprivilegedEditor.getHTML());
-      setTextoActual(refContenido.current.unprivilegedEditor.getContents());
+  useEffect(() => {
+    if (textoActual !== null) {
+      refContenido.current.setEditorContents(refContenido.current.editor, textoActual);
     }
-    
-    useEffect(()=>{
-      if(textoActual !== null){
-        refContenido.current.setEditorContents(refContenido.current.editor, textoActual);
-      }
-    },[]);
+  }, []);
 
-    return(
+  return (
     <React.Fragment>
-    <div className="text-editor">
-      <ToolbarEditor/>
-      <ReactQuill
-      ref={refContenido}
-        theme="snow"
-        onChange={actualizarDatos}
-        placeholder={"Haz el mejor Newsleter...."}
-        modules={modules}
-        formats={formats}
-      />
-    </div>
+      <div className="text-editor">
+        <ToolbarEditor />
+        <div
+          ref={quillRef}
+          onChange={actualizarDatos}
+        />
+      </div>
     </React.Fragment>
-    )
+  )
 } export default Editor;
