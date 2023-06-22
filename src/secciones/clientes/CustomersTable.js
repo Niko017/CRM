@@ -1,5 +1,3 @@
-import { useState, useMemo, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
 import {
   Avatar,
   Box,
@@ -11,90 +9,35 @@ import {
   TableCell,
   TablePagination,
   TableRow,
-  Typography
 } from '@mui/material';
 import { getInitials } from 'utils/get-initials';
 import CustomerHeaderTable from './CustomerHeaderTable';
+import { useOrder } from 'hooks/use-order';
+import { usePagination } from 'hooks/use-pagination';
 
 const CustomersTable = (props) => {
-  const {
-    count = 0,
-    items = [],
-    onDeselectAll,
-    onDeselectOne,
-    onPageChange,
-    onRowsPerPageChange,
-    onSelectAll,
-    onSelectOne,
-    page = 0,
-    rowsPerPage = 0,
-    selected = [],
-  } = props;
 
-  const selectedSome = (selected.length > 0) && (selected.length < items.length);
-  const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('');
+  const { selectAll, deselectAll, selectOne, deselectOne, selected, items } = props;
 
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
-  };
-
-  ///////////////ORDENAR POR COLUMUNAS/////////////
-  function descendingComparator(a, b, orderBy) {
-    if (b[orderBy] < a[orderBy]) {
-      return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-      return 1;
-    }
-    return 0;
-  }
-
-  function getComparator(order, orderBy) {
-    return order === 'desc'
-      ? (a, b) => descendingComparator(a, b, orderBy)
-      : (a, b) => -descendingComparator(a, b, orderBy);
-  }
-
-  function stableSort(array, comparator) {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-      const order = comparator(a[0], b[0]);
-      if (order !== 0) {
-        return order;
-      }
-      return a[1] - b[1];
-    });
-    return stabilizedThis.map((el) => el[0]);
-  }
-
-  const visibleRows = useMemo(
-    () =>
-      stableSort(items, getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage,
-      ),
-    [items, order, orderBy, page, rowsPerPage],
-  );
-
-  ///////////////FIN ORDENAR POR COLUMUNAS/////////////
+  const count = items.length;
+  const selectedSome = (selected.length > 0) && (selected.length < count);
+  const { page, rowsPerPage, handlePageChange, handleRowsPerPageChange } = usePagination();
+  const { order, orderBy, createSortHandler, visibleRows } = useOrder({ items, page, rowsPerPage });
 
   const handleClick = (event, name) => {
     const validacion = selected.includes(name);
     if (!validacion) {
-      onSelectOne?.(name);
+      selectOne?.(name);
     } else {
-      onDeselectOne?.(name);
+      deselectOne?.(name);
     }
   };
 
   const handleCheckChange = (event, selector) => {
     if (event.target.checked) {
-      onSelectOne?.(selector);
+      selectOne?.(selector);
     } else {
-      onDeselectOne?.(selector);
+      deselectOne?.(selector);
     }
   }
 
@@ -104,14 +47,15 @@ const CustomersTable = (props) => {
         <Table
           size={'small'}>
           <CustomerHeaderTable
+            items={items}
             numSelected={selected.length}
             total={items.length}
             order={order}
             orderBy={orderBy}
-            onSelectAllClick={onSelectAll}
-            onDeselectAll={onDeselectAll}
+            onSelectAllClick={selectAll}
+            onDeselectAll={deselectAll}
             selectedSome={selectedSome}
-            onRequestSort={handleRequestSort}
+            onRequestSort={createSortHandler}
           />
           <TableBody>
             {visibleRows.length !== 0 ?
@@ -152,9 +96,9 @@ const CustomersTable = (props) => {
         component="div"
         count={count}
         page={page}
-        onPageChange={onPageChange}
+        onPageChange={handlePageChange}
         rowsPerPage={rowsPerPage}
-        onRowsPerPageChange={onRowsPerPageChange}
+        onRowsPerPageChange={handleRowsPerPageChange}
         rowsPerPageOptions={[10, 25, 50, 100, count]}
         labelDisplayedRows={({ from, to, count }) => `Mostrando ${from}-${to} de ${count} filas`}
         labelRowsPerPage="Filas por página"
@@ -164,17 +108,3 @@ const CustomersTable = (props) => {
 };
 
 export default CustomersTable;
-
-CustomersTable.propTypes = {
-  count: PropTypes.number,
-  items: PropTypes.array,
-  onDeselectAll: PropTypes.func,
-  onDeselectOne: PropTypes.func,
-  onPageChange: PropTypes.func,
-  onRowsPerPageChange: PropTypes.func,
-  onSelectAll: PropTypes.func,
-  onSelectOne: PropTypes.func,
-  page: PropTypes.number,
-  rowsPerPage: PropTypes.number,
-  selected: PropTypes.array
-};

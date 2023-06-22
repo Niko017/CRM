@@ -3,22 +3,22 @@ import { emailsContexto } from 'contexts/ProvedorEmails';
 import { filtrosContexto } from 'contexts/ProvedorFiltros';
 
 
-export function useSearchCustomers({ search }){
+export function useSearchCustomers({ search }) {
 
-    const { setEmpleados } = useContext(emailsContexto);
-    const { bdDatos } = useContext(filtrosContexto);
+  const { setEmpleados } = useContext(emailsContexto);
+  const { bdDatos } = useContext(filtrosContexto);
 
   // Busca en todos los valores de cada objeto y devuelve las coincidencias.
-  const buscarDatos = (search)=>{
-    return bdDatos.filter(objeto =>  Object.keys(objeto).some( clave => String(objeto[clave]).toLocaleLowerCase().includes(search.toLocaleLowerCase())) )
+  const buscarDatos = (search) => {
+    return bdDatos.filter(objeto => Object.keys(objeto).some(clave => String(objeto[clave]).toLocaleLowerCase().includes(search.toLocaleLowerCase())))
   };
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     let datos = buscarDatos(search);
     setEmpleados(datos);
-  },[search]);
+  }, [search]);
 
-  useEffect(()=>{
+  useEffect(() => {
     setEmpleados(buscarDatos(''));
-  },[bdDatos]);
+  }, [bdDatos]);
 }

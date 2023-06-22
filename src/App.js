@@ -1,19 +1,18 @@
-import PageClientes from 'Pages/PageClientes.js';
-import PageEditor from 'Pages/PageEditor.js';
-import PageLogin from 'Pages/auth/PageLogin';
-import PageHome from 'Pages/PageHome';
-import ProvedorEmails from 'contexts/ProvedorEmails.js';
-import './App.css';
+import PageClientes from 'Pages/PageClientes.js'
+import PageEditor from 'Pages/PageEditor.js'
+import PageLogin from 'Pages/auth/PageLogin'
+import PageHome from 'Pages/PageHome'
+import ProvedorEmails from 'contexts/ProvedorEmails.js'
+import './App.css'
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import Page404 from 'Pages/Page404';
-import PageRegister from 'Pages/auth/PageRegister';
-import ProvedorFiltros from 'contexts/ProvedorFiltros';
-import PagePlantillasEmail from 'Pages/PagePlantillasEmail';
-
-
+import Page404 from 'Pages/Page404'
+import PageRegister from 'Pages/auth/PageRegister'
+import ProvedorFiltros from 'contexts/ProvedorFiltros'
+import PagePlantillasEmail from 'Pages/PagePlantillasEmail'
+import PageEmailPerso from 'Pages/PageEmailPerso'
 
 function App() {
   const router = createBrowserRouter([
@@ -23,29 +22,32 @@ function App() {
     },
     {
       path: "/email",
-      element: <PageClientes/>,
+      element: <PageClientes />,
     },
     {
       path: '/tipoEmail',
-      element: <PagePlantillasEmail/>,
+      element: <PagePlantillasEmail />,
     },
     {
       path: "/editor",
-      element: <PageEditor/>,
+      element: <PageEditor />,
     },
     {
       path: "/",
-      element : <PageLogin />
+      element: <PageLogin />
+    },
+    {
+      path: "/emailPerso",
+      element: <PageEmailPerso />
     },
   ]);
-  
+
   return (
     <ProvedorFiltros>
       <ProvedorEmails>
-        <RouterProvider router={router}/>
+        <RouterProvider router={router} />
       </ProvedorEmails>
     </ProvedorFiltros>
   );
 }
-
 export default App;

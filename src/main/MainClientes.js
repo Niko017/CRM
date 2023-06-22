@@ -1,4 +1,4 @@
-import { useState, Fragment, useContext, useEffect } from 'react';
+import { useState, Fragment, useContext, useEffect, useMemo } from 'react';
 import { Box, Button, Container, Stack, SvgIcon, ToggleButton, Typography, Card } from '@mui/material';
 import CustomersSearch from 'secciones/clientes/CustomersSearch';
 import EstadoAsegurado from 'components/Filtros/EstadoAsegurado';
@@ -18,23 +18,33 @@ import { useNavigate } from "react-router-dom";
 import Snackbar from '@mui/material/Snackbar';
 import { useBuscar } from 'hooks/useBuscar';
 import Alerta from 'components/Alerta.js';
-import { useTabla } from 'hooks/useTabla';
 import '../App.css';
 import Prioridad from 'components/filtrosCaptacion/Prioridad';
 import FechaProspeccion from 'components/filtrosCaptacion/FechaProspeccion';
 import { useAlert } from 'hooks/useAlert';
 import Volumen from 'components/filtrosCaptacion/Volumen';
+import { useSelection } from 'hooks/use-selection';
 
 
 const MainClientes = () => {
 
   //Variables para el control de los clientes.
   const { filtros, resetFiltros } = useContext(filtrosContexto);
-  const { setEmailsDatos } = useContext(emailsContexto);
+  const { setEmailsDatos, empleados } = useContext(emailsContexto);
   const { handleSearch } = useBuscar();
   const navigate = useNavigate();
-  const { count, items, page, rowsPerPage, handlePageChange, handleRowsPerPageChange, handleDeselectAll, handleDeselectOne, handleSelectAll, handleSelectOne, selected } = useTabla();
+
   const { alert, handleErrorClose, mensajeAdvertencia } = useAlert();
+
+  const useUsuariosEmails = (customers) => {
+    return useMemo(
+      () => customers.map((customer) => customer.email),
+      [customers]
+    );
+  };
+
+  const customersEmails = useUsuariosEmails(empleados);
+  const { handleDeselectAll, handleDeselectOne, handleSelectAll, handleSelectOne, selected } = useSelection(customersEmails);
 
   const seleccionEmails = () => {
     if (selected.length !== 0) {
@@ -72,7 +82,7 @@ const MainClientes = () => {
                   color='error'
                   variant="contained"
                   size="small"
-                  onClick={seleccionEmails}
+                  onClick={() => { }}
                 >Siguiente</Button>
 
               </div>
@@ -104,17 +114,12 @@ const MainClientes = () => {
             }
             <CustomersSearch />
             <CustomersTable
-              count={count}
-              items={items}
-              onDeselectAll={handleDeselectAll}
-              onDeselectOne={handleDeselectOne}
-              onPageChange={handlePageChange}
-              onRowsPerPageChange={handleRowsPerPageChange}
-              onSelectAll={handleSelectAll}
-              onSelectOne={handleSelectOne}
-              page={page}
-              rowsPerPage={rowsPerPage}
+              selectAll={handleSelectAll}
+              deselectAll={handleDeselectAll}
+              selectOne={handleSelectOne}
+              deselectOne={handleDeselectOne}
               selected={selected}
+              items={empleados}
             />
           </Stack>
         </Container>

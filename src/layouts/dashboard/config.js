@@ -20,7 +20,16 @@ export const items = [
     path: '/tipoEmail',
     icon: (
       <SvgIcon fontSize="small">
-        <HomeModernIcon/>
+        <HomeModernIcon />
+      </SvgIcon>
+    )
+  },
+  {
+    title: 'Email personalizado',
+    path: '/emailPerso',
+    icon: (
+      <SvgIcon fontSize="small">
+        <HomeModernIcon />
       </SvgIcon>
     )
   }
