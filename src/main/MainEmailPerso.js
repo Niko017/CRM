@@ -1,4 +1,6 @@
-import { FormControlLabel, Paper, Switch, TextField } from '@mui/material';
+import { Button, FormControlLabel, Paper, Switch, TextField, ToggleButton } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import SendIcon from '@mui/icons-material/Send';
 import { DatePicker } from '@mui/x-date-pickers-pro';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -16,7 +18,8 @@ function MainEmailPerso() {
         anyo: 0,
         realizada: false
     })
-    const [clientes, setClientes] = useState([])
+    const [clientes, setClientes] = useState([]);
+    const [edit, setEdit] = useState(false);
 
     const handleMonth = (date) => {
         const mesNumero = dayjs(date).month() + 1;
@@ -36,6 +39,12 @@ function MainEmailPerso() {
         const { data } = await axios.post(`${BASE_URL}/emailsPersonales`, filtrado);
         setClientes(data)
     }
+
+    const handleEdit = () => {
+        cargarEmailsPersonales();
+        setEdit(prev => !prev);
+    }
+
     useEffect(() => {
         cargarEmailsPersonales();
     }, [filtrado]);
@@ -67,12 +76,22 @@ function MainEmailPerso() {
                             views={['year', 'month', 'day']}
                             renderInput={(params) => <TextField {...params} />}
                         />
-                        <FormControlLabel control={<Switch onChange={handleRealizada} />} label="realizado" />
+                        <FormControlLabel control={<Switch color='error' onChange={handleRealizada} />} label="realizado" />
+                        <ToggleButton
+                            color={edit ? 'error' : 'standard'}
+                            value="edit"
+                            selected={edit}
+                            onChange={handleEdit}
+                        >
+                            <EditIcon />
+                        </ToggleButton>
+                        <Button color='error' endIcon={<SendIcon />}>Enviar</Button>
                     </DemoContainer>
                 </LocalizationProvider>
             </Paper>
             <TablePerso
-                clientes={clientes} />
+                clientes={clientes}
+                edit={edit} />
         </React.Fragment>
     )
 }; export default MainEmailPerso;

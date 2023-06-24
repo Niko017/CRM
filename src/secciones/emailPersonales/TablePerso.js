@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { usePagination } from 'hooks/use-pagination';
 import { useOrder } from 'hooks/use-order';
 import TableHeader from 'secciones/emailPersonales/TableHeader';
-import { Box, Card, Checkbox, Table, TableBody, TableCell, TablePagination, TableRow } from '@mui/material';
+import { Box, Button, Card, Checkbox, Table, TableBody, TableCell, TablePagination, TableRow, TextareaAutosize } from '@mui/material';
+import axios from 'axios';
+import { BASE_URL } from 'constant/constantes';
 
 export default function TablePerso(props) {
+    const { clientes, edit } = props;
 
-    const { clientes } = props;
 
     const datosPrueba = [
         {
@@ -57,6 +59,13 @@ export default function TablePerso(props) {
         return fechaEuropea;
     }
 
+    const handleActulizar = async (event, id) => {
+        const observacion = event.target.previousSibling.value;
+
+        await axios.post(`${BASE_URL}/actualizarObservacion`, { id, observacion })
+
+    }
+
     return (
         <Card>
             <Box sx={{ minWidth: 800 }}>
@@ -84,8 +93,12 @@ export default function TablePerso(props) {
                                         <TableCell>{customer.idPoliza ?? 'Sin Poliza'}</TableCell>
                                         <TableCell>{fecha}</TableCell>
                                         <TableCell>{customer.codEmail}</TableCell>
-                                        <TableCell>{customer.observaciones ?? ''}</TableCell>
-                                        <TableCell><Checkbox checked={customer.realizada} /></TableCell>
+                                        {edit ?
+                                            <TableCell><textarea style={{ resize: 'vertical' }} defaultValue={customer.observaciones}></textarea>
+                                                <Button onClick={(event) => handleActulizar(event, customer.idDeclaracion)} variant='outlined'>Actualizar</Button>
+                                            </TableCell> :
+                                            <TableCell>{customer.observaciones ?? ''}</TableCell>}
+                                        <TableCell><Checkbox color='error' checked={customer.realizada} /></TableCell>
                                         <TableCell>{customer.email}</TableCell>
                                     </TableRow>
                                 );
