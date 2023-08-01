@@ -2,6 +2,7 @@ import React from 'react'
 import ImageResize from 'quill-image-resize-module-react';
 import { ImageDrop } from 'quill-image-drop-module';
 import ImageIcon from '@mui/icons-material/Image';
+import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import 'react-quill/dist/quill.snow.css';
 
 import 'secciones/editor/editor.css';
@@ -40,6 +41,17 @@ function redoChange() {
   this.quill.history.redo();
 }
 
+function pasteClipboard() {
+  const range = this.quill.getSelection();
+  navigator.clipboard.readText()
+    .then(data => {
+      this.quill.clipboard.dangerouslyPasteHTML(range.index, data)
+    })
+    .catch(err => {
+      console.error('Error al leer del portapapeles:', err)
+    })
+}
+
 function insertRemoteImage() {
   const range = this.quill.getSelection();
   let url = prompt("Introduce una url");
@@ -72,6 +84,7 @@ export const modules = {
       undo: undoChange,
       redo: redoChange,
       imagenremota: insertRemoteImage,
+      pegar: pasteClipboard,
     },
   },
   imageDrop: true,
@@ -177,6 +190,7 @@ function ToolbarEditor() {
         <span className="ql-formats">
           {/* <button className="ql-link" /> */}
           <button className="ql-imagenremota"><ImageIcon /></button>
+          <button className='ql-pegar'><ContentPasteIcon /> </button>
           {/* <button className="ql-video" /> */}
         </span>
         <span className="ql-formats">

@@ -2,7 +2,7 @@ import React, { useRef, useContext, useEffect } from 'react';
 import ToolbarEditor from 'secciones/editor/ToolbarEditor';
 import { emailsContexto } from 'contexts/ProvedorEmails';
 
-function Editor({ quillRef }) {
+function Editor({ quillRef, quill }) {
 
   const refContenido = useRef(null);
   const { setRefTexto, textoActual, setTextoActual } = useContext(emailsContexto);

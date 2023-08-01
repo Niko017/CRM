@@ -25,7 +25,7 @@ export const items = [
     )
   },
   {
-    title: 'Email personalizado',
+    title: 'Notificación de ventas',
     path: '/emailPerso',
     icon: (
       <SvgIcon fontSize="small">

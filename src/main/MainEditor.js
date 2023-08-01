@@ -169,6 +169,7 @@ function MainEditor() {
             quill={quill}
             quillRef={quillRef}
             cambiarTexto={cambiarTexto}
+
           />
           <div style={{
             marginTop: '30px',
