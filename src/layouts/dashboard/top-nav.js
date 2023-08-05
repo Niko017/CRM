@@ -32,9 +32,10 @@ const TopNav = (props) => {
     <>
       <Box
         component="header"
+
         sx={{
           backdropFilter: 'blur(5px)',
-          backgroundColor: (theme) => alpha(theme.palette.background.default, 0.8),
+          backgroundColor: '#DC0B2A',
           position: 'static',
           left: {
             lg: `${SIDE_NAV_WIDTH}px`
@@ -43,56 +44,62 @@ const TopNav = (props) => {
           width: {
             lg: `100%`
           },
-          zIndex: (theme) => theme.zIndex.appBar
+          zIndex: (theme) => theme.zIndex.appBar,
         }}
       >
         <Stack
           alignItems="center"
           direction="row"
-          justifyContent="space-between"
+          justifyContent={lgUp ? 'flex-end' : "space-between"}
           spacing={2}
           sx={{
             minHeight: TOP_NAV_HEIGHT,
             px: 2
           }}
         >
-          <Stack
+          {!lgUp && <Stack
             alignItems="center"
             direction="row"
             spacing={2}
           >
-            {!lgUp && (
-              <IconButton onClick={onNavOpen}>
-                <SvgIcon fontSize="small">
-                  <Bars3Icon />
-                </SvgIcon>
-              </IconButton>
-            )}
-            <Tooltip title="Search">
-              <IconButton>
-                <SvgIcon fontSize="small">
-                  <MagnifyingGlassIcon />
-                </SvgIcon>
-              </IconButton>
-            </Tooltip>
-          </Stack>
+
+            <IconButton onClick={onNavOpen}>
+              <SvgIcon fontSize="small">
+                <Bars3Icon color='#FFF' />
+              </SvgIcon>
+            </IconButton>
+
+          </Stack>}
           <Stack
             alignItems="center"
             direction="row"
             spacing={2}
           >
             <Typography
-            sx={{marginRight:10}}
-            color='#868889'
-            variant="h4"
+              sx={{ marginRight: 10 }}
+              color='#ded9da'
+              variant="h3"
+              fontSize={lgUp ? 30 : 18}
+            >Bienvenid@ a Gesticyc
+            </Typography>
+
+            <Typography
+              sx={{ marginRight: 10 }}
+              color='#ded9da'
+              variant="h4"
+              fontSize={lgUp ? 30 : 18}
             >{nombreEnvio}
             </Typography>
-            <Typography
-            style={{display:'block', marginRight:20}}
-            color='#868889'
-            variant="body1"
-            >{correo}
-            </Typography>
+            {
+              lgUp &&
+              <Typography
+                style={{ display: 'block', marginRight: 20 }}
+                color='#ded9da'
+                variant="body1"
+              >{correo}
+              </Typography>
+            }
+
             {/* WIDGETS PARA NAVEGAR */}
             {/* <Tooltip title="Contacts">
               <IconButton>
@@ -101,7 +108,7 @@ const TopNav = (props) => {
                 </SvgIcon>
               </IconButton>
             </Tooltip> */}
-           {/*  <Tooltip title="Notifications">
+            {/*  <Tooltip title="Notifications">
               <IconButton>
                 <Badge
                   badgeContent={4}
@@ -126,12 +133,12 @@ const TopNav = (props) => {
             />
           </Stack>
         </Stack>
+        <AccountPopover
+          anchorEl={accountPopover.anchorRef.current}
+          open={accountPopover.open}
+          onClose={accountPopover.handleClose}
+        />
       </Box>
-      <AccountPopover
-        anchorEl={accountPopover.anchorRef.current}
-        open={accountPopover.open}
-        onClose={accountPopover.handleClose}
-      />
     </>
   );
 }; export default TopNav;

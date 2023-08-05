@@ -3,6 +3,10 @@ import LockClosedIcon from '@heroicons/react/24/solid/LockClosedIcon';
 import XCircleIcon from '@heroicons/react/24/solid/XCircleIcon';
 import EnvelopeIcon from '@heroicons/react/24/solid/EnvelopeIcon';
 import HomeModernIcon from '@heroicons/react/24/solid/HomeModernIcon';
+import ChatBubbleBottomCenterIcon from '@heroicons/react/24/solid/ChatBubbleBottomCenterIcon';
+import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
+import Square3Stack3DIcon from '@heroicons/react/24/solid/Square3Stack3DIcon'
+import DocumentChartBarIcon from '@heroicons/react/24/solid/DocumentChartBarIcon'
 import { SvgIcon } from '@mui/material';
 
 export const items = [
@@ -20,7 +24,7 @@ export const items = [
     path: '/tipoEmail',
     icon: (
       <SvgIcon fontSize="small">
-        <HomeModernIcon />
+        <Square3Stack3DIcon />
       </SvgIcon>
     )
   },
@@ -29,7 +33,25 @@ export const items = [
     path: '/emailPerso',
     icon: (
       <SvgIcon fontSize="small">
-        <HomeModernIcon />
+        <ChatBubbleBottomCenterIcon />
+      </SvgIcon>
+    )
+  },
+  {
+    title: 'Usuarios',
+    path: '/usuarios',
+    icon: (
+      <SvgIcon>
+        <UsersIcon />
+      </SvgIcon>
+    )
+  },
+  {
+    title: 'Logs',
+    path: '/logs',
+    icon: (
+      <SvgIcon>
+        <DocumentChartBarIcon />
       </SvgIcon>
     )
   }

@@ -32,18 +32,19 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
 
-.filtros{
+.filtros {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 20px;
-  *justify-content: space-between;
 }
-.oculto{
+
+.oculto {
   display: none;
 }

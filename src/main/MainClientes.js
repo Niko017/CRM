@@ -1,11 +1,13 @@
-import { useState, Fragment, useContext, useEffect, useMemo } from 'react';
-import { Box, Button, Container, Stack, SvgIcon, ToggleButton, Typography, Card } from '@mui/material';
+import { Fragment, useContext, useEffect, useMemo } from 'react';
+import { Box, Button, Container, Stack, SvgIcon, Typography, Card } from '@mui/material';
+import FechaProspeccion from 'components/filtrosCaptacion/FechaProspeccion';
 import CustomersSearch from 'secciones/clientes/CustomersSearch';
 import EstadoAsegurado from 'components/Filtros/EstadoAsegurado';
-import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
 import CustomersTable from 'secciones/clientes/CustomersTable';
 import KeyboardTabIcon from '@mui/icons-material/KeyboardTab';
+import Prioridad from 'components/filtrosCaptacion/Prioridad';
 import { filtrosContexto } from 'contexts/ProvedorFiltros';
+import Volumen from 'components/filtrosCaptacion/Volumen';
 import Localidades from 'components/Filtros/Localidades';
 import Actividades from 'components/Filtros/Actividades';
 import TiposPoliza from 'components/Filtros/TiposPoliza';
@@ -13,17 +15,14 @@ import { emailsContexto } from 'contexts/ProvedorEmails';
 import CodPostal from 'components/Filtros/CodigoPostal';
 import Provincias from 'components/Filtros/Provincias';
 import GruposEmp from 'components/Filtros/GruposEmp';
+import { useSelection } from 'hooks/use-selection';
 import Mercados from 'components/Filtros/Merccado';
 import { useNavigate } from "react-router-dom";
 import Snackbar from '@mui/material/Snackbar';
 import { useBuscar } from 'hooks/useBuscar';
 import Alerta from 'components/Alerta.js';
-import '../App.css';
-import Prioridad from 'components/filtrosCaptacion/Prioridad';
-import FechaProspeccion from 'components/filtrosCaptacion/FechaProspeccion';
 import { useAlert } from 'hooks/useAlert';
-import Volumen from 'components/filtrosCaptacion/Volumen';
-import { useSelection } from 'hooks/use-selection';
+import '../App.css';
 
 
 const MainClientes = () => {
@@ -68,12 +67,12 @@ const MainClientes = () => {
           <Stack spacing={3}>
             <Stack direction="row" justifyContent="space-between" spacing={4}>
               <div style={{ display: 'flex' }}>
-                <Button sx={{ height: 30 }} color='error' variant='contained' size='small' onClick={() => {
+                <Button sx={{ height: 40 }} color='error' variant='contained' size='small' onClick={() => {
                   resetFiltros();
                   handleSearch();
                 }}>Limpiar Filtros</Button>
                 <Button
-                  sx={{ height: 30, marginLeft: 1 }}
+                  sx={{ height: 40, marginLeft: 1 }}
                   endIcon={(
                     <SvgIcon fontSize="small">
                       <KeyboardTabIcon />

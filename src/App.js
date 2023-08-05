@@ -13,6 +13,8 @@ import PageRegister from 'Pages/auth/PageRegister'
 import ProvedorFiltros from 'contexts/ProvedorFiltros'
 import PagePlantillasEmail from 'Pages/PagePlantillasEmail'
 import PageEmailPerso from 'Pages/PageEmailPerso'
+import PageUsuarios from 'Pages/PageUsuarios';
+import PageLogs from 'Pages/PageLogs'
 
 function App() {
   const router = createBrowserRouter([
@@ -40,6 +42,14 @@ function App() {
       path: "/emailPerso",
       element: <PageEmailPerso />
     },
+    {
+      path: '/usuarios',
+      element: <PageUsuarios />
+    },
+    {
+      path: '/logs',
+      element: <PageLogs />
+    }
   ]);
 
   return (

@@ -1,4 +1,4 @@
-import { Button, FormControlLabel, Paper, Switch, TextField, ToggleButton } from '@mui/material';
+import { Button, Container, FormControlLabel, Paper, Switch, TextField, ToggleButton, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import SendIcon from '@mui/icons-material/Send';
 import { DatePicker } from '@mui/x-date-pickers-pro';
@@ -98,7 +98,8 @@ function MainEmailPerso() {
 
     return (
         <React.Fragment>
-            <Paper elevation={2}>
+            <Paper elevation={2} sx={{ padding: 2 }}>
+                <Typography sx={{ marginY: 1 }} textAlign='center' color='#868889' variant="h4">Notificación de ventas</Typography>
                 <LocalizationProvider dateAdapter={AdapterDayjs} >
                     <DemoContainer components={['DatePicker']}>
                         <DatePicker
@@ -142,6 +143,7 @@ function MainEmailPerso() {
             <TablePerso
                 clientes={clientes}
                 edit={edit} />
+
         </React.Fragment>
     )
 }; export default MainEmailPerso;

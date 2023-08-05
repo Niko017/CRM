@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useQuill } from 'react-quilljs'
 import 'quill/dist/quill.snow.css'
 import ToolbarEditor, { modules, formats } from 'secciones/editor/ToolbarEditor';
-import { Autocomplete, Button, ButtonGroup, Container, TextField } from '@mui/material';
+import { Autocomplete, Button, ButtonGroup, Container, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import { BASE_URL } from 'constant/constantes';
 import { useAlert } from 'hooks/useAlert';
@@ -67,23 +67,26 @@ function MainPlantillaEmails() {
 
     return (
         <React.Fragment>
-            <Container>
-                <div style={{ display: 'flex', gap: 50 }}>
-                    <Autocomplete
-                        sx={{ flexGrow: 1, maxWidth: '150px' }}
-                        options={emails}
-                        getOptionLabel={(option) => option.titulo ?? ''}
-                        renderInput={(params) => <TextField {...params} label="Tipos de Email" />}
-                        onChange={cambiarTexto}
-                    />
-                    {
-                        select ?
-                            <ButtonGroup>
-                                <Button size='small' color='error' variant="contained" onClick={gaurdarDatos}>Guardar</Button>
-                                <Button size='small' color='error' variant="contained" onClick={eliminar}>Eliminar</Button>
-                            </ButtonGroup> :
-                            <Button size='small' color='error' variant="contained" onClick={crearNuevo}>Crear Email</Button>
-                    }
+            <Container sx={{ marginTop: 5 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <div style={{ display: 'flex', gap: 50 }}>
+                        <Autocomplete
+                            sx={{ flexGrow: 1, minWidth: '150px' }}
+                            options={emails}
+                            getOptionLabel={(option) => option.titulo ?? ''}
+                            renderInput={(params) => <TextField {...params} label="Tipos de Email" />}
+                            onChange={cambiarTexto}
+                        />
+                        {
+                            select ?
+                                <ButtonGroup>
+                                    <Button size='small' color='error' variant="contained" onClick={gaurdarDatos}>Guardar</Button>
+                                    <Button size='small' color='error' variant="contained" onClick={eliminar}>Eliminar</Button>
+                                </ButtonGroup> :
+                                <Button size='small' color='error' variant="contained" onClick={crearNuevo}>Crear Email</Button>
+                        }
+                    </div>
+                    <Typography color='#868889' variant="h4">Tipos Email</Typography>
                 </div>
 
                 <TextField

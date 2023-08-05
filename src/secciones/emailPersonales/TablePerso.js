@@ -67,7 +67,7 @@ export default function TablePerso(props) {
     }
 
     return (
-        <Card>
+        <Card sx={{ padding: 2 }}>
             <Box sx={{ minWidth: 800 }}>
                 <Table
                     size={'small'}>
@@ -103,7 +103,7 @@ export default function TablePerso(props) {
                                     </TableRow>
                                 );
                             }) :
-                            <TableRow><TableCell colSpan={7} style={{ textAlign: 'center' }}>Sin Resultados</TableCell></TableRow>}
+                            <TableRow><TableCell colSpan={11} style={{ textAlign: 'center' }}>Sin Resultados</TableCell></TableRow>}
                     </TableBody>
                 </Table>
             </Box>
