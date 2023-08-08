@@ -27,6 +27,15 @@ const TopNav = (props) => {
   const accountPopover = usePopover();
   const { nombreEnvio, correo } = JSON.parse(sessionStorage.getItem('user'));
 
+  const barra = lgUp ? {
+    marginLeft: 33,
+    minHeight: TOP_NAV_HEIGHT,
+    px: 2
+  } : {
+    minHeight: TOP_NAV_HEIGHT,
+    px: 2
+  }
+
 
   return (
     <>
@@ -50,12 +59,9 @@ const TopNav = (props) => {
         <Stack
           alignItems="center"
           direction="row"
-          justifyContent={lgUp ? 'flex-end' : "space-between"}
+          justifyContent={"space-between"}
           spacing={2}
-          sx={{
-            minHeight: TOP_NAV_HEIGHT,
-            px: 2
-          }}
+          sx={barra}
         >
           {!lgUp && <Stack
             alignItems="center"
@@ -70,18 +76,18 @@ const TopNav = (props) => {
             </IconButton>
 
           </Stack>}
+          <Typography
+            sx={{ marginLeft: 5 }}
+            color='#ded9da'
+            variant="h3"
+            fontSize={lgUp ? 18 : 18}
+          >Bienvenid@ a Gesticyc
+          </Typography>
           <Stack
             alignItems="center"
             direction="row"
             spacing={2}
           >
-            <Typography
-              sx={{ marginRight: 10 }}
-              color='#ded9da'
-              variant="h3"
-              fontSize={lgUp ? 30 : 18}
-            >Bienvenid@ a Gesticyc
-            </Typography>
 
             <Typography
               sx={{ marginRight: 10 }}

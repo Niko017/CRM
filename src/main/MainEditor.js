@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react';
-import { Autocomplete, Snackbar, Button, SvgIcon, Container, TextField, CssBaseline } from '@mui/material';
+import { Autocomplete, Snackbar, Button, SvgIcon, Container, TextField, CssBaseline, Typography } from '@mui/material';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import { BASE_URL, SENDING_EMAIL, APIKEY } from 'constant/constantes';
 import { modules, formats } from 'secciones/editor/ToolbarEditor';
@@ -140,25 +140,28 @@ function MainEditor() {
     <React.Fragment>
       <CssBaseline>
         <Container maxWidth="xl">
-          <div style={{ display: 'flex', gap: 10 }}>
-            <Link to='/email'>
-              <Button startIcon={(
-                <SvgIcon fontSize="small">
-                  <KeyboardBackspaceIcon />
-                </SvgIcon>)}
-                sx={{ height: 30 }}
+          <div style={{ display: 'flex', marginTop: 10, justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+              <Link to='/email'>
+                <Button startIcon={(
+                  <SvgIcon fontSize="small">
+                    <KeyboardBackspaceIcon />
+                  </SvgIcon>)}
+                  sx={{ height: 30 }}
+                  size='small'
+                  variant='contained'
+                  color='error'
+                >Atras</Button></Link>
+              <Autocomplete
                 size='small'
-                variant='contained'
-                color='error'
-              >Atras</Button></Link>
-            <Autocomplete
-              size='small'
-              sx={{ flexGrow: 1, maxWidth: '150px' }}
-              options={emails}
-              getOptionLabel={(option) => option.titulo ?? ''}
-              renderInput={(params) => <TextField {...params} label="Tipos de Email" />}
-              onChange={cambiarTexto}
-            />
+                sx={{ flexGrow: 1, minWidth: '150px' }}
+                options={emails}
+                getOptionLabel={(option) => option.titulo ?? ''}
+                renderInput={(params) => <TextField {...params} label="Tipos de Email" />}
+                onChange={cambiarTexto}
+              />
+            </div>
+            <Typography sx={{ marginRight: 5 }} color='#868889' variant="h4">Email Masivo</Typography>
           </div>
           <TextField fullWidth label="Motivo" id="fullWidth" value={motivo} onChange={(event) => {
             setMotivo(event.target.value);

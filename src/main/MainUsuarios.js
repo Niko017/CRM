@@ -7,11 +7,14 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Container, Snackbar, Typography } from '@mui/material'
+import { Box, Button, Container, FormGroup, MenuItem, Snackbar, Typography } from '@mui/material'
 import axios from 'axios';
 import Alerta from 'components/Alerta.js';
 import { BASE_URL } from 'constant/constantes';
 import { useAlert } from 'hooks/useAlert';
+import Modal from '@mui/material/Modal';
+import Grid from '@mui/material/Grid';
+import TextField from '@mui/material/TextField';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -35,7 +38,19 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function MainUsuarios() {
 
+    const caja = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 900,
+        bgcolor: 'background.paper',
+        boxShadow: 24,
+        p: 4,
+    };
+
     const [usuarios, setUsuarios] = useState([]);
+    const [open, setOpen] = useState(false)
     const { alert, handleErrorClose, mensajeAdvertencia, mensajeError, mensajeInfo, mensajeConfirmacion } = useAlert()
 
     const cargarUsuarios = async () => {
@@ -52,14 +67,37 @@ export default function MainUsuarios() {
         }
     }
 
+    const roles = [
+        {
+            value: 'ventas',
+            label: 'Notificador de Ventas',
+        },
+        {
+            value: 'emails',
+            label: 'Marketing Masivo',
+        },
+        {
+            value: 'admin',
+            label: 'Administracion',
+        },
+        {
+            value: 'avisador',
+            label: 'AD Mailing',
+        },
+    ]
+
     useEffect(() => {
         cargarUsuarios();
     }, [])
 
     return (
         <>
+
             <Typography textAlign='center' sx={{ marginY: 1 }} color='#868889' variant="h4">Usuarios</Typography>
             <Container sx={{ marginY: 2 }}>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 5 }}>
+                    <Button onClick={() => setOpen(true)} variant='contained' color='error' >Añadir usuario</Button>
+                </div>
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 700 }} aria-label="customized table">
                         <TableHead>
@@ -89,6 +127,42 @@ export default function MainUsuarios() {
                         {alert.message}
                     </Alerta>
                 </Snackbar>
+                <Modal
+                    open={open}
+                    onClose={() => setOpen(false)}
+                >
+                    <Box sx={caja}>
+                        <Grid container spacing={1}>
+                            <Grid item xs={6}>
+                                <TextField fullWidth label="Nombre" variant="outlined" />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <TextField fullWidth label="Apellidos" variant="outlined" />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <TextField fullWidth label="Genero" variant="outlined" />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <TextField fullWidth type='date' label="Fecha Nacimento" variant="outlined" />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <TextField fullWidth label="Departamento" variant="outlined" />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <TextField fullWidth select label="Rol" variant="outlined" >
+                                    {roles.map((option) => (
+                                        <MenuItem key={option.value} value={option.value}>
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </Grid>
+                            <Grid alignSelf='flex-end' item xs={12}>
+                                <Button variant='contained' color='error' onClick={() => setOpen(false)}>Guardar</Button>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                </Modal>
             </Container>
         </>
     )
